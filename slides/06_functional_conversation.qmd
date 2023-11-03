@@ -1,29 +1,95 @@
 ---
 title: Conversational agent
-jupyter: python3
+title-slide-attributes:
+  data-background-image: ../images/logo.png
+  data-background-size: contain
+  data-background-opacity: "0.5"
+lang: en
+subtitle: Tutorial 5
+author: Jan Kirenz
+execute:
+  eval: false
+  echo: true
+highlight-style: github
+format:
+  revealjs: 
+    toc: true
+    toc-depth: 1
+    embed-resources: false
+    theme: [dark, ../custom.scss]  
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    code-copy: true
+    code-line-numbers: true
+    smaller: false
+    scrollable: true
+    slide-number: c
+    preview-links: auto
+    chalkboard: 
+      buttons: false
+   # logo: ../images/logo.png
+    footer: Jan Kirenz
 ---
 
+# Conversational agent
 
+Let's build a conversational agent
+
+# Setup
 
 ```{python}
-#| tags: []
 import os
 import openai
 
 from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv()) # read local .env file
+_ = load_dotenv(find_dotenv()) 
 openai.api_key = os.environ['OPENAI_API_KEY']
 ```
 
 ```{python}
-from langchain.tools import tool
-```
 
-```{python}
+import wikipedia
+
+
+from langchain.tools import tool
+
 import requests
 from pydantic import BaseModel, Field
 import datetime
 
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+from langchain.tools.render import format_tool_to_openai_function
+from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
+
+from langchain.prompts import MessagesPlaceholder
+
+from langchain.agents.format_scratchpad import format_to_openai_functions
+
+from langchain.schema.agent import AgentFinish
+
+from langchain.schema.runnable import RunnablePassthrough
+
+from langchain.agents import AgentExecutor
+
+from langchain.memory import ConversationBufferMemory
+
+import panel as pn  # GUI
+pn.extension()
+import panel as pn
+import param
+
+
+```
+
+
+# Prepare
+
+## Define weather tool
+
+```{python}
 # Define the input schema
 class OpenMeteoInput(BaseModel):
     latitude: float = Field(..., description="Latitude of the location to fetch weather data for")
@@ -61,8 +127,9 @@ def get_current_temperature(latitude: float, longitude: float) -> dict:
     return f'The current temperature is {current_temperature}°C'
 ```
 
+## Define Wikipedia tool
+
 ```{python}
-import wikipedia
 
 @tool
 def search_wikipedia(query: str) -> str:
@@ -83,41 +150,58 @@ def search_wikipedia(query: str) -> str:
     return "\n\n".join(summaries)
 ```
 
+
+## Save list of tools
+
 ```{python}
 tools = [get_current_temperature, search_wikipedia]
 ```
 
-```{python}
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from langchain.tools.render import format_tool_to_openai_function
-from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
-```
+## Set up chain
 
 ```{python}
 functions = [format_tool_to_openai_function(f) for f in tools]
+
 model = ChatOpenAI(temperature=0).bind(functions=functions)
+
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are helpful but sassy assistant"),
     ("user", "{input}"),
 ])
+
 chain = prompt | model | OpenAIFunctionsAgentOutputParser()
 ```
 
+## Invoke chain
+
 ```{python}
-result = chain.invoke({"input": "what is the weather is sf?"})
+result = chain.invoke({"input": "what is the weather in stuttgart?"})
 ```
+
+. . .
 
 ```{python}
 result.tool
 ```
 
+- 'get_current_temperature'
+
+. . .
+
 ```{python}
 result.tool_input
 ```
 
+- {'latitude': 48.7758, 'longitude': 9.1829}
+
+
+# Pass back in history
+
+## Modify prompt
+
+- Use MessagesPlaceholder
+
 ```{python}
-from langchain.prompts import MessagesPlaceholder
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are helpful but sassy assistant"),
     ("user", "{input}"),
@@ -125,20 +209,33 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 ```
 
+## Create chain
+
 ```{python}
 chain = prompt | model | OpenAIFunctionsAgentOutputParser()
 ```
 
+
+## Invoke chain
+
+- We use an empty list because we don't have any input so far
+
+. . .
+
 ```{python}
 result1 = chain.invoke({
-    "input": "what is the weather is sf?",
+    "input": "what is the weather is stuttgart?",
     "agent_scratchpad": []
 })
 ```
 
+## Inspect result1
+
 ```{python}
 result1.tool
 ```
+
+- 'get_current_temperature'
 
 ```{python}
 observation = get_current_temperature(result1.tool_input)
@@ -148,35 +245,52 @@ observation = get_current_temperature(result1.tool_input)
 observation
 ```
 
+- 'The current temperature is 10.1°C'
+
 ```{python}
 type(result1)
 ```
 
-```{python}
-from langchain.agents.format_scratchpad import format_to_openai_functions
-```
+- langchain.schema.agent.AgentActionMessageLog
+
+## Show log
 
 ```{python}
 result1.message_log
 ```
 
+- [AIMessage(content='', additional_kwargs={'function_call': {'name': 'get_current_temperature', 'arguments': '{\n  "latitude": 48.7758,\n  "longitude": 9.1829\n}'}})]
+
+## Format to OpenAI functions
+
 ```{python}
 format_to_openai_functions([(result1, observation), ])
 ```
 
+- [AIMessage(content='', additional_kwargs={'function_call': {'name': 'get_current_temperature', 'arguments': '{\n  "latitude": 48.7758,\n  "longitude": 9.1829\n}'}}),
+ FunctionMessage(content='The current temperature is 10.1°C', name='get_current_temperature')]
+
+## Update chain
+
 ```{python}
 result2 = chain.invoke({
-    "input": "what is the weather is sf?", 
+    "input": "what is the weather in stuttgart?", 
     "agent_scratchpad": format_to_openai_functions([(result1, observation)])
 })
 ```
+
+. . .
 
 ```{python}
 result2
 ```
 
+- AgentFinish(return_values={'output': 'The current temperature in Stuttgart is 10.1°C.'}, log='The current temperature in Stuttgart is 10.1°C.')
+
+
+# Final function
+
 ```{python}
-from langchain.schema.agent import AgentFinish
 def run_agent(user_input):
     intermediate_steps = []
     while True:
@@ -194,12 +308,17 @@ def run_agent(user_input):
         intermediate_steps.append((result, observation))
 ```
 
+
+## RunnablePassthrough
+
 ```{python}
-from langchain.schema.runnable import RunnablePassthrough
 agent_chain = RunnablePassthrough.assign(
     agent_scratchpad= lambda x: format_to_openai_functions(x["intermediate_steps"])
 ) | chain
 ```
+
+
+
 
 ```{python}
 def run_agent(user_input):
@@ -219,34 +338,92 @@ def run_agent(user_input):
         intermediate_steps.append((result, observation))
 ```
 
+## Run agent with weather question
+
 ```{python}
-run_agent("what is the weather is sf?")
+run_agent("what is the weather in stuttgart?")
 ```
+
+- AgentFinish(return_values={'output': 'The current temperature in Stuttgart is 10.1°C.'}, log='The current temperature in Stuttgart is 10.1°C.')
+
+
+## Run agent with general question {.smaller}
 
 ```{python}
 run_agent("what is langchain?")
 ```
 
+
+- AgentFinish(return_values={'output': 'LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.'}, log='LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.')
+
+
+## Just say hi
+
 ```{python}
 run_agent("hi!")
 ```
 
+- AgentFinish(return_values={'output': 'Hello! How can I assist you today?'}, log='Hello! How can I assist you today?')
+
+
+# Agent Executor
+
+## Define Agent Executor
+
 ```{python}
-from langchain.agents import AgentExecutor
 agent_executor = AgentExecutor(agent=agent_chain, tools=tools, verbose=True)
 ```
+
+## Invoke executor {.smaller}
 
 ```{python}
 agent_executor.invoke({"input": "what is langchain?"})
 ```
 
+> Entering new AgentExecutor chain...
+
+Invoking: `search_wikipedia` with `{'query': 'langchain'}`
+
+
+Page: LangChain
+Summary: LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). As a language model integration framework, LangChain's use-cases largely overlap with those of language models in general, including document analysis and summarization, chatbots, and code analysis.
+
+Page: Prompt engineering
+Summary: Prompt engineering is the process of structuring text that can be interpreted and understood by a generative AI model. A prompt is natural language text describing the task that an AI should perform.A prompt for a text-to-text model can be a query such as "what is Fermat's little theorem?", a command such as "write a poem about leaves falling", a short statement of feedback (for example, "too verbose", "too formal", "rephrase again", "omit this word") or a longer statement including context, instructions, and input data. Prompt engineering may involve phrasing a query, specifying a style, providing relevant context or assigning a role to the AI such as "Act as a native French speaker". A prompt may include a few examples for a model to learn from, such as "maison -> house, chat -> cat, chien ->", an approach called few-shot learning.When communicating with a text-to-image or a text-to-audio model, a typical prompt is a description of a desired output such as "a high-quality photo of an astronaut riding a horse" or "Lo-fi slow BPM electro chill with organic samples". Prompting a text-to-image model may involve adding, removing, emphasizing and re-ordering words to achieve a desired subject, style, layout, lighting, and aesthetic.
+
+Page: Sentence embedding
+Summary: In natural language processing, a sentence embedding refers to a numeric representation of a sentence in the form of a vector of real numbers which encodes meaningful semantic information.State of the art embeddings are based on the learned hidden layer representation of dedicated sentence transformer models. BERT pioneered an approach involving the use of a dedicated [CLS] token prepended to the beginning of each sentence inputted into the model; the final hidden state vector of this token encodes information about the sentence and can be fine-tuned for use in sentence classification tasks. In practice however, BERT's sentence embedding with the [CLS] token achieves poor performance, often worse than simply averaging non-contextual word embeddings. SBERT later achieved superior sentence embedding performance by fine tuning BERT's [CLS] token embeddings through the usage of a siamese neural network architecture on the SNLI dataset. 
+Other approaches are loosely based on the idea of distributional semantics applied to sentences. Skip-Thought trains an encoder-decoder structure for the task of neighboring sentences predictions. Though this has been shown to achieve worse performance than approaches such as InferSent or SBERT. 
+An alternative direction is to aggregate word embeddings, such as those returned by Word2vec, into sentence embeddings. The most straightforward approach is to simply compute the average of word vectors, known as continuous bag-of-words (CBOW). However, more elaborate solutions based on word vector quantization have also been proposed. One such approach is the vector of locally aggregated word embeddings (VLAWE), which demonstrated performance improvements in downstream text classification tasks.
+LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.
+
+> Finished chain.
+
+{'input': 'what is langchain?',
+ 'output': 'LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.'}
+
+# Conversation example
+
 ```{python}
 agent_executor.invoke({"input": "my name is bob"})
 ```
 
+> Entering new AgentExecutor chain...
+Hello Bob! How can I assist you today?
+
+> Finished chain.
+
+
+{'input': 'my name is bob', 'output': 'Hello Bob! How can I assist you today?'}
+
+## Ask a question
+
 ```{python}
 agent_executor.invoke({"input": "what is my name"})
 ```
+
+
+## Add previous messages in prompt
 
 ```{python}
 prompt = ChatPromptTemplate.from_messages([
@@ -257,34 +434,92 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 ```
 
+## Create agent chain
+
 ```{python}
 agent_chain = RunnablePassthrough.assign(
     agent_scratchpad= lambda x: format_to_openai_functions(x["intermediate_steps"])
 ) | prompt | model | OpenAIFunctionsAgentOutputParser()
 ```
 
+## Create memory object
+
 ```{python}
-from langchain.memory import ConversationBufferMemory
 memory = ConversationBufferMemory(return_messages=True,memory_key="chat_history")
 ```
+
+
+## Agent executor
 
 ```{python}
 agent_executor = AgentExecutor(agent=agent_chain, tools=tools, verbose=True, memory=memory)
 ```
 
+## Provide input with name
+
+
 ```{python}
 agent_executor.invoke({"input": "my name is bob"})
 ```
+
+> Entering new AgentExecutor chain...
+Hello Bob! How can I assist you today?
+
+> Finished chain.
+
+{'input': 'my name is bob',
+ 'chat_history': [HumanMessage(content='my name is bob'),
+  AIMessage(content='Hello Bob! How can I assist you today?')],
+ 'output': 'Hello Bob! How can I assist you today?'}
+
+## Ask about name
+
 
 ```{python}
 agent_executor.invoke({"input": "whats my name"})
 ```
 
+> Entering new AgentExecutor chain...
+Your name is Bob.
+
+> Finished chain.
+
+{'input': 'whats my name',
+ 'chat_history': [HumanMessage(content='my name is bob'),
+  AIMessage(content='Hello Bob! How can I assist you today?'),
+  HumanMessage(content='whats my name'),
+  AIMessage(content='Your name is Bob.')],
+ 'output': 'Your name is Bob.'}
+
+
+## Ask about the weather {.smaller}
+
 ```{python}
-agent_executor.invoke({"input": "whats the weather in sf?"})
+agent_executor.invoke({"input": "whats the weather in stuttgart?"})
 ```
 
-### Create a chatbot
+
+> Entering new AgentExecutor chain...
+
+Invoking: `get_current_temperature` with `{'latitude': 48.7758, 'longitude': 9.1829}`
+
+
+The current temperature is 9.5°CThe current temperature in Stuttgart is 9.5°C.
+
+> Finished chain.
+
+{'input': 'whats the weather in stuttgart?',
+ 'chat_history': [HumanMessage(content='my name is bob'),
+  AIMessage(content='Hello Bob! How can I assist you today?'),
+  HumanMessage(content='whats my name'),
+  AIMessage(content='Your name is Bob.'),
+  HumanMessage(content='whats the weather in stuttgart?'),
+  AIMessage(content='The current temperature in Stuttgart is 9.5°C.')],
+ 'output': 'The current temperature in Stuttgart is 9.5°C.'}
+
+# Create a chatbot
+
+## Define a custom function
 
 ```{python}
 @tool
@@ -294,15 +529,18 @@ def create_your_own(query: str) -> str:
     return query[::-1]
 ```
 
+
+## Create tool list
+
 ```{python}
 tools = [get_current_temperature, search_wikipedia, create_your_own]
 ```
 
+
+## Define Chatbot function
+
 ```{python}
-import panel as pn  # GUI
-pn.extension()
-import panel as pn
-import param
+
 
 class cbfs(param.Parameterized):
     
@@ -341,6 +579,8 @@ class cbfs(param.Parameterized):
         return 
 ```
 
+## Panel UI
+
 ```{python}
 cb = cbfs(tools)
 
@@ -363,31 +603,14 @@ dashboard
 ```
 
 
+# Acknowledgments
+
+- This tutorial is mainly based on the excellent course ["Functions, Tools and Agents with LangChain"](https://www.deeplearning.ai/short-courses/functions-tools-agents-langchain/?) provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI.
 
 
+# What's next? {background-image="../images/logo.png" background-opacity="0.5"}
+
+**Congratulations! You have completed this tutorial** 👍
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Next, you may want to go back to the [lab's website](https://kirenz.github.io/lab-langchain-functions/)**
