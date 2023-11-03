@@ -1,0 +1,1199 @@
+[
+  {
+    "objectID": "slides/01_document_loading.html#python",
+    "href": "slides/01_document_loading.html#python",
+    "title": "Document Loading",
+    "section": "Python",
+    "text": "Python\n\nfrom langchain.document_loaders import NotionDirectoryLoader\nfrom langchain.document_loaders import WebBaseLoader\nimport pandas as pd\nfrom langchain.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader\nfrom langchain.document_loaders.parsers import OpenAIWhisperParser\nfrom langchain.document_loaders.generic import GenericLoader\nfrom langchain.document_loaders import PyPDFLoader\nfrom dotenv import load_dotenv, find_dotenv\nimport os\nimport openai\n# import sys\n# sys.path.append('../..')\n\n_ = load_dotenv(find_dotenv())  # read local .env file\n\nopenai.api_key = os.environ['OPENAI_API_KEY']"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#basics",
+    "href": "slides/01_document_loading.html#basics",
+    "title": "Document Loading",
+    "section": "Basics",
+    "text": "Basics\n\nIn retrieval augmented generation (RAG), an LLM retrieves contextual documents from an external dataset as part of its execution.\nThis is useful if we want to ask question about specific documents (e.g., our PDFs, a set of videos, etc)."
+  },
+  {
+    "objectID": "slides/01_document_loading.html#example",
+    "href": "slides/01_document_loading.html#example",
+    "title": "Document Loading",
+    "section": "Example",
+    "text": "Example\n\nLet’s load a PDF transcript from one of Andrew Ng’s courses\nThese documents are the result of automated transcription so words and sentences are sometimes split unexpectedly."
+  },
+  {
+    "objectID": "slides/01_document_loading.html#load-pdf",
+    "href": "slides/01_document_loading.html#load-pdf",
+    "title": "Document Loading",
+    "section": "Load PDF",
+    "text": "Load PDF\n\nloader = PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture01.pdf\")\npages = loader.load()\n\n\nEach page is a Document.\nA Document contains text (page_content) and metadata."
+  },
+  {
+    "objectID": "slides/01_document_loading.html#inspect-data",
+    "href": "slides/01_document_loading.html#inspect-data",
+    "title": "Document Loading",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nlen(pages)\n\n\n22\n\n\n\npage = pages[0]\n\n\n\n\npage.metadata\n\n\n{‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture01.pdf’, ‘page’: 0}"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#inspect-content",
+    "href": "slides/01_document_loading.html#inspect-content",
+    "title": "Document Loading",
+    "section": "Inspect content",
+    "text": "Inspect content\n\nprint(page.page_content[0:500])\n\n\nMachineLearning-Lecture01\nInstructor (Andrew Ng): Okay. Good morning. Welcome to CS229, the machine learning class. So what I wanna do today is ju st spend a little time going over the logistics of the class, and then we’ll start to talk a bit about machine learning.\nBy way of introduction, my name’s Andrew Ng and I’ll be instru ctor for this class. And so I personally work in machine learning, and I’ ve worked on it for about 15 years now, and I actually think that machine learning i"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#prerequisites",
+    "href": "slides/01_document_loading.html#prerequisites",
+    "title": "Document Loading",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nYou need FFmpeg\nMac: install with Homebrew"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#example-1",
+    "href": "slides/01_document_loading.html#example-1",
+    "title": "Document Loading",
+    "section": "Example",
+    "text": "Example\nLet’s load the “Code Report” about Vector databases from Fireship"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#load-youtube-video",
+    "href": "slides/01_document_loading.html#load-youtube-video",
+    "title": "Document Loading",
+    "section": "Load YouTube video",
+    "text": "Load YouTube video\n\n# link to video\nurl = \"https://www.youtube.com/watch?v=klTvEwg3oJ4\"\n\n# path to directory\nsave_dir = \"../docs/youtube/\"\n\n# load video\nloader = GenericLoader(\n    YoutubeAudioLoader([url], save_dir),\n    OpenAIWhisperParser()\n)\n\ndocs = loader.load()"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#inspect-data-1",
+    "href": "slides/01_document_loading.html#inspect-data-1",
+    "title": "Document Loading",
+    "section": "Inspect data",
+    "text": "Inspect data\n\ndocs[0].page_content[0:500]\n\n\n“It is April 7th, 2023, and you’re watching The Code Report. One month ago, Vector Database Weaviate landed $16 million in Series A funding. Last week, PineconeDB just got a check for $28 million at a $700 million valuation. And yesterday, Chroma, an open source project with only 1.2 GitHub stars, raised $18 million for its Embeddings database. And I just launched my own Vector database this morning. We’re currently pre-revenue, pre-vision, and pre-code, and valued at $420 million. Leave your cre”"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#save-as-dataframe",
+    "href": "slides/01_document_loading.html#save-as-dataframe",
+    "title": "Document Loading",
+    "section": "Save as DataFrame",
+    "text": "Save as DataFrame\n\ndf = pd.DataFrame(docs, columns=['Text', 'Metadata'])"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#save-as-csv",
+    "href": "slides/01_document_loading.html#save-as-csv",
+    "title": "Document Loading",
+    "section": "Save as CSV",
+    "text": "Save as CSV\n\ndf.to_csv('../docs/youtube/codereport.csv')"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#example-2",
+    "href": "slides/01_document_loading.html#example-2",
+    "title": "Document Loading",
+    "section": "Example",
+    "text": "Example\n\nLet’s load a page from “Introduction to Modern Statistics” by Mine Çetinkaya-Rundel and Johanna Hardin: https://openintro-ims.netlify.app/data-design\nThe raw file is provided in GutHub under this URL: https://raw.githubusercontent.com/OpenIntroStat/ims/main/02-data-design.qmd"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#load-url",
+    "href": "slides/01_document_loading.html#load-url",
+    "title": "Document Loading",
+    "section": "Load URL",
+    "text": "Load URL\n\nloader = WebBaseLoader(\n    \"https://raw.githubusercontent.com/OpenIntroStat/ims/main/02-data-design.qmd\")\n\ndocs = loader.load()"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#inspact-data",
+    "href": "slides/01_document_loading.html#inspact-data",
+    "title": "Document Loading",
+    "section": "Inspact data",
+    "text": "Inspact data\n\nprint(docs[0].page_content[400:800])\n\n\nampling. Knowing how the observational units were selected from a larger entity will allow for generalizations back to the population from which the data were randomly selected. Additionally, by understanding the structure of the study, causal relationships can be separated from those relationships which are only associated. A good question to ask oneself before working with the data at all is, “H"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#save-as-dataframe-1",
+    "href": "slides/01_document_loading.html#save-as-dataframe-1",
+    "title": "Document Loading",
+    "section": "Save as DataFrame",
+    "text": "Save as DataFrame\n\ndf = pd.DataFrame(docs, columns=['Text', 'Metadata'])"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#save-as-csv-1",
+    "href": "slides/01_document_loading.html#save-as-csv-1",
+    "title": "Document Loading",
+    "section": "Save as CSV",
+    "text": "Save as CSV\n\ndf.to_csv('../docs/url/study-design.csv')"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#example-3",
+    "href": "slides/01_document_loading.html#example-3",
+    "title": "Document Loading",
+    "section": "Example",
+    "text": "Example\n\nOption 1: Simply use the example data provided in langchain-intro/docs/Notion_DB\nOption 2: Follow the steps here for an example Notion site such as this one\n\nDuplicate the page into your own Notion space and export as Markdown / CSV.\nUnzip it and save it as a folder that contains the markdown file for the Notion page."
+  },
+  {
+    "objectID": "slides/01_document_loading.html#load-notion",
+    "href": "slides/01_document_loading.html#load-notion",
+    "title": "Document Loading",
+    "section": "Load Notion",
+    "text": "Load Notion\n\nloader = NotionDirectoryLoader(\"../docs/Notion_DB\")\ndocs = loader.load()"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#inspect-data-2",
+    "href": "slides/01_document_loading.html#inspect-data-2",
+    "title": "Document Loading",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nprint(docs[0].page_content[0:200])\n\n# Getting Started\n\n👋 Welcome to Notion!\n\nHere are the basics:\n\n- [ ]  Click anywhere and just start typing\n- [ ]  Hit `/` to see all the types of content you can add - headers, videos, sub pages, etc."
+  },
+  {
+    "objectID": "slides/01_document_loading.html#inspect-data-3",
+    "href": "slides/01_document_loading.html#inspect-data-3",
+    "title": "Document Loading",
+    "section": "Inspect data",
+    "text": "Inspect data\n\ndocs[0].metadata\n\n\n{‘source’: ‘../docs/Notion_DB/Getting Started 95e5ecbe48c44e408ef09fed850fbd40.md’}"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html",
+    "href": "slides/02_document_splitting.html",
+    "title": "Document Splitting",
+    "section": "",
+    "text": "import os\nimport openai\nimport sys\nsys.path.append('../..')\n\nfrom dotenv import load_dotenv, find_dotenv\n_ = load_dotenv(find_dotenv()) # read local .env file\n\nopenai.api_key  = os.environ['OPENAI_API_KEY']\nfrom langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter\nchunk_size =26\nchunk_overlap = 4\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=chunk_size,\n    chunk_overlap=chunk_overlap\n)\nc_splitter = CharacterTextSplitter(\n    chunk_size=chunk_size,\n    chunk_overlap=chunk_overlap\n)\nWhy doesn’t this split the string below?\ntext1 = 'abcdefghijklmnopqrstuvwxyz'\nr_splitter.split_text(text1)\n\n['abcdefghijklmnopqrstuvwxyz']\ntext2 = 'abcdefghijklmnopqrstuvwxyzabcdefg'\nr_splitter.split_text(text2)\n\n['abcdefghijklmnopqrstuvwxyz', 'wxyzabcdefg']\nOk, this splits the string but we have an overlap specified as 5, but it looks like 3? (try an even number)\ntext3 = \"a b c d e f g h i j k l m n o p q r s t u v w x y z\"\nr_splitter.split_text(text3)\n\n['a b c d e f g h i j k l m', 'l m n o p q r s t u v w x', 'w x y z']\nc_splitter.split_text(text3)\n\n['a b c d e f g h i j k l m n o p q r s t u v w x y z']\nc_splitter = CharacterTextSplitter(\n    chunk_size=chunk_size,\n    chunk_overlap=chunk_overlap,\n    separator = ' '\n)\nc_splitter.split_text(text3)\n\n['a b c d e f g h i j k l m', 'l m n o p q r s t u v w x', 'w x y z']\nTry your own examples!"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#recursive-splitting-details",
+    "href": "slides/02_document_splitting.html#recursive-splitting-details",
+    "title": "Document Splitting",
+    "section": "Recursive splitting details",
+    "text": "Recursive splitting details\nRecursiveCharacterTextSplitter is recommended for generic text.\n\nsome_text = \"\"\"When writing documents, writers will use document structure to group content. \\\nThis can convey to the reader, which idea's are related. For example, closely related ideas \\\nare in sentances. Similar ideas are in paragraphs. Paragraphs form a document. \\n\\n  \\\nParagraphs are often delimited with a carriage return or two carriage returns. \\\nCarriage returns are the \"backslash n\" you see embedded in this string. \\\nSentences have a period at the end, but also, have a space.\\\nand words are separated by space.\"\"\"\n\n\nlen(some_text)\n\n\nc_splitter = CharacterTextSplitter(\n    chunk_size=450,\n    chunk_overlap=0,\n    separator = ' '\n)\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=450,\n    chunk_overlap=0, \n    separators=[\"\\n\\n\", \"\\n\", \" \", \"\"]\n)\n\n\nc_splitter.split_text(some_text)\n\n['When writing documents, writers will use document structure to group content. This can convey to the reader, which idea\\'s are related. For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document. \\n\\n Paragraphs are often delimited with a carriage return or two carriage returns. Carriage returns are the \"backslash n\" you see embedded in this string. Sentences have a period at the end, but also,',\n 'have a space.and words are separated by space.']\n\n\n\nr_splitter.split_text(some_text)\n\n[\"When writing documents, writers will use document structure to group content. This can convey to the reader, which idea's are related. For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document.\",\n 'Paragraphs are often delimited with a carriage return or two carriage returns. Carriage returns are the \"backslash n\" you see embedded in this string. Sentences have a period at the end, but also, have a space.and words are separated by space.']\n\n\nLet’s reduce the chunk size a bit and add a period to our separators:\n\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=150,\n    chunk_overlap=0,\n    separators=[\"\\n\\n\", \"\\n\", \"\\. \", \" \", \"\"]\n)\nr_splitter.split_text(some_text)\n\n[\"When writing documents, writers will use document structure to group content. This can convey to the reader, which idea's are related\",\n '. For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document.',\n 'Paragraphs are often delimited with a carriage return or two carriage returns',\n '. Carriage returns are the \"backslash n\" you see embedded in this string',\n '. Sentences have a period at the end, but also, have a space.and words are separated by space.']\n\n\n\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=150,\n    chunk_overlap=0,\n    separators=[\"\\n\\n\", \"\\n\", \"(?&lt;=\\. )\", \" \", \"\"]\n)\nr_splitter.split_text(some_text)\n\n[\"When writing documents, writers will use document structure to group content. This can convey to the reader, which idea's are related.\",\n 'For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document.',\n 'Paragraphs are often delimited with a carriage return or two carriage returns.',\n 'Carriage returns are the \"backslash n\" you see embedded in this string.',\n 'Sentences have a period at the end, but also, have a space.and words are separated by space.']\n\n\n\nfrom langchain.document_loaders import PyPDFLoader\nloader = PyPDFLoader(\"docs/cs229_lectures/MachineLearning-Lecture01.pdf\")\npages = loader.load()\n\n\nfrom langchain.text_splitter import CharacterTextSplitter\ntext_splitter = CharacterTextSplitter(\n    separator=\"\\n\",\n    chunk_size=1000,\n    chunk_overlap=150,\n    length_function=len\n)\n\n\ndocs = text_splitter.split_documents(pages)\n\n\nlen(docs)\n\n77\n\n\n\nlen(pages)\n\n22\n\n\n\nfrom langchain.document_loaders import NotionDirectoryLoader\nloader = NotionDirectoryLoader(\"docs/Notion_DB\")\nnotion_db = loader.load()\n\n\ndocs = text_splitter.split_documents(notion_db)\n\n\nlen(notion_db)\n\n1\n\n\n\nlen(docs)\n\n2"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#token-splitting",
+    "href": "slides/02_document_splitting.html#token-splitting",
+    "title": "Document Splitting",
+    "section": "Token splitting",
+    "text": "Token splitting\nWe can also split on token count explicity, if we want.\nThis can be useful because LLMs often have context windows designated in tokens.\nTokens are often ~4 characters.\n\nfrom langchain.text_splitter import TokenTextSplitter\n\n\ntext_splitter = TokenTextSplitter(chunk_size=1, chunk_overlap=0)\n\n\ntext1 = \"foo bar bazzyfoo\"\n\n\ntext_splitter.split_text(text1)\n\n['foo', ' bar', ' b', 'az', 'zy', 'foo']\n\n\n\ntext_splitter = TokenTextSplitter(chunk_size=10, chunk_overlap=0)\n\n\ndocs = text_splitter.split_documents(pages)\n\n\ndocs[0]\n\nDocument(page_content='MachineLearning-Lecture01  \\n', metadata={'source': 'docs/cs229_lectures/MachineLearning-Lecture01.pdf', 'page': 0})\n\n\n\npages[0].metadata\n\n{'source': 'docs/cs229_lectures/MachineLearning-Lecture01.pdf', 'page': 0}"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#context-aware-splitting",
+    "href": "slides/02_document_splitting.html#context-aware-splitting",
+    "title": "Document Splitting",
+    "section": "Context aware splitting",
+    "text": "Context aware splitting\nChunking aims to keep text with common context together.\nA text splitting often uses sentences or other delimiters to keep related text together but many documents (such as Markdown) have structure (headers) that can be explicitly used in splitting.\nWe can use MarkdownHeaderTextSplitter to preserve header metadata in our chunks, as show below.\n\nfrom langchain.document_loaders import NotionDirectoryLoader\nfrom langchain.text_splitter import MarkdownHeaderTextSplitter\n\n\nmarkdown_document = \"\"\"# Title\\n\\n \\\n## Chapter 1\\n\\n \\\nHi this is Jim\\n\\n Hi this is Joe\\n\\n \\\n### Section \\n\\n \\\nHi this is Lance \\n\\n \n## Chapter 2\\n\\n \\\nHi this is Molly\"\"\"\n\n\n\nheaders_to_split_on = [\n    (\"#\", \"Header 1\"),\n    (\"##\", \"Header 2\"),\n    (\"###\", \"Header 3\"),\n]\n\n\nmarkdown_splitter = MarkdownHeaderTextSplitter(\n    headers_to_split_on=headers_to_split_on\n)\nmd_header_splits = markdown_splitter.split_text(markdown_document)\n\n\nmd_header_splits[0]\n\nDocument(page_content='Hi this is Jim  \\nHi this is Joe', metadata={'Header 1': 'Title', 'Header 2': 'Chapter 1'})\n\n\n\nmd_header_splits[1]\n\nDocument(page_content='Hi this is Lance', metadata={'Header 1': 'Title', 'Header 2': 'Chapter 1', 'Header 3': 'Section'})\n\n\nTry on a real Markdown file, like a Notion database.\n\nloader = NotionDirectoryLoader(\"docs/Notion_DB\")\ndocs = loader.load()\ntxt = ' '.join([d.page_content for d in docs])\n\n\nheaders_to_split_on = [\n    (\"#\", \"Header 1\"),\n    (\"##\", \"Header 2\"),\n]\nmarkdown_splitter = MarkdownHeaderTextSplitter(\n    headers_to_split_on=headers_to_split_on\n)\n\n\nmd_header_splits = markdown_splitter.split_text(txt)\n\n\nmd_header_splits[0]\n\nDocument(page_content='👋 Welcome to Notion!  \\nHere are the basics:  \\n- [ ]  Click anywhere and just start typing\\n- [ ]  Hit `/` to see all the types of content you can add - headers, videos, sub pages, etc.  \\n[Example sub page](https://www.notion.so/Example-sub-page-92f63253929d456bbf12cd696e21e045?pvs=21)  \\n- [ ]  Highlight any text, and use the menu that pops up to **style** *your* ~~writing~~ `however` [you](https://www.notion.so/product) like\\n- [ ]  See the `⋮⋮` to the left of this checkbox on hover? Click and drag to move this line\\n- [ ]  Click the `+ New Page` button at the bottom of your sidebar to add a new page\\n- [ ]  Click `Templates` in your sidebar to get started with pre-built pages\\n- This is a toggle block. Click the little triangle to see more useful tips!\\n- [Template Gallery](https://www.notion.so/181e961aeb5c4ee6915307c0dfd5156d?pvs=21): More templates built by the Notion community\\n- [Help & Support](https://www.notion.so/e040febf70a94950b8620e6f00005004?pvs=21): ****Guides and FAQs for everything in Notion\\n- Stay organized with your sidebar and nested pages:  \\n![Getting%20Started%2095e5ecbe48c44e408ef09fed850fbd40/infinitehierarchynodither.gif](Getting%20Started%2095e5ecbe48c44e408ef09fed850fbd40/infinitehierarchynodither.gif)  \\nSee it in action:  \\n[1 minute](https://youtu.be/TL_N2pmh9O0)  \\n1 minute  \\n[4 minutes](https://youtu.be/FXIrojSK3Jo)  \\n4 minutes  \\n[2 minutes](https://youtu.be/2Pwzff-uffU)  \\n2 minutes  \\n[2 minutes](https://youtu.be/O8qdvSxDYNY)  \\n2 minutes  \\nVisit our [YouTube channel](http://youtube.com/c/notion) to watch 50+ more tutorials  \\n👉**Have a question?** Click the `?` at the bottom right for more guides, or to send us a message.', metadata={'Header 1': 'Getting Started'})"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#python",
+    "href": "slides/02_document_splitting.html#python",
+    "title": "Document Splitting",
+    "section": "Python",
+    "text": "Python\n\nfrom langchain.text_splitter import MarkdownHeaderTextSplitter\nfrom langchain.text_splitter import TokenTextSplitter\nfrom langchain.document_loaders import NotionDirectoryLoader\nfrom langchain.text_splitter import CharacterTextSplitter\nfrom langchain.document_loaders import PyPDFLoader\nfrom langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter\nfrom dotenv import load_dotenv, find_dotenv\nimport os\nimport openai\n# import sys\n# sys.path.append('../..')\n\n_ = load_dotenv(find_dotenv())  # read local .env file\n\nopenai.api_key = os.environ['OPENAI_API_KEY']"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#character-text-splitter",
+    "href": "slides/02_document_splitting.html#character-text-splitter",
+    "title": "Document Splitting",
+    "section": "Character Text Splitter",
+    "text": "Character Text Splitter\n\nchunk_size = 26\nchunk_overlap = 4\n\n\n\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=chunk_size,\n    chunk_overlap=chunk_overlap\n)\n\n\n\n\nc_splitter = CharacterTextSplitter(\n    chunk_size=chunk_size,\n    chunk_overlap=chunk_overlap\n)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#text-1",
+    "href": "slides/02_document_splitting.html#text-1",
+    "title": "Document Splitting",
+    "section": "Text 1",
+    "text": "Text 1\n\nWhy doesn’t this split the string below?\n\n\ntext1 = 'abcdefghijklmnopqrstuvwxyz'\n\n\n\nr_splitter.split_text(text1)\n\n\n[‘abcdefghijklmnopqrstuvwxyz’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#text-2",
+    "href": "slides/02_document_splitting.html#text-2",
+    "title": "Document Splitting",
+    "section": "Text 2",
+    "text": "Text 2\n\ntext2 = 'abcdefghijklmnopqrstuvwxyzabcdefg'\n\n\n\nr_splitter.split_text(text2)\n\n\n[‘abcdefghijklmnopqrstuvwxyz’, ‘wxyzabcdefg’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#text-3",
+    "href": "slides/02_document_splitting.html#text-3",
+    "title": "Document Splitting",
+    "section": "Text 3",
+    "text": "Text 3\n\ntext3 = \"a b c d e f g h i j k l m n o p q r s t u v w x y z\"\n\n\n\nr_splitter.split_text(text3)\n\n\n[‘a b c d e f g h i j k l m’, ‘l m n o p q r s t u v w x’, ‘w x y z’]\n\n\n\n\nc_splitter.split_text(text3)\n\n\n[‘a b c d e f g h i j k l m n o p q r s t u v w x y z’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#charactertextsplitter",
+    "href": "slides/02_document_splitting.html#charactertextsplitter",
+    "title": "Document Splitting",
+    "section": "CharacterTextSplitter",
+    "text": "CharacterTextSplitter\n\nc_splitter = CharacterTextSplitter(\n    chunk_size=chunk_size,\n    chunk_overlap=chunk_overlap,\n    separator=' '\n)\n\n\nc_splitter.split_text(text3)\n\n\n[‘a b c d e f g h i j k l m’, ‘l m n o p q r s t u v w x’, ‘w x y z’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#recursivecharactertextsplitter",
+    "href": "slides/02_document_splitting.html#recursivecharactertextsplitter",
+    "title": "Document Splitting",
+    "section": "RecursiveCharacterTextSplitter",
+    "text": "RecursiveCharacterTextSplitter\n\nRecursiveCharacterTextSplitter is recommended for generic text.\n\n\nsome_text = \"\"\"When writing documents, writers will use document structure to group content. \\\nThis can convey to the reader, which idea's are related. For example, closely related ideas \\\nare in sentances. Similar ideas are in paragraphs. Paragraphs form a document. \\n\\n  \\\nParagraphs are often delimited with a carriage return or two carriage returns. \\\nCarriage returns are the \"backslash n\" you see embedded in this string. \\\nSentences have a period at the end, but also, have a space.\\\nand words are separated by space.\"\"\""
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#define-splitter",
+    "href": "slides/02_document_splitting.html#define-splitter",
+    "title": "Document Splitting",
+    "section": "Define splitter",
+    "text": "Define splitter\n\nc_splitter = CharacterTextSplitter(\n    chunk_size=450,\n    chunk_overlap=0,\n    separator=' '\n)\n\n\n\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=450,\n    chunk_overlap=0,\n    separators=[\"\\n\\n\", \"\\n\", \" \", \"\"]\n)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#character-splitter-output",
+    "href": "slides/02_document_splitting.html#character-splitter-output",
+    "title": "Document Splitting",
+    "section": "Character Splitter output",
+    "text": "Character Splitter output\n\nc_splitter.split_text(some_text)\n\n\n[‘When writing documents, writers will use document structure to group content. This can convey to the reader, which idea's are related. For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document. Paragraphs are often delimited with a carriage return or two carriage returns. Carriage returns are the “backslash n” you see embedded in this string. Sentences have a period at the end, but also,’, ‘have a space.and words are separated by space.’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#recursive-splitter-output",
+    "href": "slides/02_document_splitting.html#recursive-splitter-output",
+    "title": "Document Splitting",
+    "section": "Recursive Splitter output",
+    "text": "Recursive Splitter output\n\nr_splitter.split_text(some_text)\n\n\n[“When writing documents, writers will use document structure to group content. This can convey to the reader, which idea’s are related. For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document.”, ‘Paragraphs are often delimited with a carriage return or two carriage returns. Carriage returns are the “backslash n” you see embedded in this string. Sentences have a period at the end, but also, have a space.and words are separated by space.’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#adapt-splitter-1",
+    "href": "slides/02_document_splitting.html#adapt-splitter-1",
+    "title": "Document Splitting",
+    "section": "Adapt splitter 1",
+    "text": "Adapt splitter 1\n\nLet’s reduce the chunk size a bit and add a period to our separators:\n\n\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=150,\n    chunk_overlap=0,\n    separators=[\"\\n\\n\", \"\\n\", \"\\. \", \" \", \"\"]\n)\n\n\n\nr_splitter.split_text(some_text)\n\n\n[“When writing documents, writers will use document structure to group content. This can convey to the reader, which idea’s are related”, ‘. For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document.’, ‘Paragraphs are often delimited with a carriage return or two carriage returns’, ‘. Carriage returns are the “backslash n” you see embedded in this string’, ‘. Sentences have a period at the end, but also, have a space.and words are separated by space.’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#adapt-splitter-2",
+    "href": "slides/02_document_splitting.html#adapt-splitter-2",
+    "title": "Document Splitting",
+    "section": "Adapt splitter 2",
+    "text": "Adapt splitter 2\n\nr_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=150,\n    chunk_overlap=0,\n    separators=[\"\\n\\n\", \"\\n\", \"(?&lt;=\\. )\", \" \", \"\"]\n)\nr_splitter.split_text(some_text)\n\n\n\nr_splitter.split_text(some_text)\n\n\n[“When writing documents, writers will use document structure to group content. This can convey to the reader, which idea’s are related.”, ‘For example, closely related ideas are in sentances. Similar ideas are in paragraphs. Paragraphs form a document.’, ‘Paragraphs are often delimited with a carriage return or two carriage returns.’, ‘Carriage returns are the “backslash n” you see embedded in this string.’, ‘Sentences have a period at the end, but also, have a space.and words are separated by space.’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#load-pdf",
+    "href": "slides/02_document_splitting.html#load-pdf",
+    "title": "Document Splitting",
+    "section": "Load PDF",
+    "text": "Load PDF\n\nloader = PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture01.pdf\")\npages = loader.load()"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#define-splitter-1",
+    "href": "slides/02_document_splitting.html#define-splitter-1",
+    "title": "Document Splitting",
+    "section": "Define splitter",
+    "text": "Define splitter\n\ntext_splitter = CharacterTextSplitter(\n    separator=\"\\n\",\n    chunk_size=1000,\n    chunk_overlap=150,\n    length_function=len\n)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#split-document",
+    "href": "slides/02_document_splitting.html#split-document",
+    "title": "Document Splitting",
+    "section": "Split document",
+    "text": "Split document\n\ndocs = text_splitter.split_documents(pages)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#inspect-data",
+    "href": "slides/02_document_splitting.html#inspect-data",
+    "title": "Document Splitting",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nlen(docs)\n\n\n77\n\n\n\nlen(pages)\n\n\n22"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#inspect-data-1",
+    "href": "slides/02_document_splitting.html#inspect-data-1",
+    "title": "Document Splitting",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nprint(docs[0].page_content[300:800])\n\n\nmy name’s Andrew Ng and I’ll be instru ctor for this class. And so I personally work in machine learning, and I’ ve worked on it for about 15 years now, and I actually think that machine learning is th e most exciting field of all the computer sciences. So I’m actually always excited about teaching this class. Sometimes I actually think that machine learning is not only the most exciting thin g in computer science, but the most exciting thing in all of human e ndeavor, so maybe a little b"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#load-data",
+    "href": "slides/02_document_splitting.html#load-data",
+    "title": "Document Splitting",
+    "section": "Load data",
+    "text": "Load data\n\nloader = NotionDirectoryLoader(\"../docs/Notion_DB\")\nnotion_db = loader.load()"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#define-splitter-2",
+    "href": "slides/02_document_splitting.html#define-splitter-2",
+    "title": "Document Splitting",
+    "section": "Define splitter",
+    "text": "Define splitter\n\ntext_splitter = CharacterTextSplitter(\n    separator=\"\\n\",\n    chunk_size=1000,\n    chunk_overlap=150,\n    length_function=len\n)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#split-document-1",
+    "href": "slides/02_document_splitting.html#split-document-1",
+    "title": "Document Splitting",
+    "section": "Split document",
+    "text": "Split document\n\ndocs = text_splitter.split_documents(notion_db)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#inspect-data-2",
+    "href": "slides/02_document_splitting.html#inspect-data-2",
+    "title": "Document Splitting",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nlen(notion_db)\n\n\n1\n\n\n\nlen(docs)\n\n\n2"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#inspect-data-smaller",
+    "href": "slides/02_document_splitting.html#inspect-data-smaller",
+    "title": "Document Splitting",
+    "section": "Inspect data {smaller}",
+    "text": "Inspect data {smaller}\n\nprint(docs[0].page_content)\n\n# Getting Started\n👋 Welcome to Notion!\nHere are the basics:\n- [ ]  Click anywhere and just start typing\n- [ ]  Hit `/` to see all the types of content you can add - headers, videos, sub pages, etc.\n    \n    [Example sub page](https://www.notion.so/Example-sub-page-92f63253929d456bbf12cd696e21e045?pvs=21)\n    \n- [ ]  Highlight any text, and use the menu that pops up to **style** *your* ~~writing~~ `however` [you](https://www.notion.so/product) like\n- [ ]  See the `⋮⋮` to the left of this checkbox on hover? Click and drag to move this line\n- [ ]  Click the `+ New Page` button at the bottom of your sidebar to add a new page\n- [ ]  Click `Templates` in your sidebar to get started with pre-built pages\n- This is a toggle block. Click the little triangle to see more useful tips!\n    - [Template Gallery](https://www.notion.so/181e961aeb5c4ee6915307c0dfd5156d?pvs=21): More templates built by the Notion community"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#basics",
+    "href": "slides/02_document_splitting.html#basics",
+    "title": "Document Splitting",
+    "section": "Basics",
+    "text": "Basics\n\nWe can also split on token count explicity, if we want\nThis can be useful because LLMs often have context windows designated in tokens\nTokens are often ~4 characters."
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#tokentextsplitter-1",
+    "href": "slides/02_document_splitting.html#tokentextsplitter-1",
+    "title": "Document Splitting",
+    "section": "TokenTextSplitter 1",
+    "text": "TokenTextSplitter 1\n\ntext_splitter = TokenTextSplitter(chunk_size=1, chunk_overlap=0)\n\n\n\ntext1 = \"foo bar bazzyfoo\"\n\n\n\n\ntext_splitter.split_text(text1)\n\n\n[‘foo’, ’ bar’, ’ b’, ‘az’, ‘zy’, ‘foo’]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#split-text",
+    "href": "slides/02_document_splitting.html#split-text",
+    "title": "Document Splitting",
+    "section": "Split text",
+    "text": "Split text\n\nmd_header_splits = markdown_splitter.split_text(markdown_document)\n\n\n\nmd_header_splits[0]\n\n\nDocument(page_content=‘Hi this is Jim this is Joe’, metadata={‘Header 1’: ‘Title’, ‘Header 2’: ‘Chapter 1’})\n\n\n\n\nmd_header_splits[1]\n\n\nDocument(page_content=‘Hi this is Lance’, metadata={‘Header 1’: ‘Title’, ‘Header 2’: ‘Chapter 1’, ‘Header 3’: ‘Section’})"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#tokentextsplitter-2",
+    "href": "slides/02_document_splitting.html#tokentextsplitter-2",
+    "title": "Document Splitting",
+    "section": "TokenTextSplitter 2",
+    "text": "TokenTextSplitter 2\n\ntext_splitter = TokenTextSplitter(chunk_size=10, chunk_overlap=0)\n\n\n\ndocs = text_splitter.split_documents(pages)\n\n\n\n\ndocs[0]\n\n\nDocument(page_content=‘MachineLearning-Lecture01 ’, metadata={‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture01.pdf’, ‘page’: 0})\n\n\n\n\npages[0].metadata\n\n\n{‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture01.pdf’, ‘page’: 0}"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#split-text-1",
+    "href": "slides/02_document_splitting.html#split-text-1",
+    "title": "Document Splitting",
+    "section": "Split text",
+    "text": "Split text\n\nmd_header_splits = markdown_splitter.split_text(txt)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#basics-1",
+    "href": "slides/02_document_splitting.html#basics-1",
+    "title": "Document Splitting",
+    "section": "Basics",
+    "text": "Basics\n\nChunking aims to keep text with common context together.\nA text splitting often uses sentences or other delimiters to keep related text together but many documents (such as Markdown) have structure (headers) that can be explicitly used in splitting.\nWe can use MarkdownHeaderTextSplitter to preserve header metadata in our chunks"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#markdown-example",
+    "href": "slides/02_document_splitting.html#markdown-example",
+    "title": "Document Splitting",
+    "section": "Markdown example",
+    "text": "Markdown example\n\nmarkdown_document = \"\"\"# Title\\n\\n \\\n## Chapter 1\\n\\n \\\nHi this is Jim\\n\\n Hi this is Joe\\n\\n \\\n### Section \\n\\n \\\nHi this is Lance \\n\\n \n## Chapter 2\\n\\n \\\nHi this is Molly\"\"\""
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#headers-to-split-on",
+    "href": "slides/02_document_splitting.html#headers-to-split-on",
+    "title": "Document Splitting",
+    "section": "Headers to split on",
+    "text": "Headers to split on\n\nheaders_to_split_on = [\n    (\"#\", \"Header 1\"),\n    (\"##\", \"Header 2\"),\n    (\"###\", \"Header 3\"),\n]"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#markdownheadertextsplitter",
+    "href": "slides/02_document_splitting.html#markdownheadertextsplitter",
+    "title": "Document Splitting",
+    "section": "MarkdownHeaderTextSplitter",
+    "text": "MarkdownHeaderTextSplitter\n\nmarkdown_splitter = MarkdownHeaderTextSplitter(\n    headers_to_split_on=headers_to_split_on\n)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#split-text-2",
+    "href": "slides/02_document_splitting.html#split-text-2",
+    "title": "Document Splitting",
+    "section": "Split text",
+    "text": "Split text\n\nmd_header_splits = markdown_splitter.split_text(markdown_document)\n\n\n\nmd_header_splits[0]\n\n\n\n\n\nDocument(page_content=‘Hi this is Jim this is Joe’, metadata={‘Header 1’: ‘Title’, ‘Header 2’: ‘Chapter 1’})\n\n\nmd_header_splits[1]\n\n\n\n\n\nDocument(page_content=‘Hi this is Lance’, metadata={‘Header 1’: ‘Title’, ‘Header 2’: ‘Chapter 1’, ‘Header 3’: ‘Section’})"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#splitting-notion-markdown",
+    "href": "slides/02_document_splitting.html#splitting-notion-markdown",
+    "title": "Document Splitting",
+    "section": "Splitting Notion Markdown",
+    "text": "Splitting Notion Markdown"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#load-data-1",
+    "href": "slides/02_document_splitting.html#load-data-1",
+    "title": "Document Splitting",
+    "section": "Load data",
+    "text": "Load data\n\nloader = NotionDirectoryLoader(\"../docs/Notion_DB\")\ndocs = loader.load()"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#join-data",
+    "href": "slides/02_document_splitting.html#join-data",
+    "title": "Document Splitting",
+    "section": "Join data",
+    "text": "Join data\n\ntxt = ' '.join([d.page_content for d in docs])\ntxt\n\n\n‘# Getting Started👋 Welcome to Notion!are the basics:- [ ] Click anywhere and just start typing- [ ] Hit / to see all the types of content you can add - headers, videos, sub pages, etc.(https://www.notion.so/Example-sub-page-92f63253929d456bbf12cd696e21e045?pvs=21)- [ ] Highlight any text, and use the menu that pops up to style your writing however you like- [ ] See the ⋮⋮ to the left of this checkbox on hover? Click and drag to move this line- [ ] Click the + New Page button at the bottom of your sidebar to add a new page- [ ] Click Templates in your sidebar to get started with pre-built pages- This is a toggle block. Click the little triangle to see more useful tips!- Template Gallery: More templates built by the Notion community- Help & Support: ****Guides and FAQs for everything in Notion- Stay organized with your sidebar and nested pages:it in action:(https://youtu.be/TL_N2pmh9O0) minute(https://youtu.be/FXIrojSK3Jo) minutes(https://youtu.be/2Pwzff-uffU) minutes(https://youtu.be/O8qdvSxDYNY) minutesour YouTube channel to watch 50+ more tutorials👉Have a question? Click the ? at the bottom right for more guides, or to send us a message.’"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#define-splitter-3",
+    "href": "slides/02_document_splitting.html#define-splitter-3",
+    "title": "Document Splitting",
+    "section": "Define Splitter",
+    "text": "Define Splitter\n\nheaders_to_split_on = [\n    (\"#\", \"Header 1\"),\n    (\"##\", \"Header 2\"),\n]\n\n\n\nmarkdown_splitter = MarkdownHeaderTextSplitter(\n    headers_to_split_on=headers_to_split_on\n)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#split-text-3",
+    "href": "slides/02_document_splitting.html#split-text-3",
+    "title": "Document Splitting",
+    "section": "Split text",
+    "text": "Split text\n\nmd_header_splits = markdown_splitter.split_text(txt)"
+  },
+  {
+    "objectID": "slides/02_document_splitting.html#output",
+    "href": "slides/02_document_splitting.html#output",
+    "title": "Document Splitting",
+    "section": "Output",
+    "text": "Output\n\nmd_header_splits[0]\n\n\nDocument(page_content=‘👋 Welcome to Notion! are the basics: - [ ] Click anywhere and just start typing- [ ] Hit / to see all the types of content you can add - headers, videos, sub pages, etc. (https://www.notion.so/Example-sub-page-92f63253929d456bbf12cd696e21e045?pvs=21) - [ ] Highlight any text, and use the menu that pops up to style your writing however you like- [ ] See the ⋮⋮ to the left of this checkbox on hover? Click and drag to move this line- [ ] Click the + New Page button at the bottom of your sidebar to add a new page- [ ] Click Templates in your sidebar to get started with pre-built pages- This is a toggle block. Click the little triangle to see more useful tips!- Template Gallery: More templates built by the Notion community- Help & Support: ****Guides and FAQs for everything in Notion- Stay organized with your sidebar and nested pages:  it in action: (https://youtu.be/TL_N2pmh9O0) minute (https://youtu.be/FXIrojSK3Jo) minutes (https://youtu.be/2Pwzff-uffU) minutes (https://youtu.be/O8qdvSxDYNY) minutes our YouTube channel to watch 50+ more tutorials 👉Have a question? Click the ? at the bottom right for more guides, or to send us a message.’, metadata={‘Header 1’: ‘Getting Started’})"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#python",
+    "href": "slides/03_vectorstores_and_embeddings.html#python",
+    "title": "Vectorstores and Embeddings",
+    "section": "Python",
+    "text": "Python\n\nimport os\nimport numpy as np\nimport openai\nfrom langchain.document_loaders import PyPDFLoader\nfrom langchain.text_splitter import RecursiveCharacterTextSplitter\nfrom langchain.embeddings.openai import OpenAIEmbeddings\nfrom langchain.vectorstores import Chroma\n\n\n#import sys\n#sys.path.append('../..')\n\nfrom dotenv import load_dotenv, find_dotenv\n_ = load_dotenv(find_dotenv()) # read local .env file\n\nopenai.api_key  = os.environ['OPENAI_API_KEY']"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#load-data",
+    "href": "slides/03_vectorstores_and_embeddings.html#load-data",
+    "title": "Vectorstores and Embeddings",
+    "section": "Load data",
+    "text": "Load data\n\n# Load PDF\nloaders = [\n    # Duplicate documents on purpose - messy data\n    PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture01.pdf\"),\n    PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture01.pdf\"),\n    PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture02.pdf\"),\n    PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture03.pdf\")\n]\n\ndocs = []\nfor loader in loaders:\n    docs.extend(loader.load())"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#define-splitter",
+    "href": "slides/03_vectorstores_and_embeddings.html#define-splitter",
+    "title": "Vectorstores and Embeddings",
+    "section": "Define splitter",
+    "text": "Define splitter\n\ntext_splitter = RecursiveCharacterTextSplitter(\n    chunk_size = 1500,\n    chunk_overlap = 150\n)"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#split-data",
+    "href": "slides/03_vectorstores_and_embeddings.html#split-data",
+    "title": "Vectorstores and Embeddings",
+    "section": "Split data",
+    "text": "Split data\n\nsplits = text_splitter.split_documents(docs)\n\n\n\nlen(splits)\n\n\n209"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#openaiembeddings",
+    "href": "slides/03_vectorstores_and_embeddings.html#openaiembeddings",
+    "title": "Vectorstores and Embeddings",
+    "section": "OpenAIEmbeddings",
+    "text": "OpenAIEmbeddings\n\nLet’s take our splits and embed them.\n\n\n\nembedding = OpenAIEmbeddings()"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#examples",
+    "href": "slides/03_vectorstores_and_embeddings.html#examples",
+    "title": "Vectorstores and Embeddings",
+    "section": "Examples",
+    "text": "Examples\n\nsentence1 = \"i like dogs\"\nsentence2 = \"i like canines\"\nsentence3 = \"the weather is ugly outside\"\n\n\n\nembedding1 = embedding.embed_query(sentence1)\nembedding2 = embedding.embed_query(sentence2)\nembedding3 = embedding.embed_query(sentence3)"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#compare-similarity",
+    "href": "slides/03_vectorstores_and_embeddings.html#compare-similarity",
+    "title": "Vectorstores and Embeddings",
+    "section": "Compare similarity",
+    "text": "Compare similarity\n\nnp.dot(embedding1, embedding2)\n\n\n0.9631851837941705\n\n\n\nnp.dot(embedding1, embedding3)\n\n\n0.7710851013557284\n\n\n\n\nnp.dot(embedding2, embedding3)\n\n\n0.7596334120325541"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#setup-1",
+    "href": "slides/03_vectorstores_and_embeddings.html#setup-1",
+    "title": "Vectorstores and Embeddings",
+    "section": "Setup",
+    "text": "Setup\n\npersist_directory = '../docs/chroma/'\n\n\n\n!rm -rf ../docs/chroma  # remove old database files if any"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#store-data",
+    "href": "slides/03_vectorstores_and_embeddings.html#store-data",
+    "title": "Vectorstores and Embeddings",
+    "section": "Store data",
+    "text": "Store data\n\nvectordb = Chroma.from_documents(\n    documents=splits,\n    embedding=embedding,\n    persist_directory=persist_directory\n)"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#inspect-data",
+    "href": "slides/03_vectorstores_and_embeddings.html#inspect-data",
+    "title": "Vectorstores and Embeddings",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nprint(vectordb._collection.count())\n\n\n209"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#search-vectorstore-for-email",
+    "href": "slides/03_vectorstores_and_embeddings.html#search-vectorstore-for-email",
+    "title": "Vectorstores and Embeddings",
+    "section": "Search vectorstore for email",
+    "text": "Search vectorstore for email\n\nquestion = \"is there an email i can ask for help\"\n\n\n\ndocs = vectordb.similarity_search(question,k=3)\n\n\n\n\nlen(docs)\n\n\n3"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#inspect-data-1",
+    "href": "slides/03_vectorstores_and_embeddings.html#inspect-data-1",
+    "title": "Vectorstores and Embeddings",
+    "section": "Inspect data",
+    "text": "Inspect data\n\ndocs[0].page_content\n\n\n“cs229-qa@cs.stanford.edu. This goes to an acc ount that’s read by all the TAs and me. So than sending us email individually, if you send email to this account, it will let us get back to you maximally quickly with answers to your questions. you’re asking questions about homework probl ems, please say in the subject line which and which question the email refers to, since that will also help us to route question to the appropriate TA or to me appropriately and get the response back to quickly. ‘s see. Skipping ahead — let’s see — for homework, one midterm, one open and term . Notice on the honor code. So one thi ng that I think will help you to succeed and well in this class and even help you to enjoy this cla ss more is if you form a study . start looking around where you’ re sitting now or at the end of class today, mingle a bit and get to know your classmates. I strongly encourage you to form study groups sort of have a group of people to study with and have a group of your fellow students talk over these concepts with. You can also post on the class news group if you want to that to try to form a study group. some of the problems sets in this cla ss are reasonably difficult. People that have the class before may tell you they were very difficult. And just I bet it would be fun for you, and you’d probably have a be tter learning experience if you form a”"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#persist-data",
+    "href": "slides/03_vectorstores_and_embeddings.html#persist-data",
+    "title": "Vectorstores and Embeddings",
+    "section": "Persist data",
+    "text": "Persist data\n\nLet’s save this so we can use it later!\n\n\n\nvectordb.persist()"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#basics",
+    "href": "slides/03_vectorstores_and_embeddings.html#basics",
+    "title": "Vectorstores and Embeddings",
+    "section": "Basics",
+    "text": "Basics\n\nThis seems great, and basic similarity search will get you 80% of the way there very easily.\nBut there are some failure modes that can creep up.\nHere are some edge cases that can arise"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#search-vectorstore-for-matlab",
+    "href": "slides/03_vectorstores_and_embeddings.html#search-vectorstore-for-matlab",
+    "title": "Vectorstores and Embeddings",
+    "section": "Search vectorstore for matlab",
+    "text": "Search vectorstore for matlab\n\nquestion = \"what did they say about matlab?\"\n\n\n\ndocs = vectordb.similarity_search(question,k=5)"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#inspect-data-2",
+    "href": "slides/03_vectorstores_and_embeddings.html#inspect-data-2",
+    "title": "Vectorstores and Embeddings",
+    "section": "Inspect data",
+    "text": "Inspect data\n\ndocs[0]\n\n\nDocument(page_content=‘those homeworks will be done in either MATLA B or in Octave, which is sort of — I some people call it a free ve rsion of MATLAB, which it sort of is, sort of isn't. I guess for those of you that haven't s een MATLAB before, and I know most of you , MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to data. And it's sort of an extremely easy to learn tool to use for implementing a lot of algorithms. in case some of you want to work on your own home computer or something if you 't have a MATLAB license, for the purposes of this class, there's also — [inaudible] that down [inaudible] MATLAB — there' s also a software package called Octave you can download for free off the Internet. And it has somewhat fewer features than MATLAB, but it's free, and for the purposes of this class, it will work for just about . actually I, well, so yeah, just a side comment for those of you that haven't seen before I guess, once a colleague of mine at a different university, not at , actually teaches another machine l earning course. He's taught it for many years. one day, he was in his office, and an old student of his from, lik e, ten years ago came his office and he said, “Oh, professo r, professor, thank you so much for your’, metadata={‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture01.pdf’, ‘page’: 8})\n\n\ndocs[1]\n\n\nDocument(page_content=‘those homeworks will be done in either MATLA B or in Octave, which is sort of — I some people call it a free ve rsion of MATLAB, which it sort of is, sort of isn't. I guess for those of you that haven't s een MATLAB before, and I know most of you , MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to data. And it's sort of an extremely easy to learn tool to use for implementing a lot of algorithms. in case some of you want to work on your own home computer or something if you 't have a MATLAB license, for the purposes of this class, there's also — [inaudible] that down [inaudible] MATLAB — there' s also a software package called Octave you can download for free off the Internet. And it has somewhat fewer features than MATLAB, but it's free, and for the purposes of this class, it will work for just about . actually I, well, so yeah, just a side comment for those of you that haven't seen before I guess, once a colleague of mine at a different university, not at , actually teaches another machine l earning course. He's taught it for many years. one day, he was in his office, and an old student of his from, lik e, ten years ago came his office and he said, “Oh, professo r, professor, thank you so much for your’, metadata={‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture01.pdf’, ‘page’: 8})"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#insights",
+    "href": "slides/03_vectorstores_and_embeddings.html#insights",
+    "title": "Vectorstores and Embeddings",
+    "section": "Insights",
+    "text": "Insights\n\nNotice that we’re getting duplicate chunks (because of the duplicate MachineLearning-Lecture01.pdf in the index).\nSemantic search fetches all similar documents, but does not enforce diversity.\ndocs[0] and docs[1] are indentical."
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#search-vectorstore-for-third-lecture",
+    "href": "slides/03_vectorstores_and_embeddings.html#search-vectorstore-for-third-lecture",
+    "title": "Vectorstores and Embeddings",
+    "section": "Search vectorstore for third lecture",
+    "text": "Search vectorstore for third lecture\n\nquestion = \"what did they say about regression in the third lecture?\"\n\n\n\ndocs = vectordb.similarity_search(question,k=5)"
+  },
+  {
+    "objectID": "slides/03_vectorstores_and_embeddings.html#inspect-data-3",
+    "href": "slides/03_vectorstores_and_embeddings.html#inspect-data-3",
+    "title": "Vectorstores and Embeddings",
+    "section": "Inspect data",
+    "text": "Inspect data\n\nfor doc in docs:\n    print(doc.metadata)\n\n\n\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 0}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 14}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture02.pdf', 'page': 0}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 6}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture01.pdf', 'page': 8}\n\n\nThe question was about the third lecture, but includes results from other lectures as well.\nWe discuss approaches to handle these problems in the next tutorial"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#python",
+    "href": "slides/04_retrieval.html#python",
+    "title": "Vectorstore Retrieval",
+    "section": "Python",
+    "text": "Python\n\nfrom langchain.text_splitter import RecursiveCharacterTextSplitter\nfrom langchain.document_loaders import PyPDFLoader\nfrom langchain.retrievers import TFIDFRetriever\nfrom langchain.retrievers import SVMRetriever\nfrom langchain.retrievers.document_compressors import LLMChainExtractor\nfrom langchain.retrievers import ContextualCompressionRetriever\nfrom langchain.chains.query_constructor.base import AttributeInfo\nfrom langchain.retrievers.self_query.base import SelfQueryRetriever\nfrom langchain.llms import OpenAI\nfrom langchain.embeddings.openai import OpenAIEmbeddings\nfrom langchain.vectorstores import Chroma\nfrom dotenv import load_dotenv, find_dotenv\nimport os\nimport openai\n# import sys\n# sys.path.append('../..')\n\n_ = load_dotenv(find_dotenv())  # read local .env file\n\nopenai.api_key = os.environ['OPENAI_API_KEY']"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#setup-1",
+    "href": "slides/04_retrieval.html#setup-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Setup",
+    "text": "Setup\nLet’s get our vectorDB from Tutorial 3.\n\npersist_directory = '../docs/chroma/'\n\n\n\nembedding = OpenAIEmbeddings()\n\n\n\n\nvectordb = Chroma(\n    persist_directory=persist_directory,\n    embedding_function=embedding\n)\n\n\n\n\nprint(vectordb._collection.count())\n\n\n209"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#text",
+    "href": "slides/04_retrieval.html#text",
+    "title": "Vectorstore Retrieval",
+    "section": "Text",
+    "text": "Text\n\ntexts = [\n    \"\"\"The Amanita phalloides has a large and imposing epigeous (aboveground) fruiting body (basidiocarp).\"\"\",\n    \"\"\"A mushroom with a large fruiting body is the Amanita phalloides. Some varieties are all-white.\"\"\",\n    \"\"\"A. phalloides, a.k.a Death Cap, is one of the most poisonous of all known mushrooms.\"\"\",\n]"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#embedding",
+    "href": "slides/04_retrieval.html#embedding",
+    "title": "Vectorstore Retrieval",
+    "section": "Embedding",
+    "text": "Embedding\n\nsmalldb = Chroma.from_texts(texts, embedding=embedding)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question",
+    "href": "slides/04_retrieval.html#question",
+    "title": "Vectorstore Retrieval",
+    "section": "Question",
+    "text": "Question\n\nquestion = \"what did they say about matlab?\"\n\n\nRetriever\n\n\n\ncompressed_docs = compression_retriever.get_relevant_documents(question)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#result-1",
+    "href": "slides/04_retrieval.html#result-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Result 1",
+    "text": "Result 1\n\nsmalldb.similarity_search(question, k=2)\n\n\n[Document(page_content=‘A mushroom with a large fruiting body is the Amanita phalloides. Some varieties are all-white.’, metadata={}), Document(page_content=‘The Amanita phalloides has a large and imposing epigeous (aboveground) fruiting body (basidiocarp).’, metadata={})]"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#result-2",
+    "href": "slides/04_retrieval.html#result-2",
+    "title": "Vectorstore Retrieval",
+    "section": "Result 2",
+    "text": "Result 2\n\nsmalldb.max_marginal_relevance_search(question, k=2, fetch_k=3)\n\n\n[Document(page_content=‘A mushroom with a large fruiting body is the Amanita phalloides. Some varieties are all-white.’, metadata={}), Document(page_content=‘A. phalloides, a.k.a Death Cap, is one of the most poisonous of all known mushrooms.’, metadata={})]"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#basics",
+    "href": "slides/04_retrieval.html#basics",
+    "title": "Vectorstore Retrieval",
+    "section": "Basics",
+    "text": "Basics\n\nAddressing Diversity: Maximum marginal relevance (MMR)\nIn Tutorial 3 we introduced one problem: how to enforce diversity in the search results.\nMaximum marginal relevance strives to achieve both relevance to the query and diversity among the results."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question-about-matlab",
+    "href": "slides/04_retrieval.html#question-about-matlab",
+    "title": "Vectorstore Retrieval",
+    "section": "Question about matlab",
+    "text": "Question about matlab\n\nquestion = \"what did they say about matlab?\"\n\n\nSimilarity search\n\n\n\ndocs_ss = vectordb.similarity_search(question, k=3)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#similarity-search",
+    "href": "slides/04_retrieval.html#similarity-search",
+    "title": "Vectorstore Retrieval",
+    "section": "Similarity search",
+    "text": "Similarity search\n\ndocs_ss = vectordb.similarity_search(question, k=3)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#results",
+    "href": "slides/04_retrieval.html#results",
+    "title": "Vectorstore Retrieval",
+    "section": "Results",
+    "text": "Results\n\ndocs_ss[0].page_content[:100]\n\n\n‘those homeworks will be done in either MATLA B or in Octave, which is sort of — I some people’\n\n\n\ndocs_ss[1].page_content[:100]\n\n\n‘those homeworks will be done in either MATLA B or in Octave, which is sort of — I some people’"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#mmr",
+    "href": "slides/04_retrieval.html#mmr",
+    "title": "Vectorstore Retrieval",
+    "section": "MMR",
+    "text": "MMR\n\ndocs_mmr = vectordb.max_marginal_relevance_search(question, k=3)\n\n\nNote the difference in results with MMR.\n\n\n\ndocs_mmr[0].page_content[:100]\n\n\n‘those homeworks will be done in either MATLA B or in Octave, which is sort of — I some people’\n\n\n\n\ndocs_mmr[1].page_content[:100]\n\n\n“mathematical work, he feels like he’s disc overing truth and beauty in the universe. And says it”"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#mmr-results",
+    "href": "slides/04_retrieval.html#mmr-results",
+    "title": "Vectorstore Retrieval",
+    "section": "MMR results",
+    "text": "MMR results\n\nNote the difference in results with MMR.\n\n\ndocs_mmr[0].page_content[:100]\n\n\n‘those homeworks will be done in either MATLA B or in Octave, which is sort of — I some people’\n\n\n\ndocs_mmr[1].page_content[:100]\n\n\n“mathematical work, he feels like he’s disc overing truth and beauty in the universe. And says it”"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#basics-1",
+    "href": "slides/04_retrieval.html#basics-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Basics",
+    "text": "Basics\n\nAddressing Specificity: working with metadata\nIn Tutorial 3, we showed that a question about the third lecture can include results from other lectures as well.\nTo address this, many vectorstores support operations on metadata.\nmetadata provides context for each embedded chunk."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question-about-third-lecture",
+    "href": "slides/04_retrieval.html#question-about-third-lecture",
+    "title": "Vectorstore Retrieval",
+    "section": "Question about third lecture",
+    "text": "Question about third lecture\n\nquestion = \"what did they say about regression in the third lecture?\"\n\n\nSimilarity search\n\n\n\ndocs = vectordb.similarity_search(\n    question,\n    k=3,\n    filter={\"source\": \"../docs/cs229_lectures/MachineLearning-Lecture03.pdf\"}\n)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#similarity-search-1",
+    "href": "slides/04_retrieval.html#similarity-search-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Similarity search",
+    "text": "Similarity search\n\ndocs = vectordb.similarity_search(\n    question,\n    k=3,\n    filter={\"source\": \"../docs/cs229_lectures/MachineLearning-Lecture03.pdf\"}\n)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#result",
+    "href": "slides/04_retrieval.html#result",
+    "title": "Vectorstore Retrieval",
+    "section": "Result",
+    "text": "Result\n\nfor d in docs:\n    print(d.metadata)\n\n\n{‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture03.pdf’, ‘page’: 0}\n{‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture03.pdf’, ‘page’: 14}\n{‘source’: ‘../docs/cs229_lectures/MachineLearning-Lecture03.pdf’, ‘page’: 4}"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#basics-2",
+    "href": "slides/04_retrieval.html#basics-2",
+    "title": "Vectorstore Retrieval",
+    "section": "Basics",
+    "text": "Basics\n\nAddressing Specificity: working with metadata using self-query retriever\nBut we have an interesting challenge: we often want to infer the metadata from the query itself.\nTo address this, we can use SelfQueryRetriever, which uses an LLM to extract:\n\n\nThe query string to use for vector search\nA metadata filter to pass in as well\n\n\nMost vector databases support metadata filters, so this doesn’t require any new databases or indexes."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#metadata_field_info",
+    "href": "slides/04_retrieval.html#metadata_field_info",
+    "title": "Vectorstore Retrieval",
+    "section": "metadata_field_info",
+    "text": "metadata_field_info\n\nmetadata_field_info = [\n    AttributeInfo(\n        name=\"source\",\n        description=\"The lecture the chunk is from, should be one of `../docs/cs229_lectures/MachineLearning-Lecture01.pdf`, `../docs/cs229_lectures/MachineLearning-Lecture02.pdf`, or `../docs/cs229_lectures/MachineLearning-Lecture03.pdf`\",\n        type=\"string\",\n    ),\n    AttributeInfo(\n        name=\"page\",\n        description=\"The page from the lecture\",\n        type=\"integer\",\n    ),\n]"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#document_content_description",
+    "href": "slides/04_retrieval.html#document_content_description",
+    "title": "Vectorstore Retrieval",
+    "section": "document_content_description",
+    "text": "document_content_description\n\ndocument_content_description = \"Lecture notes\"\nllm = OpenAI(temperature=0)\nretriever = SelfQueryRetriever.from_llm(\n    llm,\n    vectordb,\n    document_content_description,\n    metadata_field_info,\n    verbose=True\n)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question-about-third-lecture-1",
+    "href": "slides/04_retrieval.html#question-about-third-lecture-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Question about third lecture",
+    "text": "Question about third lecture\n\nquestion = \"what did they say about regression in the third lecture?\"\n\n\nRetriever\n\n\n\ndocs = retriever.get_relevant_documents(question)\n\n\nYou will receive a warning about predict_and_parse being deprecated the first time you executing the next line. This can be safely ignored."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#retriever",
+    "href": "slides/04_retrieval.html#retriever",
+    "title": "Vectorstore Retrieval",
+    "section": "Retriever",
+    "text": "Retriever\n\ndocs = retriever.get_relevant_documents(question)\n\n\nYou will receive a warning about predict_and_parse being deprecated the first time you executing the next line. This can be safely ignored."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#result-3",
+    "href": "slides/04_retrieval.html#result-3",
+    "title": "Vectorstore Retrieval",
+    "section": "Result",
+    "text": "Result\n\nfor doc in docs:\n    print(doc.metadata)\n\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 14}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 0}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 10}\n{'source': '../docs/cs229_lectures/MachineLearning-Lecture03.pdf', 'page': 10}"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#basics-3",
+    "href": "slides/04_retrieval.html#basics-3",
+    "title": "Vectorstore Retrieval",
+    "section": "Basics",
+    "text": "Basics\n\nAnother approach for improving the quality of retrieved docs is compression.\nInformation most relevant to a query may be buried in a document with a lot of irrelevant text.\nPassing that full document through your application can lead to more expensive LLM calls and poorer responses.\nContextual compression is meant to fix this."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#helper-function-pretty-print",
+    "href": "slides/04_retrieval.html#helper-function-pretty-print",
+    "title": "Vectorstore Retrieval",
+    "section": "Helper function: pretty print",
+    "text": "Helper function: pretty print\n\ndef pretty_print_docs(docs):\n    print(f\"\\n{'-' * 100}\\n\".join([f\"Document {i+1}:\\n\\n\" +\n          d.page_content for i, d in enumerate(docs)]))"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#load-llm",
+    "href": "slides/04_retrieval.html#load-llm",
+    "title": "Vectorstore Retrieval",
+    "section": "Load LLM",
+    "text": "Load LLM\n\n# Wrap our vectorstore\nllm = OpenAI(temperature=0)\ncompressor = LLMChainExtractor.from_llm(llm)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#contextualcompressionretriever",
+    "href": "slides/04_retrieval.html#contextualcompressionretriever",
+    "title": "Vectorstore Retrieval",
+    "section": "ContextualCompressionRetriever",
+    "text": "ContextualCompressionRetriever\n\ncompression_retriever = ContextualCompressionRetriever(\n    base_compressor=compressor,\n    base_retriever=vectordb.as_retriever()\n)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question-about-matlab-1",
+    "href": "slides/04_retrieval.html#question-about-matlab-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Question about matlab",
+    "text": "Question about matlab\n\nquestion = \"what did they say about matlab?\"\n\n\nRetriever\n\n\n\ncompressed_docs = compression_retriever.get_relevant_documents(question)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#retriever-1",
+    "href": "slides/04_retrieval.html#retriever-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Retriever",
+    "text": "Retriever\n\ncompressed_docs = compression_retriever.get_relevant_documents(question)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#result-4",
+    "href": "slides/04_retrieval.html#result-4",
+    "title": "Vectorstore Retrieval",
+    "section": "Result",
+    "text": "Result\n\npretty_print_docs(compressed_docs)\n\nDocument 1:\n\n\"MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it's sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.\"\n----------------------------------------------------------------------------------------------------\nDocument 2:\n\n\"MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it's sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.\"\n----------------------------------------------------------------------------------------------------\nDocument 3:\n\n\"And the student said, \"Oh, it was the MATLAB.\" So for those of you that don't know MATLAB yet, I hope you do learn it. It's not hard, and we'll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don't know it.\"\n----------------------------------------------------------------------------------------------------\nDocument 4:\n\n\"And the student said, \"Oh, it was the MATLAB.\" So for those of you that don't know MATLAB yet, I hope you do learn it. It's not hard, and we'll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don't know it.\""
+  },
+  {
+    "objectID": "slides/04_retrieval.html#matlab-is-i-guess-part-of-the-programming-language-that-makes-it-very-easy-to-write-codes-using-matrices-to-write-code-for-numerical-routines-to-move-data-around-to-plot-data.-and-its-sort-of-an-extremely-easy-to-learn-tool-to-use-for-implementing-a-lot-of-learning-algorithms.",
+    "href": "slides/04_retrieval.html#matlab-is-i-guess-part-of-the-programming-language-that-makes-it-very-easy-to-write-codes-using-matrices-to-write-code-for-numerical-routines-to-move-data-around-to-plot-data.-and-its-sort-of-an-extremely-easy-to-learn-tool-to-use-for-implementing-a-lot-of-learning-algorithms.",
+    "title": "Vectorstore Retrieval",
+    "section": "“MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it’s sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.”",
+    "text": "“MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it’s sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.”\nDocument 2:"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#matlab-is-i-guess-part-of-the-programming-language-that-makes-it-very-easy-to-write-codes-using-matrices-to-write-code-for-numerical-routines-to-move-data-around-to-plot-data.-and-its-sort-of-an-extremely-easy-to-learn-tool-to-use-for-implementing-a-lot-of-learning-algorithms.-1",
+    "href": "slides/04_retrieval.html#matlab-is-i-guess-part-of-the-programming-language-that-makes-it-very-easy-to-write-codes-using-matrices-to-write-code-for-numerical-routines-to-move-data-around-to-plot-data.-and-its-sort-of-an-extremely-easy-to-learn-tool-to-use-for-implementing-a-lot-of-learning-algorithms.-1",
+    "title": "Vectorstore Retrieval",
+    "section": "“MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it’s sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.”",
+    "text": "“MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it’s sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.”\nDocument 3:"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#and-the-student-saidoh-it-was-the-matlab.-so-for-those-of-you-that-dont-know-matlab-yet-i-hope-you-do-learn-it.-its-not-hard-and-well-actually-have-a-short-matlab-tutorial-in-one-of-the-discussion-sections-for-those-of-you-that-dont-know-it.",
+    "href": "slides/04_retrieval.html#and-the-student-saidoh-it-was-the-matlab.-so-for-those-of-you-that-dont-know-matlab-yet-i-hope-you-do-learn-it.-its-not-hard-and-well-actually-have-a-short-matlab-tutorial-in-one-of-the-discussion-sections-for-those-of-you-that-dont-know-it.",
+    "title": "Vectorstore Retrieval",
+    "section": "“And the student said,”Oh, it was the MATLAB.” So for those of you that don’t know MATLAB yet, I hope you do learn it. It’s not hard, and we’ll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don’t know it.”",
+    "text": "“And the student said,”Oh, it was the MATLAB.” So for those of you that don’t know MATLAB yet, I hope you do learn it. It’s not hard, and we’ll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don’t know it.”\nDocument 4:\n“And the student said,”Oh, it was the MATLAB.” So for those of you that don’t know MATLAB yet, I hope you do learn it. It’s not hard, and we’ll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don’t know it.”"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#contextualcompressionretriever-with-mmr",
+    "href": "slides/04_retrieval.html#contextualcompressionretriever-with-mmr",
+    "title": "Vectorstore Retrieval",
+    "section": "ContextualCompressionRetriever with MMR",
+    "text": "ContextualCompressionRetriever with MMR\n\ncompression_retriever = ContextualCompressionRetriever(\n    base_compressor=compressor,\n    base_retriever=vectordb.as_retriever(search_type=\"mmr\")\n)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question-1",
+    "href": "slides/04_retrieval.html#question-1",
+    "title": "Vectorstore Retrieval",
+    "section": "Question",
+    "text": "Question\n\nquestion = \"what did they say about matlab?\""
+  },
+  {
+    "objectID": "slides/04_retrieval.html#retriever-2",
+    "href": "slides/04_retrieval.html#retriever-2",
+    "title": "Vectorstore Retrieval",
+    "section": "Retriever",
+    "text": "Retriever\n\ncompressed_docs = compression_retriever.get_relevant_documents(question)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#result-5",
+    "href": "slides/04_retrieval.html#result-5",
+    "title": "Vectorstore Retrieval",
+    "section": "Result",
+    "text": "Result\n\npretty_print_docs(compressed_docs)\n\n\nDocument 1:\n\n\"MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it's sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.\"\n----------------------------------------------------------------------------------------------------\nDocument 2:\n\n\"And the student said, \"Oh, it was the MATLAB.\" So for those of you that don't know MATLAB yet, I hope you do learn it. It's not hard, and we'll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don't know it.\""
+  },
+  {
+    "objectID": "slides/04_retrieval.html#matlab-is-i-guess-part-of-the-programming-language-that-makes-it-very-easy-to-write-codes-using-matrices-to-write-code-for-numerical-routines-to-move-data-around-to-plot-data.-and-its-sort-of-an-extremely-easy-to-learn-tool-to-use-for-implementing-a-lot-of-learning-algorithms.-2",
+    "href": "slides/04_retrieval.html#matlab-is-i-guess-part-of-the-programming-language-that-makes-it-very-easy-to-write-codes-using-matrices-to-write-code-for-numerical-routines-to-move-data-around-to-plot-data.-and-its-sort-of-an-extremely-easy-to-learn-tool-to-use-for-implementing-a-lot-of-learning-algorithms.-2",
+    "title": "Vectorstore Retrieval",
+    "section": "“MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it’s sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.”",
+    "text": "“MATLAB is I guess part of the programming language that makes it very easy to write codes using matrices, to write code for numerical routines, to move data around, to plot data. And it’s sort of an extremely easy to learn tool to use for implementing a lot of learning algorithms.”\nDocument 2:\n“And the student said,”Oh, it was the MATLAB.” So for those of you that don’t know MATLAB yet, I hope you do learn it. It’s not hard, and we’ll actually have a short MATLAB tutorial in one of the discussion sections for those of you that don’t know it.”"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#basics-4",
+    "href": "slides/04_retrieval.html#basics-4",
+    "title": "Vectorstore Retrieval",
+    "section": "Basics",
+    "text": "Basics\n\nIt’s worth noting that vectordb as not the only kind of tool to retrieve documents.\nThe LangChain retriever abstraction includes other ways to retrieve documents, such as TF-IDF or SVM."
+  },
+  {
+    "objectID": "slides/04_retrieval.html#load",
+    "href": "slides/04_retrieval.html#load",
+    "title": "Vectorstore Retrieval",
+    "section": "Load",
+    "text": "Load\n\n# Load PDF\nloader = PyPDFLoader(\"../docs/cs229_lectures/MachineLearning-Lecture01.pdf\")\n\npages = loader.load()\n\nall_page_text = [p.page_content for p in pages]\n\njoined_page_text = \" \".join(all_page_text)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#split",
+    "href": "slides/04_retrieval.html#split",
+    "title": "Vectorstore Retrieval",
+    "section": "Split",
+    "text": "Split\n\n# Split\ntext_splitter = RecursiveCharacterTextSplitter(\n    chunk_size=1500, chunk_overlap=150)\n\nsplits = text_splitter.split_text(joined_page_text)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#retrieve-with-svm-and-tf-idf",
+    "href": "slides/04_retrieval.html#retrieve-with-svm-and-tf-idf",
+    "title": "Vectorstore Retrieval",
+    "section": "Retrieve with SVM and TF-IDF",
+    "text": "Retrieve with SVM and TF-IDF\n\nSupport vector machine (SVMs) retriever\n\n\n\n# Retrieve\nsvm_retriever = SVMRetriever.from_texts(splits, embedding)\n\n\nTF-IDF: term-frequency times inverse document-frequency retriever\n\n\n\n\ntfidf_retriever = TFIDFRetriever.from_texts(splits)"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#question-2",
+    "href": "slides/04_retrieval.html#question-2",
+    "title": "Vectorstore Retrieval",
+    "section": "Question",
+    "text": "Question"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#svm-retriever",
+    "href": "slides/04_retrieval.html#svm-retriever",
+    "title": "Vectorstore Retrieval",
+    "section": "SVM retriever",
+    "text": "SVM retriever\n\nquestion = \"What are major topics for this class?\"\n\ndocs_svm = svm_retriever.get_relevant_documents(question)\ndocs_svm[0]\n\n\nDocument(page_content=‘don't have a MATLAB license, for the purposes of this class, there's also — [inaudible] that down [inaudible] MATLAB — there' s also a software package called Octave you can download for free off the Internet. And it has somewhat fewer features than MATLAB, but it's free, and for the purposes of this class, it will work for just about . actually I, well, so yeah, just a side comment for those of you that haven't seen before I guess, once a colleague of mine at a different university, not at , actually teaches another machine l earning course. He's taught it for many years. one day, he was in his office, and an old student of his from, lik e, ten years ago came his office and he said, “Oh, professo r, professor, thank you so much for your learning class. I learned so much from it. There's this stuff that I learned in your , and I now use every day. And it's help ed me make lots of money, and here's a of my big house.” my friend was very excited. He said, “W ow. That's great. I'm glad to hear this learning stuff was actually useful. So what was it that you learned? Was it regression? Was it the PCA? Was it the data ne tworks? What was it that you that was so helpful?” And the student said, “Oh, it was the MATLAB.” for those of you that don't know MATLAB yet, I hope you do learn it. It's not hard,’, metadata={})"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#tfidf-retriever",
+    "href": "slides/04_retrieval.html#tfidf-retriever",
+    "title": "Vectorstore Retrieval",
+    "section": "TFIDF retriever",
+    "text": "TFIDF retriever\n\nquestion = \"what did they say about matlab?\"\n\ndocs_tfidf = tfidf_retriever.get_relevant_documents(question)\n\ndocs_tfidf[0]\n\n\nDocument(page_content=“Saxena and Min Sun here did, wh ich is given an image like this, right? This is actually a taken of the Stanford campus. You can apply that sort of cl ustering algorithm and the picture into regions. Let me actually blow that up so that you can see it more . Okay. So in the middle, you see the lines sort of groupi ng the image together, the image into [inaudible] regions. what Ashutosh and Min did was they then applied the learning algorithm to say can take this clustering and us e it to build a 3D model of the world? And so using the , they then had a lear ning algorithm try to learn what the 3D structure of the looks like so that they could come up with a 3D model that you can sort of fly , okay? Although many people used to th ink it’s not possible to take a single and build a 3D model, but using a lear ning algorithm and that sort of clustering is the first step. They were able to. ’ll just show you one more example. I like this because it’s a picture of Stanford with our Stanford campus. So again, taking th e same sort of clustering algorithms, taking same sort of unsupervised learning algor ithm, you can group the pixels into different . And using that as a pre-processing step, they eventually built this sort of 3D model of Stanford campus in a single picture. You can sort of walk into the ceiling, look”, metadata={})"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#python",
+    "href": "slides/05_question_answering.html#python",
+    "title": "Question Answering",
+    "section": "Python",
+    "text": "Python\n\nfrom langchain.prompts import PromptTemplate\nfrom langchain.chains import RetrievalQA\nfrom langchain.chat_models import ChatOpenAI\nfrom langchain.embeddings.openai import OpenAIEmbeddings\nfrom langchain.vectorstores import Chroma\nimport datetime\nfrom dotenv import load_dotenv, find_dotenv\nimport os\nimport openai\n# import sys\n# sys.path.append('../..')\n\n_ = load_dotenv(find_dotenv())  # read local .env file\n\nopenai.api_key = os.environ['OPENAI_API_KEY']"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#vector-database-setup",
+    "href": "slides/05_question_answering.html#vector-database-setup",
+    "title": "Question Answering",
+    "section": "Vector Database setup",
+    "text": "Vector Database setup\n\npersist_directory = '../docs/chroma/'\nembedding = OpenAIEmbeddings()\nvectordb = Chroma(persist_directory=persist_directory,\n                  embedding_function=embedding)\n\n\nprint(vectordb._collection.count())\n\n\n209"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#question-and-similarity-search",
+    "href": "slides/05_question_answering.html#question-and-similarity-search",
+    "title": "Question Answering",
+    "section": "Question and similarity search",
+    "text": "Question and similarity search\n\nquestion = \"What are major topics for this class?\"\n\ndocs = vectordb.similarity_search(question, k=3)\n\nlen(docs)\n\n\n3"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#chatopenai-model",
+    "href": "slides/05_question_answering.html#chatopenai-model",
+    "title": "Question Answering",
+    "section": "ChatOpenAI model",
+    "text": "ChatOpenAI model\n\nllm_name = \"gpt-3.5-turbo\"\n\nllm = ChatOpenAI(model_name=llm_name, temperature=0)"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#retrievalqa-chain-1",
+    "href": "slides/05_question_answering.html#retrievalqa-chain-1",
+    "title": "Question Answering",
+    "section": "RetrievalQA chain",
+    "text": "RetrievalQA chain\n\nqa_chain = RetrievalQA.from_chain_type(\n    llm,\n    retriever=vectordb.as_retriever()\n)"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#result",
+    "href": "slides/05_question_answering.html#result",
+    "title": "Question Answering",
+    "section": "Result",
+    "text": "Result\n\nresult = qa_chain({\"query\": question})\n\n\n\nresult[\"result\"]\n\n\n‘The major topics for this class are machine learning and its various extensions.’"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#prompt-template",
+    "href": "slides/05_question_answering.html#prompt-template",
+    "title": "Question Answering",
+    "section": "Prompt template",
+    "text": "Prompt template\n\ntemplate = \"\"\"Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer. Use three sentences maximum. Keep the answer as concise as possible. Always say \"thanks for asking!\" at the end of the answer. \n{context}\nQuestion: {question}\nHelpful Answer:\"\"\"\n\nQA_CHAIN_PROMPT = PromptTemplate.from_template(template)"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#question-answer-chain",
+    "href": "slides/05_question_answering.html#question-answer-chain",
+    "title": "Question Answering",
+    "section": "Question answer chain",
+    "text": "Question answer chain\n\nqa_chain = RetrievalQA.from_chain_type(\n    llm,\n    retriever=vectordb.as_retriever(),\n    return_source_documents=True,\n    chain_type_kwargs={\"prompt\": QA_CHAIN_PROMPT}\n)"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#question-and-result",
+    "href": "slides/05_question_answering.html#question-and-result",
+    "title": "Question Answering",
+    "section": "Question and result",
+    "text": "Question and result\n\nquestion = \"Is probability a class topic?\"\n\n\n\nresult = qa_chain({\"query\": question})\n\n\n\n\nresult[\"result\"]\n\n\n‘Yes, probability is a class topic. Thanks for asking!’"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#source-documents",
+    "href": "slides/05_question_answering.html#source-documents",
+    "title": "Question Answering",
+    "section": "Source documents",
+    "text": "Source documents\n\nresult[\"source_documents\"][0]\n\n\nDocument(page_content=“of this class will not be very program ming intensive, although we will do some , mostly in either MATLAB or Octa ve. I’ll say a bit more about that later. also assume familiarity with basic proba bility and statistics. So most undergraduate class, like Stat 116 taught here at Stanford, will be more than enough. I’m gonna all of you know what ra ndom variables are, that all of you know what expectation , what a variance or a random variable is. And in case of some of you, it’s been a while you’ve seen some of this material. At some of the discussion sections, we’ll actually over some of the prerequisites, sort of as a refresher course under prerequisite class. ‘ll say a bit more about that later as well. , I also assume familiarity with basi c linear algebra. And again, most undergraduate algebra courses are more than enough. So if you’ve taken courses like Math 51, , Math 113 or CS205 at Stanford, that would be more than enough. Basically, I’m assume that all of you know what matrix es and vectors are, that you know how to matrices and vectors and multiply matrix and matrices, that you know what a matrix inverse is. If you know what an eigenvect or of a matrix is, that’d be even better. if you don’t quite know or if you’re not qu ite sure, that’s fine, too. We’ll go over it in review sections.”, metadata={’source’: ‘../docs/cs229_lectures/MachineLearning-Lecture01.pdf’, ‘page’: 4})"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#map-reduce",
+    "href": "slides/05_question_answering.html#map-reduce",
+    "title": "Question Answering",
+    "section": "Map Reduce",
+    "text": "Map Reduce\n\nqa_chain_mr = RetrievalQA.from_chain_type(\n    llm,\n    retriever=vectordb.as_retriever(),\n    chain_type=\"map_reduce\"\n)"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#result-1",
+    "href": "slides/05_question_answering.html#result-1",
+    "title": "Question Answering",
+    "section": "Result",
+    "text": "Result\n\nresult = qa_chain_mr({\"query\": question})\n\n\n\nresult[\"result\"]\n\n\n‘There is no mention of probability as a class topic in the provided text.’"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#basics",
+    "href": "slides/05_question_answering.html#basics",
+    "title": "Question Answering",
+    "section": "Basics",
+    "text": "Basics\n\nIf you wish to experiment on the LangChain plus platform:\n\nGo to langchain plus platform and sign up\nCreate an API key from your account’s settings\nUse this API key in the code below\n\nuncomment the code"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#code",
+    "href": "slides/05_question_answering.html#code",
+    "title": "Question Answering",
+    "section": "Code",
+    "text": "Code\n\n# os.environ[\"LANGCHAIN_TRACING_V2\"] = \"true\"\n# os.environ[\"LANGCHAIN_ENDPOINT\"] = \"https://api.langchain.plus\"\n# os.environ[\"LANGCHAIN_API_KEY\"] = \"...\"  # replace dots with your api key\n\n\n# qa_chain_mr = RetrievalQA.from_chain_type(\n#     llm,\n#     retriever=vectordb.as_retriever(),\n#     chain_type=\"map_reduce\"\n# )\n# result = qa_chain_mr({\"query\": question})\n# result[\"result\"]\n\n\n# qa_chain_mr = RetrievalQA.from_chain_type(\n#     llm,\n#     retriever=vectordb.as_retriever(),\n#     chain_type=\"refine\"\n# )\n# result = qa_chain_mr({\"query\": question})\n# result[\"result\"]"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#conversational-history",
+    "href": "slides/05_question_answering.html#conversational-history",
+    "title": "Question Answering",
+    "section": "Conversational history",
+    "text": "Conversational history\n\nQA fails to preserve conversational history.\n\n\nqa_chain = RetrievalQA.from_chain_type(\n    llm,\n    retriever=vectordb.as_retriever()\n)\n\n\n\nquestion = \"Is probability a class topic?\"\nresult = qa_chain({\"query\": question})\nresult[\"result\"]\n\n\n‘Yes, probability is a topic that will be covered in this class. The instructor assumes familiarity with basic probability and statistics.’"
+  },
+  {
+    "objectID": "slides/05_question_answering.html#limitations",
+    "href": "slides/05_question_answering.html#limitations",
+    "title": "Question Answering",
+    "section": "Limitations",
+    "text": "Limitations\n\nNote, The LLM response varies.\nSome responses do include a reference to probability which might be gleaned from referenced documents.\nThe point is simply that the model does not have access to past questions or answers, this will be covered in the next tutorial (Tutorial 6)."
+  },
+  {
+    "objectID": "slides/06_chat.html#python",
+    "href": "slides/06_chat.html#python",
+    "title": "Chat",
+    "section": "Python",
+    "text": "Python\n\nimport param\nimport panel as pn\nfrom langchain.document_loaders import PyPDFLoader\nfrom langchain.chains import RetrievalQA,  ConversationalRetrievalChain\nfrom langchain.document_loaders import TextLoader\nfrom langchain.vectorstores import DocArrayInMemorySearch\nfrom langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter\nfrom langchain.chains import ConversationalRetrievalChain\nfrom langchain.memory import ConversationBufferMemory\nfrom langchain.chains import RetrievalQA\nfrom langchain.prompts import PromptTemplate\nfrom langchain.chat_models import ChatOpenAI\nfrom langchain.embeddings.openai import OpenAIEmbeddings\nfrom langchain.vectorstores import Chroma\nimport datetime\nfrom dotenv import load_dotenv, find_dotenv\nimport panel as pn  # GUI\nimport os\nimport openai\n\n# import sys\n# sys.path.append('../..')\n\npn.extension()\n\n_ = load_dotenv(find_dotenv())  # read local .env file\n\nopenai.api_key = os.environ['OPENAI_API_KEY']"
+  },
+  {
+    "objectID": "slides/06_chat.html#langchain-plus-platform",
+    "href": "slides/06_chat.html#langchain-plus-platform",
+    "title": "Chat",
+    "section": "LangChain plus platform",
+    "text": "LangChain plus platform\n\nIf you wish to experiment on LangChain plus platform:\n\nGo to langchain plus platform and sign up\nCreate an api key from your account’s settings\nUse this api key in the code below\n\n\n\n\n# import os\n# os.environ[\"LANGCHAIN_TRACING_V2\"] = \"true\"\n# os.environ[\"LANGCHAIN_ENDPOINT\"] = \"https://api.langchain.plus\"\n# os.environ[\"LANGCHAIN_API_KEY\"] = \"...\""
+  },
+  {
+    "objectID": "slides/06_chat.html#vector-database",
+    "href": "slides/06_chat.html#vector-database",
+    "title": "Chat",
+    "section": "Vector Database",
+    "text": "Vector Database\n\npersist_directory = '../docs/chroma/'\nembedding = OpenAIEmbeddings()\nvectordb = Chroma(persist_directory=persist_directory,\n                  embedding_function=embedding)"
+  },
+  {
+    "objectID": "slides/06_chat.html#question-and-similarity-search",
+    "href": "slides/06_chat.html#question-and-similarity-search",
+    "title": "Chat",
+    "section": "Question and similarity search",
+    "text": "Question and similarity search\n\nquestion = \"What are major topics for this class?\"\ndocs = vectordb.similarity_search(question, k=3)\nlen(docs)\n\n\n3"
+  },
+  {
+    "objectID": "slides/06_chat.html#openai-model",
+    "href": "slides/06_chat.html#openai-model",
+    "title": "Chat",
+    "section": "OpenAI model",
+    "text": "OpenAI model\n\nllm_name = \"gpt-3.5-turbo\"\n\nllm = ChatOpenAI(model_name=llm_name, temperature=0)\n\n\nllm.predict(\"Hello world!\")\n\n\n‘Hello! How can I assist you today?’"
+  },
+  {
+    "objectID": "slides/06_chat.html#prompt-template",
+    "href": "slides/06_chat.html#prompt-template",
+    "title": "Chat",
+    "section": "Prompt template",
+    "text": "Prompt template\n\ntemplate = \"\"\"Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer. Use three sentences maximum. Keep the answer as concise as possible. Always say \"thanks for asking!\" at the end of the answer. \n{context}\nQuestion: {question}\nHelpful Answer:\"\"\"\nQA_CHAIN_PROMPT = PromptTemplate(\n    input_variables=[\"context\", \"question\"], template=template,)"
+  },
+  {
+    "objectID": "slides/06_chat.html#run-chain",
+    "href": "slides/06_chat.html#run-chain",
+    "title": "Chat",
+    "section": "Run chain",
+    "text": "Run chain\n\nquestion = \"Is probability a class topic?\"\n\nqa_chain = RetrievalQA.from_chain_type(llm,\n                                       retriever=vectordb.as_retriever(),\n                                       return_source_documents=True,\n                                       chain_type_kwargs={\"prompt\": QA_CHAIN_PROMPT})\n\n\nresult = qa_chain({\"query\": question})\n\nresult[\"result\"]\n\n\n‘Yes, probability is a class topic. Thanks for asking!’"
+  },
+  {
+    "objectID": "slides/06_chat.html#conversationbuffermemory",
+    "href": "slides/06_chat.html#conversationbuffermemory",
+    "title": "Chat",
+    "section": "ConversationBufferMemory",
+    "text": "ConversationBufferMemory\n\nmemory = ConversationBufferMemory(\n    memory_key=\"chat_history\",\n    return_messages=True\n)"
+  },
+  {
+    "objectID": "slides/06_chat.html#conversationalretrievalchain",
+    "href": "slides/06_chat.html#conversationalretrievalchain",
+    "title": "Chat",
+    "section": "ConversationalRetrievalChain",
+    "text": "ConversationalRetrievalChain\n\nretriever = vectordb.as_retriever()\n\n\n\nqa = ConversationalRetrievalChain.from_llm(\n    llm,\n    retriever=retriever,\n    memory=memory\n)"
+  },
+  {
+    "objectID": "slides/06_chat.html#question-and-result",
+    "href": "slides/06_chat.html#question-and-result",
+    "title": "Chat",
+    "section": "Question and result",
+    "text": "Question and result\n\nquestion = \"Is probability a class topic?\"\nresult = qa({\"question\": question})\n\n\n\nresult['answer']\n\n\n‘Yes, probability is a topic that will be covered in this class. The instructor assumes familiarity with basic probability and statistics.’"
+  },
+  {
+    "objectID": "slides/06_chat.html#second-question",
+    "href": "slides/06_chat.html#second-question",
+    "title": "Chat",
+    "section": "Second question",
+    "text": "Second question\n\nquestion = \"why are those prerequesites needed?\"\nresult = qa({\"question\": question})\n\n\nresult['answer']\n\n\n‘Familiarity with basic probability and statistics is needed as prerequisites because the course will involve concepts and techniques from these fields. The instructor assumes that students already know what random variables, expectation, variance, and probability distributions are. This knowledge is necessary to understand and apply the machine learning algorithms and models that will be taught in the course. Additionally, some of the material covered in the course may require a refresher on probability and statistics, so the discussion sections will provide an opportunity to review these concepts.’"
+  },
+  {
+    "objectID": "slides/06_chat.html#helper-function-load_db",
+    "href": "slides/06_chat.html#helper-function-load_db",
+    "title": "Chat",
+    "section": "Helper function: load_db",
+    "text": "Helper function: load_db\n\ndef load_db(file, chain_type, k):\n    # load documents\n    loader = PyPDFLoader(file)\n    documents = loader.load()\n    # split documents\n    text_splitter = RecursiveCharacterTextSplitter(\n        chunk_size=1000, chunk_overlap=150)\n    docs = text_splitter.split_documents(documents)\n    # define embedding\n    embeddings = OpenAIEmbeddings()\n    # create vector database from data\n    db = DocArrayInMemorySearch.from_documents(docs, embeddings)\n    # define retriever\n    retriever = db.as_retriever(\n        search_type=\"similarity\", search_kwargs={\"k\": k})\n    # create a chatbot chain. Memory is managed externally.\n    qa = ConversationalRetrievalChain.from_llm(\n        llm=ChatOpenAI(model_name=llm_name, temperature=0),\n        chain_type=chain_type,\n        retriever=retriever,\n        return_source_documents=True,\n        return_generated_question=True,\n    )\n    return qa"
+  },
+  {
+    "objectID": "slides/06_chat.html#helper-function-cbfs",
+    "href": "slides/06_chat.html#helper-function-cbfs",
+    "title": "Chat",
+    "section": "Helper function: cbfs",
+    "text": "Helper function: cbfs\n\nclass cbfs(param.Parameterized):\n    chat_history = param.List([])\n    answer = param.String(\"\")\n    db_query = param.String(\"\")\n    db_response = param.List([])\n\n    def __init__(self,  **params):\n        super(cbfs, self).__init__(**params)\n        self.panels = []\n        self.loaded_file = \"../docs/cs229_lectures/MachineLearning-Lecture01.pdf\"\n        self.qa = load_db(self.loaded_file, \"stuff\", 4)\n\n    def call_load_db(self, count):\n        if count == 0 or file_input.value is None:  # init or no file specified :\n            return pn.pane.Markdown(f\"Loaded File: {self.loaded_file}\")\n        else:\n            file_input.save(\"temp.pdf\")  # local copy\n            self.loaded_file = file_input.filename\n            button_load.button_style = \"outline\"\n            self.qa = load_db(\"temp.pdf\", \"stuff\", 4)\n            button_load.button_style = \"solid\"\n        self.clr_history()\n        return pn.pane.Markdown(f\"Loaded File: {self.loaded_file}\")\n\n    def convchain(self, query):\n        if not query:\n            return pn.WidgetBox(pn.Row('User:', pn.pane.Markdown(\"\", width=600)), scroll=True)\n        result = self.qa(\n            {\"question\": query, \"chat_history\": self.chat_history})\n        self.chat_history.extend([(query, result[\"answer\"])])\n        self.db_query = result[\"generated_question\"]\n        self.db_response = result[\"source_documents\"]\n        self.answer = result['answer']\n        self.panels.extend([\n            pn.Row('User:', pn.pane.Markdown(query, width=600)),\n            pn.Row('ChatBot:', pn.pane.Markdown(self.answer,\n                   width=600, style={'background-color': '#F6F6F6'}))\n        ])\n        inp.value = ''  # clears loading indicator when cleared\n        return pn.WidgetBox(*self.panels, scroll=True)\n\n    @param.depends('db_query ', )\n    def get_lquest(self):\n        if not self.db_query:\n            return pn.Column(\n                pn.Row(pn.pane.Markdown(f\"Last question to DB:\",\n                       styles={'background-color': '#F6F6F6'})),\n                pn.Row(pn.pane.Str(\"no DB accesses so far\"))\n            )\n        return pn.Column(\n            pn.Row(pn.pane.Markdown(f\"DB query:\", styles={\n                   'background-color': '#F6F6F6'})),\n            pn.pane.Str(self.db_query)\n        )\n\n    @param.depends('db_response', )\n    def get_sources(self):\n        if not self.db_response:\n            return\n        rlist = [pn.Row(pn.pane.Markdown(f\"Result of DB lookup:\",\n                        styles={'background-color': '#F6F6F6'}))]\n        for doc in self.db_response:\n            rlist.append(pn.Row(pn.pane.Str(doc)))\n        return pn.WidgetBox(*rlist, width=600, scroll=True)\n\n    @param.depends('convchain', 'clr_history')\n    def get_chats(self):\n        if not self.chat_history:\n            return pn.WidgetBox(pn.Row(pn.pane.Str(\"No History Yet\")), width=600, scroll=True)\n        rlist = [pn.Row(pn.pane.Markdown(\n            f\"Current Chat History variable\", styles={'background-color': '#F6F6F6'}))]\n        for exchange in self.chat_history:\n            rlist.append(pn.Row(pn.pane.Str(exchange)))\n        return pn.WidgetBox(*rlist, width=600, scroll=True)\n\n    def clr_history(self, count=0):\n        self.chat_history = []\n        return"
+  },
+  {
+    "objectID": "slides/06_chat.html#create-chatbot",
+    "href": "slides/06_chat.html#create-chatbot",
+    "title": "Chat",
+    "section": "Create Chatbot",
+    "text": "Create Chatbot\n\ncb = cbfs()\n\nfile_input = pn.widgets.FileInput(accept='.pdf')\nbutton_load = pn.widgets.Button(name=\"Load DB\", button_type='primary')\nbutton_clearhistory = pn.widgets.Button(\n    name=\"Clear History\", button_type='warning')\nbutton_clearhistory.on_click(cb.clr_history)\ninp = pn.widgets.TextInput(placeholder='Enter text here…')\n\nbound_button_load = pn.bind(cb.call_load_db, button_load.param.clicks)\nconversation = pn.bind(cb.convchain, inp)\n\njpg_pane = pn.pane.Image('../imges/convchain.png')\n\ntab1 = pn.Column(\n    pn.Row(inp),\n    pn.layout.Divider(),\n    pn.panel(conversation,  loading_indicator=True, height=300),\n    pn.layout.Divider(),\n)\ntab2 = pn.Column(\n    pn.panel(cb.get_lquest),\n    pn.layout.Divider(),\n    pn.panel(cb.get_sources),\n)\ntab3 = pn.Column(\n    pn.panel(cb.get_chats),\n    pn.layout.Divider(),\n)\ntab4 = pn.Column(\n    pn.Row(file_input, button_load, bound_button_load),\n    pn.Row(button_clearhistory, pn.pane.Markdown(\n        \"Clears chat history. Can use to start a new topic\")),\n    pn.layout.Divider(),\n    pn.Row(jpg_pane.clone(width=400))\n)\ndashboard = pn.Column(\n    pn.Row(pn.pane.Markdown('# ChatWithYourData_Bot')),\n    pn.Tabs(('Conversation', tab1), ('Database', tab2),\n            ('Chat History', tab3), ('Configure', tab4))\n)\ndashboard"
+  },
+  {
+    "objectID": "slides/06_chat.html#adapt-the-code",
+    "href": "slides/06_chat.html#adapt-the-code",
+    "title": "Chat",
+    "section": "Adapt the code",
+    "text": "Adapt the code\n\nFeel free to copy this code and modify it to add your own features.\nYou can try alternate memory and retriever models by changing the configuration in load_db function and the convchain method. Panel and Param have many useful features and widgets you can use to extend the GUI."
+  },
+  {
+    "objectID": "slides/06_chat.html#panel-user-interface",
+    "href": "slides/06_chat.html#panel-user-interface",
+    "title": "Chat",
+    "section": "Panel user interface",
+    "text": "Panel user interface"
+  },
+  {
+    "objectID": "slides/06_chat.html#panel-user-interface-1",
+    "href": "slides/06_chat.html#panel-user-interface-1",
+    "title": "Chat",
+    "section": "Panel user interface",
+    "text": "Panel user interface"
+  },
+  {
+    "objectID": "slides/06_chat.html#panel-user-interface-2",
+    "href": "slides/06_chat.html#panel-user-interface-2",
+    "title": "Chat",
+    "section": "Panel user interface",
+    "text": "Panel user interface"
+  },
+  {
+    "objectID": "slides/06_chat.html#panel-user-interface-3",
+    "href": "slides/06_chat.html#panel-user-interface-3",
+    "title": "Chat",
+    "section": "Panel user interface",
+    "text": "Panel user interface"
+  },
+  {
+    "objectID": "slides/06_chat.html#panel-user-interface-4",
+    "href": "slides/06_chat.html#panel-user-interface-4",
+    "title": "Chat",
+    "section": "Panel user interface",
+    "text": "Panel user interface"
+  },
+  {
+    "objectID": "slides/06_chat.html#question",
+    "href": "slides/06_chat.html#question",
+    "title": "Chat",
+    "section": "Question",
+    "text": "Question"
+  },
+  {
+    "objectID": "slides/06_chat.html#databse",
+    "href": "slides/06_chat.html#databse",
+    "title": "Chat",
+    "section": "Databse",
+    "text": "Databse"
+  },
+  {
+    "objectID": "slides/06_chat.html#chat-history",
+    "href": "slides/06_chat.html#chat-history",
+    "title": "Chat",
+    "section": "Chat history",
+    "text": "Chat history"
+  },
+  {
+    "objectID": "slides/06_chat.html#configurations",
+    "href": "slides/06_chat.html#configurations",
+    "title": "Chat",
+    "section": "Configurations",
+    "text": "Configurations"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#save-data",
+    "href": "slides/01_document_loading.html#save-data",
+    "title": "Document Loading",
+    "section": "Save data",
+    "text": "Save data\n\ndf = pd.DataFrame(docs, columns=['Text', 'Metadata'])\n\n\n\ndf.to_csv('../docs/youtube/codereport.csv')"
+  },
+  {
+    "objectID": "slides/01_document_loading.html#save-data-1",
+    "href": "slides/01_document_loading.html#save-data-1",
+    "title": "Document Loading",
+    "section": "Save data",
+    "text": "Save data\n\ndf = pd.DataFrame(docs, columns=['Text', 'Metadata'])\n\n\n\ndf.to_csv('../docs/url/study-design.csv')"
+  },
+  {
+    "objectID": "slides/04_retrieval.html#example",
+    "href": "slides/04_retrieval.html#example",
+    "title": "Vectorstore Retrieval",
+    "section": "Example",
+    "text": "Example\n\ntexts = [\n    \"\"\"The Amanita phalloides has a large and imposing epigeous (aboveground) fruiting body (basidiocarp).\"\"\",\n    \"\"\"A mushroom with a large fruiting body is the Amanita phalloides. Some varieties are all-white.\"\"\",\n    \"\"\"A. phalloides, a.k.a Death Cap, is one of the most poisonous of all known mushrooms.\"\"\",\n]\n\n\n\nsmalldb = Chroma.from_texts(texts, embedding=embedding)\n\n\n\n\nquestion = \"Tell me about all-white mushrooms with large fruiting bodies\""
+  },
+  {
+    "objectID": "slides/05_question_answering.html#conversational-history-1",
+    "href": "slides/05_question_answering.html#conversational-history-1",
+    "title": "Question Answering",
+    "section": "Conversational history",
+    "text": "Conversational history\n\nquestion = \"why are those prerequesites needed?\"\nresult = qa_chain({\"query\": question})\nresult[\"result\"]\n\n\n‘The prerequisites are needed because they provide the foundational knowledge and skills necessary to understand and apply machine learning algorithms. knowledge of computer science and computer skills is important because machine learning algorithms often involve programming and working with data. Understanding concepts like big-O notation helps in analyzing the efficiency and scalability of algorithms.with probability and statistics is necessary because machine learning involves working with data and making predictions based on statistical models. Understanding concepts like random variables, expectation, and variance is crucial in understanding and evaluating machine learning algorithms.knowledge of linear algebra is important because many machine learning algorithms involve manipulating matrices and vectors. Understanding concepts like matrix multiplication, matrix inverse, and eigenvectors is essential in understanding and implementing these algorithms., these prerequisites provide the necessary background knowledge and skills to effectively learn and apply machine learning algorithms.’"
+  }
+]

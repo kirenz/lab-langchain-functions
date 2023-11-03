@@ -1,0 +1,22 @@
+---
+title: "Welcome 👋"
+---
+
+Welcome to the lab *"Langchain RAG"* 
+
+![](images/logo.png){width="60%"}
+
+The tutorials in this lab will cover *Retrieval Augmented Generation (RAG)*, a common LLM application that retrieves contextual documents from an external dataset, and a guide to building a chatbot that responds to queries based on the content of your documents, rather than the information it has learned in training.
+
+::: {.callout-important}
+Make sure you meet all the [requirements](/requirements.qmd) and have read the lecture [slides](/slide.qmd) before you start with the [assignments](/assignments.qmd) 
+:::
+
+What you will learn in this lab:
+
+- **Document Loading**: Learn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video.
+- **Document Splitting**: Discover the best practices and considerations for splitting data.
+- **Vector stores and embeddings**: Dive into the concept of embeddings and explore vector store integrations within LangChain.
+- **Retrieval**: Grasp advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries.
+- **Question Answering**: Build a one-pass question-answering solution.
+- **Chat System**: Learn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain.

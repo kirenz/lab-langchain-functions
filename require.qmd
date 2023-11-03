@@ -1,0 +1,20 @@
+---
+title: "Requirements"
+---
+
+
+## Local development
+
+To start this lab on your local machine, you'll need:
+
+- **Python**: Anaconda, Anaconda Environment `langchain` and Visual Studio Code
+- **Environment**: Use this folder template: [*langchain-rag*](/langchain-rag.zip) and insert your OpenAI API key in the `.env` file.  
+
+:::{.callout-important}
+Visit the "[Programming Toolkit-webpage](https://kirenz.github.io/lab-toolkit/)" to learn how to meet all requirements.
+:::
+
+
+## Cloud development
+
+Instead of local development, you may also work in a fully configured dev environment in the cloud with GitHub Codespaces. Take a look at [this site](/slide.qmd) to learn more about the different options.
