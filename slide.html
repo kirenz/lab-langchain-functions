@@ -114,14 +114,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-is-retrieval-augmented-generation-rag" id="toc-what-is-retrieval-augmented-generation-rag" class="nav-link active" data-scroll-target="#what-is-retrieval-augmented-generation-rag"><span class="header-section-number">1</span> What is Retrieval-Augmented Generation (RAG)?</a></li>
-  <li><a href="#document-loading" id="toc-document-loading" class="nav-link" data-scroll-target="#document-loading"><span class="header-section-number">2</span> Document Loading</a></li>
-  <li><a href="#document-splitting" id="toc-document-splitting" class="nav-link" data-scroll-target="#document-splitting"><span class="header-section-number">3</span> Document Splitting</a></li>
-  <li><a href="#vector-stores-and-embeddings" id="toc-vector-stores-and-embeddings" class="nav-link" data-scroll-target="#vector-stores-and-embeddings"><span class="header-section-number">4</span> Vector stores and embeddings</a></li>
-  <li><a href="#retrieval" id="toc-retrieval" class="nav-link" data-scroll-target="#retrieval"><span class="header-section-number">5</span> Retrieval</a></li>
-  <li><a href="#question-answering" id="toc-question-answering" class="nav-link" data-scroll-target="#question-answering"><span class="header-section-number">6</span> Question Answering</a></li>
-  <li><a href="#chat-system" id="toc-chat-system" class="nav-link" data-scroll-target="#chat-system"><span class="header-section-number">7</span> Chat System</a></li>
-  <li><a href="#langchain-cookbook" id="toc-langchain-cookbook" class="nav-link" data-scroll-target="#langchain-cookbook"><span class="header-section-number">8</span> LangChain cookbook</a></li>
+  <li><a href="#openai-function-calling" id="toc-openai-function-calling" class="nav-link active" data-scroll-target="#openai-function-calling"><span class="header-section-number">1</span> OpenAI Function Calling</a></li>
+  <li><a href="#langchain-expression-language-lcel" id="toc-langchain-expression-language-lcel" class="nav-link" data-scroll-target="#langchain-expression-language-lcel"><span class="header-section-number">2</span> LangChain Expression Language (LCEL)</a></li>
+  <li><a href="#openai-function-calling-in-langchain" id="toc-openai-function-calling-in-langchain" class="nav-link" data-scroll-target="#openai-function-calling-in-langchain"><span class="header-section-number">3</span> OpenAI Function Calling In LangChain</a></li>
+  <li><a href="#tagging-and-extraction-using-openai-functions" id="toc-tagging-and-extraction-using-openai-functions" class="nav-link" data-scroll-target="#tagging-and-extraction-using-openai-functions"><span class="header-section-number">4</span> Tagging and Extraction Using OpenAI functions</a></li>
+  <li><a href="#tools-and-routing" id="toc-tools-and-routing" class="nav-link" data-scroll-target="#tools-and-routing"><span class="header-section-number">5</span> Tools and Routing</a></li>
+  <li><a href="#chat-system" id="toc-chat-system" class="nav-link" data-scroll-target="#chat-system"><span class="header-section-number">6</span> Chat System</a></li>
+  <li><a href="#langchain-cookbook" id="toc-langchain-cookbook" class="nav-link" data-scroll-target="#langchain-cookbook"><span class="header-section-number">7</span> LangChain cookbook</a></li>
   </ul>
 </nav>
     </div>
@@ -145,8 +144,7 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p><em>The following tutorials are mainly based on the excellent course <a href="https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/">“LangChain: Chat with Your DataI”</a> provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI and cover the following topics:</em></p>
-<p><img src="./images/rag.png" class="img-fluid"></p>
+<p><em>The following tutorials are mainly based on the excellent course <a href="https://www.deeplearning.ai/short-courses/functions-tools-agents-langchain/?">“Functions, Tools and Agents with LangChain”</a> provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI.</em></p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -161,19 +159,11 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li><p><strong>Colab</strong>: Click on one of the links “💻 Jupyter Notebook” to start a Colab session.</p></li>
 <li><p><strong>Local</strong>: Click on one of the links “💻 Jupyter Notebook” below, go to the Colab menu and choose “File” &gt; “Download” &gt; “Download .ipynb”</p></li>
-<li><p><strong>Cloud Codespace</strong>: Work in a fully configured dev environment in the cloud with a <a href="https://github.com/kirenz/lab-langchain-rag/blob/main/README.md">GitHub Codespace VS Code Browser</a> environment.</p></li>
+<li><p><strong>Cloud Codespace</strong>: Work in a fully configured dev environment in the cloud with a <a href="https://github.com/kirenz/lab-langchain-functions/blob/main/README.md">GitHub Codespace VS Code Browser</a> environment.</p></li>
 <li><p><strong>Local VS Code with Codespace</strong>: Use <a href="https://docs.github.com/en/codespaces/developing-in-codespaces/using-github-codespaces-in-visual-studio-code">GitHub Codespaces in your local Visual Studio Code environment</a>.</p></li>
 </ol>
-<section id="what-is-retrieval-augmented-generation-rag" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="what-is-retrieval-augmented-generation-rag"><span class="header-section-number">1</span> What is Retrieval-Augmented Generation (RAG)?</h2>
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/T-D1OfcDW1M?si=E491V0ebqfGxV5UZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Large language models usually give great answers, but because they’re limited to the training data used to create the model, over time they can become incomplete–or worse, generate answers that are just plain wrong. One way of improving the LLM results is called “retrieval-augmented generation” or RAG.</p>
-<p>In this video, IBM Senior Research Scientist Marina Danilevsky explains the LLM/RAG framework and how this combination delivers two big advantages, namely: the model gets the most up-to-date and trustworthy facts, and you can see where the model got its info, lending more credibility to what it generates.</p>
-</section>
-<section id="document-loading" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="document-loading"><span class="header-section-number">2</span> Document Loading</h2>
-<p>Learn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video:</p>
+<section id="openai-function-calling" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="openai-function-calling"><span class="header-section-number">1</span> OpenAI Function Calling</h2>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -181,16 +171,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container">
 <ul>
-<li><a href="./slides/01_document_loading.qmd">🖥️ Presentation</a></li>
-<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/01_document_loading.ipynb">💻 Jupyter Notebook</a></li>
+<li><a href="./slides/01_openai_functions.html">🖥️ Presentation</a></li>
+<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/01_openai_functions.ipynb">💻 Jupyter Notebook</a></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="document-splitting" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="document-splitting"><span class="header-section-number">3</span> Document Splitting</h2>
-<p>In the context of building LLM-related applications, splitting is the process of breaking down large pieces of text into smaller segments:</p>
+<section id="langchain-expression-language-lcel" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="langchain-expression-language-lcel"><span class="header-section-number">2</span> LangChain Expression Language (LCEL)</h2>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -198,16 +187,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container">
 <ul>
-<li><a href="./slides/02_document_splitting.qmd">🖥️ Presentation</a></li>
-<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/02_document_splitting.ipynb">💻 Jupyter Notebook</a></li>
+<li><a href="./slides/02_lcel.html">🖥️ Presentation</a></li>
+<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/02_lcel.ipynb">💻 Jupyter Notebook</a></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="vector-stores-and-embeddings" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="vector-stores-and-embeddings"><span class="header-section-number">4</span> Vector stores and embeddings</h2>
-<p>Learn the concept of embeddings and explore vector store integrations within LangChain.</p>
+<section id="openai-function-calling-in-langchain" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="openai-function-calling-in-langchain"><span class="header-section-number">3</span> OpenAI Function Calling In LangChain</h2>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -215,16 +203,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container">
 <ul>
-<li><a href="./slides/03_vectorstores_and_embeddings.qmd">🖥️ Presentation</a></li>
-<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/03_vectorstores_and_embeddings.ipynb">💻 Jupyter Notebook</a></li>
+<li><a href="./slides/03_function_calling.html">🖥️ Presentation</a></li>
+<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/03_function_calling.ipynb">💻 Jupyter Notebook</a></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="retrieval" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="retrieval"><span class="header-section-number">5</span> Retrieval</h2>
-<p>Learn advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries:</p>
+<section id="tagging-and-extraction-using-openai-functions" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="tagging-and-extraction-using-openai-functions"><span class="header-section-number">4</span> Tagging and Extraction Using OpenAI functions</h2>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -232,16 +219,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container">
 <ul>
-<li><a href="./slides/04_retrieval.qmd">🖥️ Presentation</a></li>
-<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/04_retrieval.ipynb">💻 Jupyter Notebook</a></li>
+<li><a href="./slides/04_tagging_extraction.html">🖥️ Presentation</a></li>
+<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/04_tagging_extraction.ipynb">💻 Jupyter Notebook</a></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="question-answering" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="question-answering"><span class="header-section-number">6</span> Question Answering</h2>
-<p>Build a one-pass question-answering solution.</p>
+<section id="tools-and-routing" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="tools-and-routing"><span class="header-section-number">5</span> Tools and Routing</h2>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -249,15 +235,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container">
 <ul>
-<li><a href="./slides/05_question_answering.qmd">🖥️ Presentation</a></li>
-<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/05_question_answering.ipynb">💻 Jupyter Notebook</a></li>
+<li><a href="./slides/05_tools_routing.html">🖥️ Presentation</a></li>
+<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/05_tools_routing.ipynb">💻 Jupyter Notebook</a></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="chat-system" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="chat-system"><span class="header-section-number">7</span> Chat System</h2>
+<section id="chat-system" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="chat-system"><span class="header-section-number">6</span> Chat System</h2>
 <p>Learn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain.</p>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
@@ -266,15 +252,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container">
 <ul>
-<li><a href="./slides/06_chat.qmd">🖥️ Presentation</a></li>
-<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/06_chat.ipynb">💻 Jupyter Notebook</a></li>
+<li><a href="./slides/06_functional_conversation.html">🖥️ Presentation</a></li>
+<li><a href="https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/06_functional_conversation.ipynb">💻 Jupyter Notebook</a></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="langchain-cookbook" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="langchain-cookbook"><span class="header-section-number">8</span> LangChain cookbook</h2>
+<section id="langchain-cookbook" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="langchain-cookbook"><span class="header-section-number">7</span> LangChain cookbook</h2>
 <p>Some example code for building applications with LangChain, with an emphasis on more applied and end-to-end examples (see <a href="https://github.com/langchain-ai/langchain/tree/master/cookbook">this site</a> for more examples):</p>
 <ul>
 <li><a href="https://github.com/langchain-ai/langchain/blob/master/cookbook/Semi_Structured_RAG.ipynb">Semi-structured RAG</a>: This cookbook shows how to perform RAG on documents with semi-structured data (e.g.&nbsp;PDF with tables and text)</li>

@@ -436,29 +436,19 @@ Jan Kirenz
 <span id="cb1-6"><a href="#cb1-6"></a>openai.api_key <span class="op">=</span> os.environ[<span class="st">'OPENAI_API_KEY'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> tool</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
-<span id="cb2-4"><a href="#cb2-4"></a></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="im">import</span> requests</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="im">import</span> datetime</span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="im">from</span> langchain.tools.render <span class="im">import</span> format_tool_to_openai_function</span>
-<span id="cb2-10"><a href="#cb2-10"></a></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="im">import</span> wikipedia</span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="im">from</span> langchain.chains.openai_functions.openapi <span class="im">import</span> openapi_spec_to_openai_fn</span>
-<span id="cb2-14"><a href="#cb2-14"></a></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="im">from</span> langchain.utilities.openapi <span class="im">import</span> OpenAPISpec</span>
-<span id="cb2-16"><a href="#cb2-16"></a></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="im">from</span> langchain.chat_models <span class="im">import</span> ChatOpenAI</span>
-<span id="cb2-18"><a href="#cb2-18"></a></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
-<span id="cb2-20"><a href="#cb2-20"></a></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="im">from</span> langchain.agents.output_parsers <span class="im">import</span> OpenAIFunctionsAgentOutputParser</span>
-<span id="cb2-22"><a href="#cb2-22"></a></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="im">from</span> langchain.schema.agent <span class="im">import</span> AgentFinish</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> datetime</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> requests</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="im">import</span> wikipedia</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="im">from</span> langchain.agents <span class="im">import</span> tool</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="im">from</span> langchain.tools.render <span class="im">import</span> format_tool_to_openai_function</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="im">from</span> langchain.chains.openai_functions.openapi <span class="im">import</span> openapi_spec_to_openai_fn</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="im">from</span> langchain.utilities.openapi <span class="im">import</span> OpenAPISpec</span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="im">from</span> langchain.chat_models <span class="im">import</span> ChatOpenAI</span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="im">from</span> langchain.agents.output_parsers <span class="im">import</span> OpenAIFunctionsAgentOutputParser</span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="im">from</span> langchain.schema.agent <span class="im">import</span> AgentFinish</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -466,7 +456,7 @@ Jan Kirenz
 <h1>Define a tool</h1>
 
 </section>
-<section id="create-tool" class="slide level2 smaller">
+<section id="create-tool" class="slide level2">
 <h2>Create tool</h2>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="at">@tool</span></span>
@@ -474,14 +464,15 @@ Jan Kirenz
 <span id="cb3-3"><a href="#cb3-3"></a>    <span class="co">"""Search for weather online"""</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>    <span class="cf">return</span> <span class="st">"42f"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="fragment">
+</section>
+<section id="inspect-tool" class="slide level2 smaller">
+<h2>Inspect tool</h2>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>search.name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">‘search’</li>
 </ul>
-</div>
 <div class="fragment">
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>search.description</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -497,7 +488,7 @@ Jan Kirenz
 </ul>
 </div>
 </section>
-<section id="add-a-description" class="slide level2">
+<section id="add-a-description" class="slide level2 smaller">
 <h2>Add a description</h2>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">class</span> SearchInput(BaseModel):</span>
@@ -574,7 +565,7 @@ Jan Kirenz
 <span id="cb11-35"><a href="#cb11-35"></a>    <span class="cf">return</span> <span class="ss">f'The current temperature is </span><span class="sc">{</span>current_temperature<span class="sc">}</span><span class="ss">°C'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="inspect-function" class="slide level2">
+<section id="inspect-function" class="slide level2 smaller">
 <h2>Inspect function</h2>
 <div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>get_current_temperature.name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -599,7 +590,7 @@ Jan Kirenz
 </ul>
 </div>
 </section>
-<section id="convert-this-tool-into-openai-function" class="slide level2">
+<section id="convert-this-tool-into-openai-function" class="slide level2 smaller">
 <h2>Convert this tool into OpenAI function</h2>
 <div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>format_tool_to_openai_function(get_current_temperature)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -622,7 +613,7 @@ Jan Kirenz
 <h1>Wikikedia tool</h1>
 
 </section>
-<section id="create-tool-2" class="slide level2">
+<section id="create-tool-2" class="slide level2 smaller">
 <h2>Create tool</h2>
 <div class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="at">@tool</span></span>
@@ -644,8 +635,8 @@ Jan Kirenz
 <span id="cb17-17"><a href="#cb17-17"></a>    <span class="cf">return</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(summaries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="inspect-function-1" class="slide level2">
-<h2>Inspect function</h2>
+<section id="inspect" class="slide level2 smaller">
+<h2>Inspect</h2>
 <div class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>search_wikipedia.name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -660,14 +651,15 @@ Jan Kirenz
 <li class="fragment">{‘name’: ‘search_wikipedia’, ‘description’: ‘search_wikipedia(query: str) -&gt; str - Run Wikipedia search and get page summaries.’, ‘parameters’: {‘title’: ‘search_wikipediaSchemaSchema’, ‘type’: ‘object’, ‘properties’: {‘query’: {‘title’: ‘Query’, ‘type’: ‘string’}}, ‘required’: [‘query’]}}</li>
 </ul>
 </div>
-<div class="fragment">
+</section>
+<section id="inspect-1" class="slide level2">
+<h2>Inspect</h2>
 <div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>format_tool_to_openai_function(search_wikipedia)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">{‘name’: ‘search_wikipedia’, ‘description’: ‘search_wikipedia(query: str) -&gt; str - Run Wikipedia search and get page summaries.’, ‘parameters’: {‘title’: ‘search_wikipediaSchemaSchema’, ‘type’: ‘object’, ‘properties’: {‘query’: {‘title’: ‘Query’, ‘type’: ‘string’}}, ‘required’: [‘query’]}}</li>
 </ul>
-</div>
 </section>
 <section id="use-tool-1" class="slide level2 smaller">
 <h2>Use tool</h2>
@@ -933,7 +925,7 @@ model.invoke("tell me about pet with id 42")
 <span id="cb22-7"><a href="#cb22-7"></a>model <span class="op">=</span> ChatOpenAI(temperature<span class="op">=</span><span class="dv">0</span>).bind(functions<span class="op">=</span>functions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="invoke-functions" class="slide level2">
+<section id="invoke-functions" class="slide level2 smaller">
 <h2>Invoke functions</h2>
 <div class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>model.invoke(<span class="st">"what is the weather in stuttgart right now"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -968,22 +960,26 @@ model.invoke("tell me about pet with id 42")
 </div>
 <p>AIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘get_current_temperature’, ‘arguments’: ‘{“latitude”: 48.7758,“longitude”: 9.1829}’}})</p>
 </section>
-<section id="use-output-parser" class="slide level2">
+<section id="use-output-parser" class="slide level2 smaller">
 <h2>Use output parser</h2>
 <div class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a>chain <span class="op">=</span> prompt <span class="op">|</span> model <span class="op">|</span> OpenAIFunctionsAgentOutputParser()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="fragment">
 <div class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>result <span class="op">=</span> chain.invoke({<span class="st">"input"</span>: <span class="st">"what is the weather in stuttgart right now"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
+<div class="fragment">
 <div class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a><span class="bu">type</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">langchain.schema.agent.AgentActionMessageLog</li>
 </ul>
+</div>
 </section>
-<section id="inspect-result" class="slide level2">
+<section id="inspect-result" class="slide level2 smaller">
 <h2>Inspect result</h2>
 <div class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>result.tool</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1008,7 +1004,7 @@ model.invoke("tell me about pet with id 42")
 </ul>
 </div>
 </section>
-<section id="try-a-new-input" class="slide level2">
+<section id="try-a-new-input" class="slide level2 smaller">
 <h2>Try a new input</h2>
 <div class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a>result <span class="op">=</span> chain.invoke({<span class="st">"input"</span>: <span class="st">"Hi! How are you?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1065,15 +1061,17 @@ model.invoke("tell me about pet with id 42")
 <li class="fragment">‘The current temperature is 10.1°C’</li>
 </ul>
 </section>
-<section id="input-a-general-queation" class="slide level2 result">
+<section id="input-a-general-queation" class="slide level2 smaller">
 <h2>Input a general queation</h2>
 <div class="cell" data-execution_count="47">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1"></a>result <span class="op">=</span> chain.invoke({<span class="st">"input"</span>: <span class="st">"What is langchain?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="fragment">
 <div class="cell" data-execution_count="48">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>‘Page: LangChain: LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). As a language model integration framework, LangChain's use-cases largely overlap with those of language models in general, including document analysis and summarization, chatbots, and code analysis.: Prompt engineering: Prompt engineering is the process of structuring text that can be interpreted and understood by a generative AI model. A prompt is natural language text describing the task that an AI should perform.A prompt for a text-to-text model can be a query such as “what is Fermat's little theorem?”, a command such as “write a poem about leaves falling”, a short statement of feedback (for example, “too verbose”, “too formal”, “rephrase again”, “omit this word”) or a longer statement including context, instructions, and input data. Prompt engineering may involve phrasing a query, specifying a style, providing relevant context or assigning a role to the AI such as “Act as a native French speaker”. A prompt may include a few examples for a model to learn from, such as “maison -&gt; house, chat -&gt; cat, chien -&gt;”, an approach called few-shot learning.When communicating with a text-to-image or a text-to-audio model, a typical prompt is a description of a desired output such as “a high-quality photo of an astronaut riding a horse” or “Lo-fi slow BPM electro chill with organic samples”. Prompting a text-to-image model may involve adding, removing, emphasizing and re-ordering words to achieve a desired subject, style, layout, lighting, and aesthetic.: Sentence embedding: In natural language processing, a sentence embedding refers to a numeric representation of a sentence in the form of a vector of real numbers which encodes meaningful semantic information.State of the art embeddings are based on the learned hidden layer representation of dedicated sentence transformer models. BERT pioneered an approach involving the use of a dedicated [CLS] token prepended to the beginning of each sentence inputted into the model; the final hidden state vector of this token encodes information about the sentence and can be fine-tuned for use in sentence classification tasks. In practice however, BERT's sentence embedding with the [CLS] token achieves poor performance, often worse than simply averaging non-contextual word embeddings. SBERT later achieved superior sentence embedding performance by fine tuning BERT's [CLS] token embeddings through the usage of a siamese neural network architecture on the SNLI dataset. approaches are loosely based on the idea of distributional semantics applied to sentences. Skip-Thought trains an encoder-decoder structure for the task of neighboring sentences predictions. Though this has been shown to achieve worse performance than approaches such as InferSent or SBERT. alternative direction is to aggregate word embeddings, such as those returned by Word2vec, into sentence embeddings. The most straightforward approach is to simply compute the average of word vectors, known as continuous bag-of-words (CBOW). However, more elaborate solutions based on word vector quantization have also been proposed. One such approach is the vector of locally aggregated word embeddings (VLAWE), which demonstrated performance improvements in downstream text classification tasks.’</p>
+</div>
 </section>
 <section id="just-say-hi" class="slide level2">
 <h2>Just say hi</h2>

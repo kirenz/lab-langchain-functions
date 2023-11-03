@@ -427,8 +427,7 @@ Jan Kirenz
 
 </section>
 
-<section>
-<section id="setup" class="title-slide slide level1 center">
+<section id="setup" class="title-slide slide level1 smaller center">
 <h1>Setup</h1>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> os</span>
@@ -438,26 +437,19 @@ Jan Kirenz
 <span id="cb1-5"><a href="#cb1-5"></a>_ <span class="op">=</span> load_dotenv(find_dotenv()) <span class="co"># read local .env file</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a>openai.api_key <span class="op">=</span> os.environ[<span class="st">'OPENAI_API_KEY'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="langchain" class="slide level2">
-<h2>LangChain</h2>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="im">from</span> langchain.chat_models <span class="im">import</span> ChatOpenAI</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="im">from</span> langchain.schema.output_parser <span class="im">import</span> StrOutputParser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> json</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="im">from</span> langchain.chat_models <span class="im">import</span> ChatOpenAI</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="im">from</span> langchain.schema.output_parser <span class="im">import</span> StrOutputParser</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> OpenAIEmbeddings</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="im">from</span> langchain.vectorstores <span class="im">import</span> DocArrayInMemorySearch</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="im">from</span> langchain.schema.runnable <span class="im">import</span> RunnableMap</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="im">from</span> langchain.llms <span class="im">import</span> OpenAI</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> OpenAIEmbeddings</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> langchain.vectorstores <span class="im">import</span> DocArrayInMemorySearch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">from</span> langchain.schema.runnable <span class="im">import</span> RunnableMap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">from</span> langchain.llms <span class="im">import</span> OpenAI</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="im">import</span> json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section></section>
+</section>
+
 <section>
 <section id="simple-chain" class="title-slide slide level1 center">
 <h1>Simple Chain</h1>
@@ -465,25 +457,25 @@ Jan Kirenz
 </section>
 <section id="create-chain" class="slide level2 smaller">
 <h2>Create chain</h2>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_template(</span>
-<span id="cb6-2"><a href="#cb6-2"></a>    <span class="st">"tell me a short joke about </span><span class="sc">{topic}</span><span class="st">"</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>)</span>
-<span id="cb6-4"><a href="#cb6-4"></a></span>
-<span id="cb6-5"><a href="#cb6-5"></a>model <span class="op">=</span> ChatOpenAI()</span>
-<span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a>output_parser <span class="op">=</span> StrOutputParser()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_template(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="st">"tell me a short joke about </span><span class="sc">{topic}</span><span class="st">"</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>model <span class="op">=</span> ChatOpenAI()</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a>output_parser <span class="op">=</span> StrOutputParser()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>chain <span class="op">=</span> prompt <span class="op">|</span> model <span class="op">|</span> output_parser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>chain <span class="op">=</span> prompt <span class="op">|</span> model <span class="op">|</span> output_parser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="invoke-chain" class="slide level2">
 <h2>Invoke chain</h2>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>chain.invoke({<span class="st">"topic"</span>: <span class="st">"a professor at HdM Stuttgar"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>chain.invoke({<span class="st">"topic"</span>: <span class="st">"a professor at HdM Stuttgar"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">‘’Why did the professor at HdM Stuttgart always carry a ladder?he wanted to reach new heights in teaching!’’</li>
@@ -496,27 +488,27 @@ Jan Kirenz
 </section>
 <section id="create-vector-store-and-retriever" class="slide level2">
 <h2>Create Vector Store and Retriever</h2>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>vectorstore <span class="op">=</span> DocArrayInMemorySearch.from_texts(</span>
-<span id="cb9-2"><a href="#cb9-2"></a>    [<span class="st">"Yuval Noah Harari is the author of Sapiens"</span>, <span class="st">"In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism"</span>],</span>
-<span id="cb9-3"><a href="#cb9-3"></a>    embedding<span class="op">=</span>OpenAIEmbeddings()</span>
-<span id="cb9-4"><a href="#cb9-4"></a>)</span>
-<span id="cb9-5"><a href="#cb9-5"></a></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># create a retriever</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>retriever <span class="op">=</span> vectorstore.as_retriever()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>vectorstore <span class="op">=</span> DocArrayInMemorySearch.from_texts(</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    [<span class="st">"Yuval Noah Harari is the author of Sapiens"</span>, <span class="st">"In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism"</span>],</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    embedding<span class="op">=</span>OpenAIEmbeddings()</span>
+<span id="cb6-4"><a href="#cb6-4"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co"># create a retriever</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>retriever <span class="op">=</span> vectorstore.as_retriever()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="retrieve-relevant-documents" class="slide level2 smaller">
 <h2>Retrieve relevant documents</h2>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>retriever.get_relevant_documents(<span class="st">"who is the author of Sapiens?"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>retriever.get_relevant_documents(<span class="st">"who is the author of Sapiens?"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">[Document(page_content=‘Yuval Noah Harari is the author of Sapiens’), Document(page_content=‘In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism’)]</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>retriever.get_relevant_documents(<span class="st">"Which book did William Irvine write?"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>retriever.get_relevant_documents(<span class="st">"Which book did William Irvine write?"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">[Document(page_content=‘In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism’), Document(page_content=‘Yuval Noah Harari is the author of Sapiens’)]</li>
@@ -530,33 +522,33 @@ Jan Kirenz
 </section>
 <section id="create-prompt" class="slide level2">
 <h2>Create prompt</h2>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>template <span class="op">=</span> <span class="st">"""Answer the question based only on the following context:</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="sc">{context}</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="st">Question: </span><span class="sc">{question}</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="st">"""</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a></span>
-<span id="cb12-7"><a href="#cb12-7"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_template(template)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>template <span class="op">=</span> <span class="st">"""Answer the question based only on the following context:</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="sc">{context}</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">Question: </span><span class="sc">{question}</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="st">"""</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_template(template)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="runnable-map" class="slide level2">
+<section id="runnable-map" class="slide level2 smaller">
 <h2>Runnable Map</h2>
 <ul>
 <li class="fragment"><p>Chain: get user input &gt; fetch relevant context &gt; pass context into prompt &gt; pass into model &gt; pass into output parser to convert into string</p></li>
 <li class="fragment"><p>Create dictionary with context and question . . .</p></li>
 </ul>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>chain <span class="op">=</span> RunnableMap({</span>
-<span id="cb13-2"><a href="#cb13-2"></a>    <span class="st">"context"</span>: <span class="kw">lambda</span> x: retriever.get_relevant_documents(x[<span class="st">"question"</span>]),</span>
-<span id="cb13-3"><a href="#cb13-3"></a>    <span class="st">"question"</span>: <span class="kw">lambda</span> x: x[<span class="st">"question"</span>]</span>
-<span id="cb13-4"><a href="#cb13-4"></a>}) <span class="op">|</span> prompt <span class="op">|</span> model <span class="op">|</span> output_parser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>chain <span class="op">=</span> RunnableMap({</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="st">"context"</span>: <span class="kw">lambda</span> x: retriever.get_relevant_documents(x[<span class="st">"question"</span>]),</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="st">"question"</span>: <span class="kw">lambda</span> x: x[<span class="st">"question"</span>]</span>
+<span id="cb10-4"><a href="#cb10-4"></a>}) <span class="op">|</span> prompt <span class="op">|</span> model <span class="op">|</span> output_parser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="invoke-chain-1" class="slide level2">
 <h2>Invoke chain</h2>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>chain.invoke({<span class="st">"question"</span>: <span class="st">"who is the author of Sapiens?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>chain.invoke({<span class="st">"question"</span>: <span class="st">"who is the author of Sapiens?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">‘The author of Sapiens is Yuval Noah Harari.’</li>
@@ -564,18 +556,15 @@ Jan Kirenz
 </section>
 <section id="closer-look-at-the-runnablemap" class="slide level2 smaller">
 <h2>Closer look at the RunnableMap</h2>
-<ul>
-<li class="fragment"></li>
-</ul>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>inputs <span class="op">=</span> RunnableMap({</span>
-<span id="cb15-2"><a href="#cb15-2"></a>    <span class="st">"context"</span>: <span class="kw">lambda</span> x: retriever.get_relevant_documents(x[<span class="st">"question"</span>]),</span>
-<span id="cb15-3"><a href="#cb15-3"></a>    <span class="st">"question"</span>: <span class="kw">lambda</span> x: x[<span class="st">"question"</span>]</span>
-<span id="cb15-4"><a href="#cb15-4"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>inputs <span class="op">=</span> RunnableMap({</span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="st">"context"</span>: <span class="kw">lambda</span> x: retriever.get_relevant_documents(x[<span class="st">"question"</span>]),</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="st">"question"</span>: <span class="kw">lambda</span> x: x[<span class="st">"question"</span>]</span>
+<span id="cb12-4"><a href="#cb12-4"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>inputs.invoke({<span class="st">"question"</span>: <span class="st">"who is the author of Sapiens?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>inputs.invoke({<span class="st">"question"</span>: <span class="st">"who is the author of Sapiens?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">{‘context’: [Document(page_content=‘Yuval Noah Harari is the author of Sapiens’), Document(page_content=‘In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism’)], ‘question’: ‘who is the author of Sapiens?’}</li>
@@ -589,43 +578,43 @@ Jan Kirenz
 </section>
 <section id="weather-function" class="slide level2">
 <h2>Weather function</h2>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>functions <span class="op">=</span> [</span>
-<span id="cb17-2"><a href="#cb17-2"></a>    {</span>
-<span id="cb17-3"><a href="#cb17-3"></a>      <span class="st">"name"</span>: <span class="st">"weather_search"</span>,</span>
-<span id="cb17-4"><a href="#cb17-4"></a>      <span class="st">"description"</span>: <span class="st">"Search for weather given an airport code"</span>,</span>
-<span id="cb17-5"><a href="#cb17-5"></a>      <span class="st">"parameters"</span>: {</span>
-<span id="cb17-6"><a href="#cb17-6"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
-<span id="cb17-7"><a href="#cb17-7"></a>        <span class="st">"properties"</span>: {</span>
-<span id="cb17-8"><a href="#cb17-8"></a>          <span class="st">"airport_code"</span>: {</span>
-<span id="cb17-9"><a href="#cb17-9"></a>            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
-<span id="cb17-10"><a href="#cb17-10"></a>            <span class="st">"description"</span>: <span class="st">"The airport code to get the weather for"</span></span>
-<span id="cb17-11"><a href="#cb17-11"></a>          },</span>
-<span id="cb17-12"><a href="#cb17-12"></a>        },</span>
-<span id="cb17-13"><a href="#cb17-13"></a>        <span class="st">"required"</span>: [<span class="st">"airport_code"</span>]</span>
-<span id="cb17-14"><a href="#cb17-14"></a>      }</span>
-<span id="cb17-15"><a href="#cb17-15"></a>    }</span>
-<span id="cb17-16"><a href="#cb17-16"></a>  ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>functions <span class="op">=</span> [</span>
+<span id="cb14-2"><a href="#cb14-2"></a>    {</span>
+<span id="cb14-3"><a href="#cb14-3"></a>      <span class="st">"name"</span>: <span class="st">"weather_search"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>      <span class="st">"description"</span>: <span class="st">"Search for weather given an airport code"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>      <span class="st">"parameters"</span>: {</span>
+<span id="cb14-6"><a href="#cb14-6"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7"></a>        <span class="st">"properties"</span>: {</span>
+<span id="cb14-8"><a href="#cb14-8"></a>          <span class="st">"airport_code"</span>: {</span>
+<span id="cb14-9"><a href="#cb14-9"></a>            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10"></a>            <span class="st">"description"</span>: <span class="st">"The airport code to get the weather for"</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a>          },</span>
+<span id="cb14-12"><a href="#cb14-12"></a>        },</span>
+<span id="cb14-13"><a href="#cb14-13"></a>        <span class="st">"required"</span>: [<span class="st">"airport_code"</span>]</span>
+<span id="cb14-14"><a href="#cb14-14"></a>      }</span>
+<span id="cb14-15"><a href="#cb14-15"></a>    }</span>
+<span id="cb14-16"><a href="#cb14-16"></a>  ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="bind" class="slide level2">
 <h2>Bind</h2>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_messages(</span>
-<span id="cb18-2"><a href="#cb18-2"></a>    [</span>
-<span id="cb18-3"><a href="#cb18-3"></a>        (<span class="st">"human"</span>, <span class="st">"</span><span class="sc">{input}</span><span class="st">"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a>    ]</span>
-<span id="cb18-5"><a href="#cb18-5"></a>)</span>
-<span id="cb18-6"><a href="#cb18-6"></a>model <span class="op">=</span> ChatOpenAI(temperature<span class="op">=</span><span class="dv">0</span>).bind(functions<span class="op">=</span>functions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_messages(</span>
+<span id="cb15-2"><a href="#cb15-2"></a>    [</span>
+<span id="cb15-3"><a href="#cb15-3"></a>        (<span class="st">"human"</span>, <span class="st">"</span><span class="sc">{input}</span><span class="st">"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4"></a>    ]</span>
+<span id="cb15-5"><a href="#cb15-5"></a>)</span>
+<span id="cb15-6"><a href="#cb15-6"></a>model <span class="op">=</span> ChatOpenAI(temperature<span class="op">=</span><span class="dv">0</span>).bind(functions<span class="op">=</span>functions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="runnable" class="slide level2">
 <h2>Runnable</h2>
-<div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>runnable <span class="op">=</span> prompt <span class="op">|</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>runnable <span class="op">=</span> prompt <span class="op">|</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>runnable.invoke({<span class="st">"input"</span>: <span class="st">"what is the weather in sf"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>runnable.invoke({<span class="st">"input"</span>: <span class="st">"what is the weather in sf"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">AIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘weather_search’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})</li>
@@ -633,52 +622,52 @@ Jan Kirenz
 </section>
 <section id="weather-and-sports-search-function" class="slide level2 smaller">
 <h2>Weather and sports search function</h2>
-<div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>functions <span class="op">=</span> [</span>
-<span id="cb21-2"><a href="#cb21-2"></a>    {</span>
-<span id="cb21-3"><a href="#cb21-3"></a>      <span class="st">"name"</span>: <span class="st">"weather_search"</span>,</span>
-<span id="cb21-4"><a href="#cb21-4"></a>      <span class="st">"description"</span>: <span class="st">"Search for weather given an airport code"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5"></a>      <span class="st">"parameters"</span>: {</span>
-<span id="cb21-6"><a href="#cb21-6"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
-<span id="cb21-7"><a href="#cb21-7"></a>        <span class="st">"properties"</span>: {</span>
-<span id="cb21-8"><a href="#cb21-8"></a>          <span class="st">"airport_code"</span>: {</span>
-<span id="cb21-9"><a href="#cb21-9"></a>            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
-<span id="cb21-10"><a href="#cb21-10"></a>            <span class="st">"description"</span>: <span class="st">"The airport code to get the weather for"</span></span>
-<span id="cb21-11"><a href="#cb21-11"></a>          },</span>
-<span id="cb21-12"><a href="#cb21-12"></a>        },</span>
-<span id="cb21-13"><a href="#cb21-13"></a>        <span class="st">"required"</span>: [<span class="st">"airport_code"</span>]</span>
-<span id="cb21-14"><a href="#cb21-14"></a>      }</span>
-<span id="cb21-15"><a href="#cb21-15"></a>    },</span>
-<span id="cb21-16"><a href="#cb21-16"></a>        {</span>
-<span id="cb21-17"><a href="#cb21-17"></a>      <span class="st">"name"</span>: <span class="st">"sports_search"</span>,</span>
-<span id="cb21-18"><a href="#cb21-18"></a>      <span class="st">"description"</span>: <span class="st">"Search for news of recent sport events"</span>,</span>
-<span id="cb21-19"><a href="#cb21-19"></a>      <span class="st">"parameters"</span>: {</span>
-<span id="cb21-20"><a href="#cb21-20"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
-<span id="cb21-21"><a href="#cb21-21"></a>        <span class="st">"properties"</span>: {</span>
-<span id="cb21-22"><a href="#cb21-22"></a>          <span class="st">"team_name"</span>: {</span>
-<span id="cb21-23"><a href="#cb21-23"></a>            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
-<span id="cb21-24"><a href="#cb21-24"></a>            <span class="st">"description"</span>: <span class="st">"The sports team to search for"</span></span>
-<span id="cb21-25"><a href="#cb21-25"></a>          },</span>
-<span id="cb21-26"><a href="#cb21-26"></a>        },</span>
-<span id="cb21-27"><a href="#cb21-27"></a>        <span class="st">"required"</span>: [<span class="st">"team_name"</span>]</span>
-<span id="cb21-28"><a href="#cb21-28"></a>      }</span>
-<span id="cb21-29"><a href="#cb21-29"></a>    }</span>
-<span id="cb21-30"><a href="#cb21-30"></a>  ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>functions <span class="op">=</span> [</span>
+<span id="cb18-2"><a href="#cb18-2"></a>    {</span>
+<span id="cb18-3"><a href="#cb18-3"></a>      <span class="st">"name"</span>: <span class="st">"weather_search"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4"></a>      <span class="st">"description"</span>: <span class="st">"Search for weather given an airport code"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5"></a>      <span class="st">"parameters"</span>: {</span>
+<span id="cb18-6"><a href="#cb18-6"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7"></a>        <span class="st">"properties"</span>: {</span>
+<span id="cb18-8"><a href="#cb18-8"></a>          <span class="st">"airport_code"</span>: {</span>
+<span id="cb18-9"><a href="#cb18-9"></a>            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10"></a>            <span class="st">"description"</span>: <span class="st">"The airport code to get the weather for"</span></span>
+<span id="cb18-11"><a href="#cb18-11"></a>          },</span>
+<span id="cb18-12"><a href="#cb18-12"></a>        },</span>
+<span id="cb18-13"><a href="#cb18-13"></a>        <span class="st">"required"</span>: [<span class="st">"airport_code"</span>]</span>
+<span id="cb18-14"><a href="#cb18-14"></a>      }</span>
+<span id="cb18-15"><a href="#cb18-15"></a>    },</span>
+<span id="cb18-16"><a href="#cb18-16"></a>        {</span>
+<span id="cb18-17"><a href="#cb18-17"></a>      <span class="st">"name"</span>: <span class="st">"sports_search"</span>,</span>
+<span id="cb18-18"><a href="#cb18-18"></a>      <span class="st">"description"</span>: <span class="st">"Search for news of recent sport events"</span>,</span>
+<span id="cb18-19"><a href="#cb18-19"></a>      <span class="st">"parameters"</span>: {</span>
+<span id="cb18-20"><a href="#cb18-20"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb18-21"><a href="#cb18-21"></a>        <span class="st">"properties"</span>: {</span>
+<span id="cb18-22"><a href="#cb18-22"></a>          <span class="st">"team_name"</span>: {</span>
+<span id="cb18-23"><a href="#cb18-23"></a>            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
+<span id="cb18-24"><a href="#cb18-24"></a>            <span class="st">"description"</span>: <span class="st">"The sports team to search for"</span></span>
+<span id="cb18-25"><a href="#cb18-25"></a>          },</span>
+<span id="cb18-26"><a href="#cb18-26"></a>        },</span>
+<span id="cb18-27"><a href="#cb18-27"></a>        <span class="st">"required"</span>: [<span class="st">"team_name"</span>]</span>
+<span id="cb18-28"><a href="#cb18-28"></a>      }</span>
+<span id="cb18-29"><a href="#cb18-29"></a>    }</span>
+<span id="cb18-30"><a href="#cb18-30"></a>  ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="bind-1" class="slide level2">
+<section id="bind-1" class="slide level2 smaller">
 <h2>Bind</h2>
-<div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>model <span class="op">=</span> model.bind(functions<span class="op">=</span>functions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>model <span class="op">=</span> model.bind(functions<span class="op">=</span>functions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>runnable <span class="op">=</span> prompt <span class="op">|</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>runnable <span class="op">=</span> prompt <span class="op">|</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>runnable.invoke({<span class="st">"input"</span>: <span class="st">"how did the patriots do yesterday?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>runnable.invoke({<span class="st">"input"</span>: <span class="st">"how did the patriots do yesterday?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">AIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘sports_search’, ‘arguments’: ‘{“team_name”: “patriots”}’}})</li>
@@ -690,53 +679,48 @@ Jan Kirenz
 <h1>Fallbacks</h1>
 
 </section>
-<section id="create-json-output" class="slide level2">
-<h2>Create JSON output</h2>
-<ul>
-<li class="fragment">We use a simple model</li>
-</ul>
-<div class="fragment">
-<div class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>simple_model <span class="op">=</span> OpenAI(</span>
-<span id="cb25-2"><a href="#cb25-2"></a>    temperature<span class="op">=</span><span class="dv">0</span>, </span>
-<span id="cb25-3"><a href="#cb25-3"></a>    max_tokens<span class="op">=</span><span class="dv">1000</span>, </span>
-<span id="cb25-4"><a href="#cb25-4"></a>    model<span class="op">=</span><span class="st">"text-davinci-001"</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>)</span>
-<span id="cb25-6"><a href="#cb25-6"></a>simple_chain <span class="op">=</span> simple_model <span class="op">|</span> json.loads</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<section id="use-a-simple-model" class="slide level2">
+<h2>Use a simple model</h2>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>simple_model <span class="op">=</span> OpenAI(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>    temperature<span class="op">=</span><span class="dv">0</span>, </span>
+<span id="cb22-3"><a href="#cb22-3"></a>    max_tokens<span class="op">=</span><span class="dv">1000</span>, </span>
+<span id="cb22-4"><a href="#cb22-4"></a>    model<span class="op">=</span><span class="st">"text-davinci-001"</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>)</span>
+<span id="cb22-6"><a href="#cb22-6"></a>simple_chain <span class="op">=</span> simple_model <span class="op">|</span> json.loads</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="input-challenge" class="slide level2">
-<h2>Input challenge</h2>
-<div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>challenge <span class="op">=</span> <span class="st">"write three poems in a json blob, where each poem is a json blob of a title, author, and first line"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="input" class="slide level2">
+<h2>Input</h2>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>challenge <span class="op">=</span> <span class="st">"write three poems in a json blob, where each poem is a json blob of a title, author, and first line"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="run-simple-model" class="slide level2">
 <h2>Run simple model</h2>
-<div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a>simple_model.invoke(challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>simple_model.invoke(challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">Note: The next line is expected to fail.</li>
 </ul>
-<div class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># simple_chain.invoke(challenge)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># simple_chain.invoke(challenge)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">Output is not JSON</li>
 </ul>
 </section>
-<section id="new-model" class="slide level2">
-<h2>New model</h2>
-<div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>model <span class="op">=</span> ChatOpenAI(temperature<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb29-2"><a href="#cb29-2"></a></span>
-<span id="cb29-3"><a href="#cb29-3"></a>chain <span class="op">=</span> model <span class="op">|</span> StrOutputParser() <span class="op">|</span> json.loads</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="use-different-model" class="slide level2">
+<h2>Use different model</h2>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>model <span class="op">=</span> ChatOpenAI(temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a></span>
+<span id="cb26-3"><a href="#cb26-3"></a>chain <span class="op">=</span> model <span class="op">|</span> StrOutputParser() <span class="op">|</span> json.loads</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>chain.invoke(challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a>chain.invoke(challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">{‘poem1’: {‘title’: ‘Whispers of the Wind’, ‘author’: ‘Emily Rivers’, ‘first_line’: “Softly it blows, the wind’s gentle touch”}, ‘poem2’: {‘title’: ‘Silent Serenade’, ‘author’: ‘Jacob Stone’, ‘first_line’: ‘In moonlit night, a song unheard’}, ‘poem3’: {‘title’: ‘Dancing Shadows’, ‘author’: ‘Sophia Reed’, ‘first_line’: ‘Shadows sway, a graceful ballet’}}</li>
@@ -745,11 +729,11 @@ Jan Kirenz
 </section>
 <section id="new-model-with-fallbacks" class="slide level2">
 <h2>New model with fallbacks</h2>
-<div class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1"></a>final_chain <span class="op">=</span> simple_chain.with_fallbacks([chain])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>final_chain <span class="op">=</span> simple_chain.with_fallbacks([chain])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>final_chain.invoke(challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>final_chain.invoke(challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">{‘poem1’: {‘title’: ‘Whispers of the Wind’, ‘author’: ‘Emily Rivers’, ‘first_line’: ‘Softly it comes, the whisper of the wind’}, ‘poem2’: {‘title’: ‘Silent Serenade’, ‘author’: ‘Jacob Moore’, ‘first_line’: ‘In the stillness of night, a silent serenade’}, ‘poem3’: {‘title’: ‘Dancing Shadows’, ‘author’: ‘Sophia Anderson’, ‘first_line’: ‘Shadows dance upon the walls, a secret ballet’}}</li>
@@ -762,20 +746,20 @@ Jan Kirenz
 </section>
 <section id="joke-example" class="slide level2">
 <h2>Joke example</h2>
-<div class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_template(</span>
-<span id="cb33-2"><a href="#cb33-2"></a>    <span class="st">"Tell me a short joke about </span><span class="sc">{topic}</span><span class="st">"</span></span>
-<span id="cb33-3"><a href="#cb33-3"></a>)</span>
-<span id="cb33-4"><a href="#cb33-4"></a>model <span class="op">=</span> ChatOpenAI()</span>
-<span id="cb33-5"><a href="#cb33-5"></a>output_parser <span class="op">=</span> StrOutputParser()</span>
-<span id="cb33-6"><a href="#cb33-6"></a></span>
-<span id="cb33-7"><a href="#cb33-7"></a>chain <span class="op">=</span> prompt <span class="op">|</span> model <span class="op">|</span> output_parser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_template(</span>
+<span id="cb30-2"><a href="#cb30-2"></a>    <span class="st">"Tell me a short joke about </span><span class="sc">{topic}</span><span class="st">"</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>)</span>
+<span id="cb30-4"><a href="#cb30-4"></a>model <span class="op">=</span> ChatOpenAI()</span>
+<span id="cb30-5"><a href="#cb30-5"></a>output_parser <span class="op">=</span> StrOutputParser()</span>
+<span id="cb30-6"><a href="#cb30-6"></a></span>
+<span id="cb30-7"><a href="#cb30-7"></a>chain <span class="op">=</span> prompt <span class="op">|</span> model <span class="op">|</span> output_parser</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="one-input" class="slide level2">
 <h2>One input</h2>
-<div class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>chain.invoke({<span class="st">"topic"</span>: <span class="st">"professors"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1"></a>chain.invoke({<span class="st">"topic"</span>: <span class="st">"professors"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">‘Why did the professor bring a ladder to the lecture? they wanted to reach new heights of knowledge!’</li>
@@ -783,27 +767,27 @@ Jan Kirenz
 </section>
 <section id="multiple-inputs" class="slide level2">
 <h2>Multiple inputs</h2>
-<div class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1"></a>chain.batch([{<span class="st">"topic"</span>: <span class="st">"professors"</span>}, {<span class="st">"topic"</span>: <span class="st">"students"</span>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>chain.batch([{<span class="st">"topic"</span>: <span class="st">"professors"</span>}, {<span class="st">"topic"</span>: <span class="st">"students"</span>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">[‘Why did the professor bring a ladder to class?they heard the lecture was going to be on high-level concepts!’, ‘Why did the student bring a ladder to school?they wanted to reach for the highest grades!’]</li>
 </ul>
 </section>
-<section id="stream-back-responses" class="slide level2">
+<section id="stream-back-responses" class="slide level2 smaller">
 <h2>Stream back responses</h2>
-<div class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a><span class="cf">for</span> t <span class="kw">in</span> chain.stream({<span class="st">"topic"</span>: <span class="st">"professors"</span>}):</span>
-<span id="cb36-2"><a href="#cb36-2"></a>    <span class="bu">print</span>(t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a><span class="cf">for</span> t <span class="kw">in</span> chain.stream({<span class="st">"topic"</span>: <span class="st">"professors"</span>}):</span>
+<span id="cb33-2"><a href="#cb33-2"></a>    <span class="bu">print</span>(t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Why did the professor bring a ladder to class ?</p>
 <p>Because they wanted to reach new heights in education !</p>
 </section>
 <section id="async-method" class="slide level2">
 <h2>Async method</h2>
-<div class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1"></a>response <span class="op">=</span> <span class="cf">await</span> chain.ainvoke({<span class="st">"topic"</span>: <span class="st">"professors"</span>})</span>
-<span id="cb37-2"><a href="#cb37-2"></a>response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>response <span class="op">=</span> <span class="cf">await</span> chain.ainvoke({<span class="st">"topic"</span>: <span class="st">"professors"</span>})</span>
+<span id="cb34-2"><a href="#cb34-2"></a>response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">‘Why did the professor bring a ladder to the lecture? they wanted to reach new heights of knowledge!’</li>

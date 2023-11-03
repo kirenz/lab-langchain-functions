@@ -427,7 +427,7 @@ Jan Kirenz
 <p>Let’s build a conversational agent</p>
 </section>
 
-<section id="setup" class="title-slide slide level1 center">
+<section id="setup" class="title-slide slide level1 smaller center">
 <h1>Setup</h1>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> os</span>
@@ -438,36 +438,27 @@ Jan Kirenz
 <span id="cb1-6"><a href="#cb1-6"></a>openai.api_key <span class="op">=</span> os.environ[<span class="st">'OPENAI_API_KEY'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> wikipedia</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="im">from</span> langchain.tools <span class="im">import</span> tool</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> datetime</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> requests</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="im">import</span> wikipedia</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
 <span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="im">import</span> requests</span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="im">import</span> datetime</span>
-<span id="cb2-9"><a href="#cb2-9"></a></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="im">from</span> langchain.chat_models <span class="im">import</span> ChatOpenAI</span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="im">from</span> langchain.tools.render <span class="im">import</span> format_tool_to_openai_function</span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="im">from</span> langchain.agents.output_parsers <span class="im">import</span> OpenAIFunctionsAgentOutputParser</span>
-<span id="cb2-14"><a href="#cb2-14"></a></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> MessagesPlaceholder</span>
-<span id="cb2-16"><a href="#cb2-16"></a></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="im">from</span> langchain.agents.format_scratchpad <span class="im">import</span> format_to_openai_functions</span>
-<span id="cb2-18"><a href="#cb2-18"></a></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="im">from</span> langchain.schema.agent <span class="im">import</span> AgentFinish</span>
-<span id="cb2-20"><a href="#cb2-20"></a></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="im">from</span> langchain.schema.runnable <span class="im">import</span> RunnablePassthrough</span>
-<span id="cb2-22"><a href="#cb2-22"></a></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor</span>
-<span id="cb2-24"><a href="#cb2-24"></a></span>
-<span id="cb2-25"><a href="#cb2-25"></a><span class="im">from</span> langchain.memory <span class="im">import</span> ConversationBufferMemory</span>
-<span id="cb2-26"><a href="#cb2-26"></a></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="im">import</span> panel <span class="im">as</span> pn  <span class="co"># GUI</span></span>
-<span id="cb2-28"><a href="#cb2-28"></a>pn.extension()</span>
-<span id="cb2-29"><a href="#cb2-29"></a><span class="im">import</span> panel <span class="im">as</span> pn</span>
-<span id="cb2-30"><a href="#cb2-30"></a><span class="im">import</span> param</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="im">from</span> langchain.tools <span class="im">import</span> tool</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="im">from</span> langchain.chat_models <span class="im">import</span> ChatOpenAI</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="im">from</span> langchain.tools.render <span class="im">import</span> format_tool_to_openai_function</span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="im">from</span> langchain.agents.output_parsers <span class="im">import</span> OpenAIFunctionsAgentOutputParser</span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> MessagesPlaceholder</span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="im">from</span> langchain.agents.format_scratchpad <span class="im">import</span> format_to_openai_functions</span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="im">from</span> langchain.schema.agent <span class="im">import</span> AgentFinish</span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="im">from</span> langchain.schema.runnable <span class="im">import</span> RunnablePassthrough</span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor</span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="im">from</span> langchain.memory <span class="im">import</span> ConversationBufferMemory</span>
+<span id="cb2-17"><a href="#cb2-17"></a></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="im">import</span> panel <span class="im">as</span> pn </span>
+<span id="cb2-19"><a href="#cb2-19"></a>pn.extension()</span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="im">import</span> panel <span class="im">as</span> pn</span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="im">import</span> param</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 
@@ -476,7 +467,7 @@ Jan Kirenz
 <h1>Prepare</h1>
 
 </section>
-<section id="define-weather-tool" class="slide level2">
+<section id="define-weather-tool" class="slide level2 smaller">
 <h2>Define weather tool</h2>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Define the input schema</span></span>
@@ -516,7 +507,7 @@ Jan Kirenz
 <span id="cb3-35"><a href="#cb3-35"></a>    <span class="cf">return</span> <span class="ss">f'The current temperature is </span><span class="sc">{</span>current_temperature<span class="sc">}</span><span class="ss">°C'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="define-wikipedia-tool" class="slide level2">
+<section id="define-wikipedia-tool" class="slide level2 smaller">
 <h2>Define Wikipedia tool</h2>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="at">@tool</span></span>
@@ -559,7 +550,7 @@ Jan Kirenz
 <span id="cb6-10"><a href="#cb6-10"></a>chain <span class="op">=</span> prompt <span class="op">|</span> model <span class="op">|</span> OpenAIFunctionsAgentOutputParser()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="invoke-chain" class="slide level2">
+<section id="invoke-chain" class="slide level2 smaller">
 <h2>Invoke chain</h2>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>result <span class="op">=</span> chain.invoke({<span class="st">"input"</span>: <span class="st">"what is the weather in stuttgart?"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -619,7 +610,7 @@ Jan Kirenz
 </div>
 </div>
 </section>
-<section id="inspect-result1" class="slide level2">
+<section id="inspect-result1" class="slide level2 smaller">
 <h2>Inspect result1</h2>
 <div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>result1.tool</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -661,7 +652,7 @@ Jan Kirenz
 <li class="fragment">[AIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘get_current_temperature’, ‘arguments’: ‘{“latitude”: 48.7758,“longitude”: 9.1829}’}}), FunctionMessage(content=‘The current temperature is 10.1°C’, name=‘get_current_temperature’)]</li>
 </ul>
 </section>
-<section id="update-chain" class="slide level2">
+<section id="update-chain" class="slide level2 smaller">
 <h2>Update chain</h2>
 <div class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>result2 <span class="op">=</span> chain.invoke({</span>
@@ -681,6 +672,10 @@ Jan Kirenz
 <section>
 <section id="final-function" class="title-slide slide level1 center">
 <h1>Final function</h1>
+
+</section>
+<section id="function-for-agent" class="slide level2 smaller">
+<h2>Function for agent</h2>
 <div class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">def</span> run_agent(user_input):</span>
 <span id="cb21-2"><a href="#cb21-2"></a>    intermediate_steps <span class="op">=</span> []</span>
@@ -699,13 +694,14 @@ Jan Kirenz
 <span id="cb21-15"><a href="#cb21-15"></a>        intermediate_steps.append((result, observation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="runnablepassthrough" class="slide level2">
+<section id="runnablepassthrough" class="slide level2 smaller">
 <h2>RunnablePassthrough</h2>
 <div class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>agent_chain <span class="op">=</span> RunnablePassthrough.assign(</span>
 <span id="cb22-2"><a href="#cb22-2"></a>    agent_scratchpad<span class="op">=</span> <span class="kw">lambda</span> x: format_to_openai_functions(x[<span class="st">"intermediate_steps"</span>])</span>
 <span id="cb22-3"><a href="#cb22-3"></a>) <span class="op">|</span> chain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="fragment">
 <div class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">def</span> run_agent(user_input):</span>
 <span id="cb23-2"><a href="#cb23-2"></a>    intermediate_steps <span class="op">=</span> []</span>
@@ -722,6 +718,7 @@ Jan Kirenz
 <span id="cb23-13"><a href="#cb23-13"></a>        }[result.tool]</span>
 <span id="cb23-14"><a href="#cb23-14"></a>        observation <span class="op">=</span> tool.run(result.tool_input)</span>
 <span id="cb23-15"><a href="#cb23-15"></a>        intermediate_steps.append((result, observation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </section>
 <section id="run-agent-with-weather-question" class="slide level2">
@@ -780,7 +777,7 @@ Jan Kirenz
 <p>{‘input’: ‘what is langchain?’, ‘output’: ‘LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.’}</p>
 </section></section>
 <section>
-<section id="conversation-example" class="title-slide slide level1 center">
+<section id="conversation-example" class="title-slide slide level1 smaller center">
 <h1>Conversation example</h1>
 <div class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>agent_executor.invoke({<span class="st">"input"</span>: <span class="st">"my name is bob"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -892,7 +889,7 @@ Jan Kirenz
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1"></a>tools <span class="op">=</span> [get_current_temperature, search_wikipedia, create_your_own]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="define-chatbot-function" class="slide level2">
+<section id="define-chatbot-function" class="slide level2 smaller">
 <h2>Define Chatbot function</h2>
 <div class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">class</span> cbfs(param.Parameterized):</span>
@@ -932,7 +929,7 @@ Jan Kirenz
 <span id="cb40-35"><a href="#cb40-35"></a>        <span class="cf">return</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="panel-ui" class="slide level2">
+<section id="panel-ui" class="slide level2 smaller">
 <h2>Panel UI</h2>
 <div class="cell" data-execution_count="41">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1"></a>cb <span class="op">=</span> cbfs(tools)</span>
