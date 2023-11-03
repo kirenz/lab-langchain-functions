@@ -48,37 +48,25 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 ```
 
 ```{python}
-from langchain.agents import tool
-
-from pydantic import BaseModel, Field
-
-import requests
-from pydantic import BaseModel, Field
 import datetime
-
-from langchain.tools.render import format_tool_to_openai_function
-
+import requests
 import wikipedia
+from pydantic import BaseModel, Field
 
+from langchain.agents import tool
+from langchain.tools.render import format_tool_to_openai_function
 from langchain.chains.openai_functions.openapi import openapi_spec_to_openai_fn
-
 from langchain.utilities.openapi import OpenAPISpec
-
 from langchain.chat_models import ChatOpenAI
-
 from langchain.prompts import ChatPromptTemplate
-
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
-
 from langchain.schema.agent import AgentFinish
-
-
 ```
 
 
 # Define a tool
 
-## Create tool {.smaller}
+## Create tool 
 
 ```{python}
 @tool
@@ -87,7 +75,7 @@ def search(query: str) -> str:
     return "42f"
 ```
 
-. . .
+## Inspect tool {.smaller}
 
 ```{python}
 search.name
@@ -110,7 +98,7 @@ search.args
 
 - {'query': {'title': 'Query', 'type': 'string'}}
 
-## Add a description
+## Add a description {.smaller}
 
 ```{python}
 class SearchInput(BaseModel):
@@ -189,7 +177,7 @@ def get_current_temperature(latitude: float, longitude: float) -> dict:
 ```
 
 
-## Inspect function
+## Inspect function {.smaller}
 
 ```{python}
 get_current_temperature.name
@@ -219,7 +207,7 @@ get_current_temperature.args
   'type': 'number'}}
 
 
-## Convert this tool into OpenAI function
+## Convert this tool into OpenAI function {.smaller}
 
 ```{python}
 format_tool_to_openai_function(get_current_temperature)
@@ -249,7 +237,7 @@ get_current_temperature({"latitude": 48.741400, "longitude": 9.1006302})
 
 # Wikikedia tool
 
-## Create tool
+## Create tool {.smaller}
 
 ```{python}
 @tool
@@ -271,7 +259,7 @@ def search_wikipedia(query: str) -> str:
     return "\n\n".join(summaries)
 ```
 
-## Inspect function
+## Inspect {.smaller}
 
 ```{python}
 search_wikipedia.name
@@ -292,7 +280,7 @@ search_wikipedia.description
   'properties': {'query': {'title': 'Query', 'type': 'string'}},
   'required': ['query']}}
 
-. . .
+## Inspect 
 
 ```{python}
 format_tool_to_openai_function(search_wikipedia)
@@ -554,7 +542,7 @@ functions = [
 model = ChatOpenAI(temperature=0).bind(functions=functions)
 ```
 
-## Invoke functions
+## Invoke functions {.smaller}
 
 ```{python}
 model.invoke("what is the weather in stuttgart right now")
@@ -593,23 +581,27 @@ chain.invoke({"input": "what is the weather in stuttgart right now"})
 AIMessage(content='', additional_kwargs={'function_call': {'name': 'get_current_temperature', 'arguments': '{\n  "latitude": 48.7758,\n  "longitude": 9.1829\n}'}})
 
 
-## Use output parser
+## Use output parser {.smaller}
 
 ```{python}
 chain = prompt | model | OpenAIFunctionsAgentOutputParser()
 ```
 
+. . .
+
 ```{python}
 result = chain.invoke({"input": "what is the weather in stuttgart right now"})
 ```
+
+. . .
 
 ```{python}
 type(result)
 ```
 
 - langchain.schema.agent.AgentActionMessageLog
-
-## Inspect result
+ 
+## Inspect result {.smaller}
 
 ```{python}
 result.tool
@@ -633,8 +625,8 @@ get_current_temperature(result.tool_input)
 
 - 'The current temperature is 10.1°C'
 
-## Try a new input 
-
+## Try a new input {.smaller}
+ 
 ```{python}
 result = chain.invoke({"input": "Hi! How are you?"})
 ```
@@ -689,11 +681,13 @@ result
 
 - 'The current temperature is 10.1°C'
 
-## Input a general queation {.result}
+## Input a general queation {.smaller}
 
 ```{python}
 result = chain.invoke({"input": "What is langchain?"})
 ```
+
+. . .
 
 ```{python}
 result
