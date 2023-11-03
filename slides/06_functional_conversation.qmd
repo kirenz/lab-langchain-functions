@@ -37,7 +37,7 @@ format:
 
 Let's build a conversational agent
 
-# Setup
+# Setup {.smaller}
 
 ```{python}
 import os
@@ -49,45 +49,33 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 ```
 
 ```{python}
-
+import datetime
+import requests
 import wikipedia
-
+from pydantic import BaseModel, Field
 
 from langchain.tools import tool
-
-import requests
-from pydantic import BaseModel, Field
-import datetime
-
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.tools.render import format_tool_to_openai_function
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
-
 from langchain.prompts import MessagesPlaceholder
-
 from langchain.agents.format_scratchpad import format_to_openai_functions
-
 from langchain.schema.agent import AgentFinish
-
 from langchain.schema.runnable import RunnablePassthrough
-
 from langchain.agents import AgentExecutor
-
 from langchain.memory import ConversationBufferMemory
 
-import panel as pn  # GUI
+import panel as pn 
 pn.extension()
 import panel as pn
 import param
-
-
 ```
 
 
 # Prepare
 
-## Define weather tool
+## Define weather tool {.smaller}
 
 ```{python}
 # Define the input schema
@@ -127,7 +115,7 @@ def get_current_temperature(latitude: float, longitude: float) -> dict:
     return f'The current temperature is {current_temperature}°C'
 ```
 
-## Define Wikipedia tool
+## Define Wikipedia tool {.smaller}
 
 ```{python}
 
@@ -172,7 +160,7 @@ prompt = ChatPromptTemplate.from_messages([
 chain = prompt | model | OpenAIFunctionsAgentOutputParser()
 ```
 
-## Invoke chain
+## Invoke chain {.smaller}
 
 ```{python}
 result = chain.invoke({"input": "what is the weather in stuttgart?"})
@@ -229,7 +217,7 @@ result1 = chain.invoke({
 })
 ```
 
-## Inspect result1
+## Inspect result1 {.smaller}
 
 ```{python}
 result1.tool
@@ -270,7 +258,7 @@ format_to_openai_functions([(result1, observation), ])
 - [AIMessage(content='', additional_kwargs={'function_call': {'name': 'get_current_temperature', 'arguments': '{\n  "latitude": 48.7758,\n  "longitude": 9.1829\n}'}}),
  FunctionMessage(content='The current temperature is 10.1°C', name='get_current_temperature')]
 
-## Update chain
+## Update chain {.smaller}
 
 ```{python}
 result2 = chain.invoke({
@@ -288,7 +276,9 @@ result2
 - AgentFinish(return_values={'output': 'The current temperature in Stuttgart is 10.1°C.'}, log='The current temperature in Stuttgart is 10.1°C.')
 
 
-# Final function
+# Final function 
+
+## Function for agent {.smaller}
 
 ```{python}
 def run_agent(user_input):
@@ -309,7 +299,7 @@ def run_agent(user_input):
 ```
 
 
-## RunnablePassthrough
+## RunnablePassthrough {.smaller}
 
 ```{python}
 agent_chain = RunnablePassthrough.assign(
@@ -317,7 +307,7 @@ agent_chain = RunnablePassthrough.assign(
 ) | chain
 ```
 
-
+. . .
 
 
 ```{python}
@@ -402,7 +392,7 @@ LangChain is a framework designed to simplify the creation of applications using
 {'input': 'what is langchain?',
  'output': 'LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.'}
 
-# Conversation example
+# Conversation example {.smaller}
 
 ```{python}
 agent_executor.invoke({"input": "my name is bob"})
@@ -537,7 +527,7 @@ tools = [get_current_temperature, search_wikipedia, create_your_own]
 ```
 
 
-## Define Chatbot function
+## Define Chatbot function {.smaller}
 
 ```{python}
 
@@ -579,7 +569,7 @@ class cbfs(param.Parameterized):
         return 
 ```
 
-## Panel UI
+## Panel UI {.smaller}
 
 ```{python}
 cb = cbfs(tools)
