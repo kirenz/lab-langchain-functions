@@ -1,0 +1,1066 @@
+[
+  {
+    "objectID": "slide.html",
+    "href": "slide.html",
+    "title": "Slides",
+    "section": "",
+    "text": "The following tutorials are mainly based on the excellent course “LangChain: Chat with Your DataI” provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI and cover the following topics:\nYou have several options to start code development:"
+  },
+  {
+    "objectID": "slide.html#what-is-retrieval-augmented-generation-rag",
+    "href": "slide.html#what-is-retrieval-augmented-generation-rag",
+    "title": "Slides",
+    "section": "1 What is Retrieval-Augmented Generation (RAG)?",
+    "text": "1 What is Retrieval-Augmented Generation (RAG)?\n\n\nLarge language models usually give great answers, but because they’re limited to the training data used to create the model, over time they can become incomplete–or worse, generate answers that are just plain wrong. One way of improving the LLM results is called “retrieval-augmented generation” or RAG.\nIn this video, IBM Senior Research Scientist Marina Danilevsky explains the LLM/RAG framework and how this combination delivers two big advantages, namely: the model gets the most up-to-date and trustworthy facts, and you can see where the model got its info, lending more credibility to what it generates."
+  },
+  {
+    "objectID": "slide.html#document-loading",
+    "href": "slide.html#document-loading",
+    "title": "Slides",
+    "section": "2 Document Loading",
+    "text": "2 Document Loading\nLearn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video:\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
+  },
+  {
+    "objectID": "slide.html#document-splitting",
+    "href": "slide.html#document-splitting",
+    "title": "Slides",
+    "section": "3 Document Splitting",
+    "text": "3 Document Splitting\nIn the context of building LLM-related applications, splitting is the process of breaking down large pieces of text into smaller segments:\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
+  },
+  {
+    "objectID": "slide.html#vector-stores-and-embeddings",
+    "href": "slide.html#vector-stores-and-embeddings",
+    "title": "Slides",
+    "section": "4 Vector stores and embeddings",
+    "text": "4 Vector stores and embeddings\nLearn the concept of embeddings and explore vector store integrations within LangChain.\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
+  },
+  {
+    "objectID": "slide.html#retrieval",
+    "href": "slide.html#retrieval",
+    "title": "Slides",
+    "section": "5 Retrieval",
+    "text": "5 Retrieval\nLearn advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries:\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
+  },
+  {
+    "objectID": "slide.html#question-answering",
+    "href": "slide.html#question-answering",
+    "title": "Slides",
+    "section": "6 Question Answering",
+    "text": "6 Question Answering\nBuild a one-pass question-answering solution.\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
+  },
+  {
+    "objectID": "slide.html#chat-system",
+    "href": "slide.html#chat-system",
+    "title": "Slides",
+    "section": "7 Chat System",
+    "text": "7 Chat System\nLearn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain.\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
+  },
+  {
+    "objectID": "slide.html#langchain-cookbook",
+    "href": "slide.html#langchain-cookbook",
+    "title": "Slides",
+    "section": "8 LangChain cookbook",
+    "text": "8 LangChain cookbook\nSome example code for building applications with LangChain, with an emphasis on more applied and end-to-end examples (see this site for more examples):\n\nSemi-structured RAG: This cookbook shows how to perform RAG on documents with semi-structured data (e.g. PDF with tables and text)"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#basics",
+    "href": "slides/03_function_calling.html#basics",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Basics",
+    "text": "Basics\n\nPydantic data classes are a blend of Python’s data classes with the validation power of Pydantic.\nThey offer a concise way to define data structures while ensuring that the data adheres to specified types and constraints."
+  },
+  {
+    "objectID": "slides/03_function_calling.html#create-class-with-standard-python",
+    "href": "slides/03_function_calling.html#create-class-with-standard-python",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Create class with standard Python",
+    "text": "Create class with standard Python\n\nclass User:\n    def __init__(self, name: str, age: int, email: str):\n        self.name = name\n        self.age = age\n        self.email = email"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#creata-an-instance",
+    "href": "slides/03_function_calling.html#creata-an-instance",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Creata an instance",
+    "text": "Creata an instance\n\nfoo = User(name=\"Joe\",age=32, email=\"joe@gmail.com\")\n\n\n\nfoo.name\n\n\n‘Joe’\n\n\n\n\nfoo = User(name=\"Joe\",age=\"bar\", email=\"joe@gmail.com\")\n\n\n\n\nfoo.age\n\n\n‘bar’"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#create-class-with-pydantic",
+    "href": "slides/03_function_calling.html#create-class-with-pydantic",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Create class with Pydantic",
+    "text": "Create class with Pydantic\n\nclass pUser(BaseModel):\n    name: str\n    age: int\n    email: str"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#create-instance",
+    "href": "slides/03_function_calling.html#create-instance",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Create instance",
+    "text": "Create instance\n\nfoo_p = pUser(name=\"Jane\", age=32, email=\"jane@gmail.com\")\n\n\nfoo_p.name\n\n\n‘Jane’\n\n\nfoo_p = pUser(name=\"Jane\", age=\"bar\", email=\"jane@gmail.com\")\n\n\nValidationError: 1 validation error for pUser age value is not a valid integer (type=type_error.integer)"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#nest-data-structures",
+    "href": "slides/03_function_calling.html#nest-data-structures",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Nest data structures",
+    "text": "Nest data structures\n\nDefine class type which includes another object (nest objects)\n\n\n\nclass Class(BaseModel):\n    students: List[pUser]\n\n\n\n\nobj = Class(\n    students=[pUser(name=\"Jane\", age=32, email=\"jane@gmail.com\")]\n)\n\n\n\n\nobj\n\n\nClass(students=[pUser(name=‘Jane’, age=32, email=‘jane@gmail.com’)])"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#weather-search-function",
+    "href": "slides/03_function_calling.html#weather-search-function",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Weather search function",
+    "text": "Weather search function\n\nDocstring is required\n\n\n\nclass WeatherSearch(BaseModel):\n    \"\"\"Call this with an airport code to get the weather at that airport\"\"\"\n    airport_code: str = Field(description=\"airport code to get weather for\")\n\n\nPass in class type\n\n\n\n\nweather_function = convert_pydantic_to_openai_function(WeatherSearch)"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#inspect-class-type",
+    "href": "slides/03_function_calling.html#inspect-class-type",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Inspect class type",
+    "text": "Inspect class type\n\nweather_function\n\n{‘name’: ‘WeatherSearch’, ‘description’: ‘Call this with an airport code to get the weather at that airport’, ‘parameters’: {‘title’: ‘WeatherSearch’, ‘description’: ‘Call this with an airport code to get the weather at that airport’, ‘type’: ‘object’, ‘properties’: {‘airport_code’: {‘title’: ‘Airport Code’, ‘description’: ‘airport code to get weather for’, ‘type’: ‘string’}}, ‘required’: [‘airport_code’]}}"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#use-model-directly",
+    "href": "slides/03_function_calling.html#use-model-directly",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Use model directly",
+    "text": "Use model directly\n\nmodel = ChatOpenAI()\n\n\nmodel.invoke(\"what is the weather in SF today?\", functions=[weather_function])\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘WeatherSearch’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#use-bind",
+    "href": "slides/03_function_calling.html#use-bind",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Use bind",
+    "text": "Use bind\n\nmodel_with_function = model.bind(functions=[weather_function])\n\n\n\nmodel_with_function.invoke(\"what is the weather in sf?\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘WeatherSearch’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#forcing-it-to-use-a-function",
+    "href": "slides/03_function_calling.html#forcing-it-to-use-a-function",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Forcing it to use a function",
+    "text": "Forcing it to use a function\n\nmodel_with_forced_function = model.bind(functions=[weather_function], function_call={\"name\":\"WeatherSearch\"})\n\n\n\nmodel_with_forced_function.invoke(\"what is the weather in sf?\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘WeatherSearch’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})\n\n\n\n\nmodel_with_forced_function.invoke(\"hi!\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘WeatherSearch’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#prompt-template",
+    "href": "slides/03_function_calling.html#prompt-template",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Prompt template",
+    "text": "Prompt template\nWe can use this model bound to function in a chain as we normally would\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are a helpful assistant\"),\n    (\"user\", \"{input}\")\n])"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#chain",
+    "href": "slides/03_function_calling.html#chain",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Chain",
+    "text": "Chain\n\nchain = prompt | model_with_function\n\n\n\nchain.invoke({\"input\": \"what is the weather in sf?\"})\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘WeatherSearch’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#using-multiple-functions",
+    "href": "slides/03_function_calling.html#using-multiple-functions",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Using multiple functions",
+    "text": "Using multiple functions"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#create-artistsearch-function",
+    "href": "slides/03_function_calling.html#create-artistsearch-function",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Create ArtistSearch function",
+    "text": "Create ArtistSearch function\nEven better, we can pass a set of function and let the LLM decide which to use based on the question context.\n\nclass ArtistSearch(BaseModel):\n    \"\"\"Call this to get the names of songs by a particular artist\"\"\"\n    artist_name: str = Field(description=\"name of artist to look up\")\n    n: int = Field(description=\"number of results\")\n\n\n\nfunctions = [\n    convert_pydantic_to_openai_function(WeatherSearch),\n    convert_pydantic_to_openai_function(ArtistSearch),\n]\n\n\n\n\nmodel_with_functions = model.bind(functions=functions)"
+  },
+  {
+    "objectID": "slides/03_function_calling.html#invoke-functions",
+    "href": "slides/03_function_calling.html#invoke-functions",
+    "title": "OpenAI Function Calling In LangChain",
+    "section": "Invoke functions",
+    "text": "Invoke functions\n\nmodel_with_functions.invoke(\"what is the weather in sf?\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘WeatherSearch’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})\n\n\nmodel_with_functions.invoke(\"what are three songs by taylor swift?\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘ArtistSearch’, ‘arguments’: ‘{“artist_name”: “taylor swift”,“n”: 3}’}})\n\n\nmodel_with_functions.invoke(\"hi!\")\n\n\nAIMessage(content=‘Hello! How can I assist you today?’)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#helper-function",
+    "href": "slides/01_openai_functions.html#helper-function",
+    "title": "OpenAI Function Calling",
+    "section": "Helper function",
+    "text": "Helper function"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#weather-example",
+    "href": "slides/01_openai_functions.html#weather-example",
+    "title": "OpenAI Function Calling",
+    "section": "Weather example",
+    "text": "Weather example\n\nimport json\n\n# Example dummy function hard coded to return the same weather\n# In production, this could be your backend API or an external API\ndef get_current_weather(location, unit=\"celsius\"):\n    \"\"\"Get the current weather in a given location\"\"\"\n    weather_info = {\n        \"location\": location,\n        \"temperature\": \"16\",\n        \"unit\": unit,\n        \"forecast\": [\"sunny\", \"windy\"],\n    }\n    return json.dumps(weather_info)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#define-a-function",
+    "href": "slides/01_openai_functions.html#define-a-function",
+    "title": "OpenAI Function Calling",
+    "section": "Define a function",
+    "text": "Define a function\n\n# define a function\nfunctions = [\n    {\n        \"name\": \"get_current_weather\",\n        \"description\": \"Get the current weather in a given location\",\n        \"parameters\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"location\": {\n                    \"type\": \"string\",\n                    \"description\": \"The city and state, e.g. Stuttgart, BW\",\n                },\n                \"unit\": {\"type\": \"string\", \"enum\": [\"celsius\", \"fahrenheit\"]},\n            },\n            \"required\": [\"location\"],\n        },\n    }\n]"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#messages",
+    "href": "slides/01_openai_functions.html#messages",
+    "title": "OpenAI Function Calling",
+    "section": "Messages",
+    "text": "Messages\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"What's the weather like in Stuttgart?\"\n    }\n]\n\n\n\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n    functions=functions\n)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#print-response",
+    "href": "slides/01_openai_functions.html#print-response",
+    "title": "OpenAI Function Calling",
+    "section": "Print response",
+    "text": "Print response\n\nprint(response)\n\n{ “id”: “chatcmpl-8EzjVmo4zPOq7Z70XEV47HcjF3FBb”, “object”: “chat.completion”, “created”: 1698584585, “model”: “gpt-3.5-turbo-0613”, “choices”: [ { “index”: 0, “message”: { “role”: “assistant”, “content”: null, “function_call”: { “name”: “get_current_weather”, “arguments”: “{\"location\": \"Stuttgart\"}” } }, “finish_reason”: “function_call” } ], “usage”: { “prompt_tokens”: 81, “completion_tokens”: 17, “total_tokens”: 98 } } ## Response message\n\nresponse_message = response[\"choices\"][0][\"message\"]\n\n\n\nresponse_message\n\n&lt;OpenAIObject at 0x120dc2c30&gt; JSON: { “role”: “assistant”, “content”: null, “function_call”: { “name”: “get_current_weather”, “arguments”: “{\"location\": \"Stuttgart\"}” } }"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#response-message-content",
+    "href": "slides/01_openai_functions.html#response-message-content",
+    "title": "OpenAI Function Calling",
+    "section": "Response message content",
+    "text": "Response message content\n\nContent is empty\n\n\n\nresponse_message[\"content\"]\n\n\nFunction call is a dictionary\n\n\n\n\nresponse_message[\"function_call\"]\n\n\n&lt;OpenAIObject at 0x120f9dc10&gt; JSON: { “name”: “get_current_weather”, “arguments”: “{\"location\": \"Stuttgart\"}” }"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#inspect-json",
+    "href": "slides/01_openai_functions.html#inspect-json",
+    "title": "OpenAI Function Calling",
+    "section": "Inspect JSON",
+    "text": "Inspect JSON\n\njson.loads(response_message[\"function_call\"][\"arguments\"])\n\n{‘location’: ‘Stuttgart’}\n\n\nargs = json.loads(response_message[\"function_call\"][\"arguments\"])\n\n\n\n\nget_current_weather(args)\n\n\n‘{“location”: {“location”: “Stuttgart”}, “temperature”: “16”, “unit”: “celsius”, “forecast”: [“sunny”, “windy”]}’"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#new-message",
+    "href": "slides/01_openai_functions.html#new-message",
+    "title": "OpenAI Function Calling",
+    "section": "New message",
+    "text": "New message\n\nNew message with no relation to weather\n\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"hi!\",\n    }\n]\n\n\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n    functions=functions,\n)\n\n\nprint(response)\n\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"hi!\",\n    }\n]\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n    functions=functions,\n    function_call=\"auto\",\n)\nprint(response)\n\n{ “id”: “chatcmpl-8Ezl8M209h6uqOXuFrGzVwAoSjXVI”, “object”: “chat.completion”, “created”: 1698584686, “model”: “gpt-3.5-turbo-0613”, “choices”: [ { “index”: 0, “message”: { “role”: “assistant”, “content”: “Hello! How can I assist you today?” }, “finish_reason”: “stop” } ], “usage”: { “prompt_tokens”: 75, “completion_tokens”: 10, “total_tokens”: 85 } }"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#disable-function-usage",
+    "href": "slides/01_openai_functions.html#disable-function-usage",
+    "title": "OpenAI Function Calling",
+    "section": "Disable function usage",
+    "text": "Disable function usage\n\nDon’t use the function\n\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"hi!\",\n    }\n]\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n    functions=functions,\n    function_call=\"none\",\n)\nprint(response)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#force-function-usage",
+    "href": "slides/01_openai_functions.html#force-function-usage",
+    "title": "OpenAI Function Calling",
+    "section": "Force function usage",
+    "text": "Force function usage\n\nforce to use the function\n\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"hi!\",\n    }\n]\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n    functions=functions,\n    function_call={\"name\": \"get_current_weather\"},\n)\nprint(response)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#pass-the-reults-back-in-the-llm",
+    "href": "slides/01_openai_functions.html#pass-the-reults-back-in-the-llm",
+    "title": "OpenAI Function Calling",
+    "section": "Pass the reults back in the LLM",
+    "text": "Pass the reults back in the LLM\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"What's the weather like in Boston!\",\n    }\n]\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n    functions=functions,\n    function_call={\"name\": \"get_current_weather\"},\n)\nprint(response)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#response",
+    "href": "slides/01_openai_functions.html#response",
+    "title": "OpenAI Function Calling",
+    "section": "Response",
+    "text": "Response\n{ “id”: “chatcmpl-8EzqG43iC6CWCOqCQiSWxngMHJNIQ”, “object”: “chat.completion”, “created”: 1698585004, “model”: “gpt-3.5-turbo-0613”, “choices”: [ { “index”: 0, “message”: { “role”: “assistant”, “content”: null, “function_call”: { “name”: “get_current_weather”, “arguments”: “{\"location\": \"Boston, MA\"}” } }, “finish_reason”: “stop” } ], “usage”: { “prompt_tokens”: 88, “completion_tokens”: 11, “total_tokens”: 99 } }"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#append-message",
+    "href": "slides/01_openai_functions.html#append-message",
+    "title": "OpenAI Function Calling",
+    "section": "Append message",
+    "text": "Append message\nAppend to list of messages\n\nmessages.append(response[\"choices\"][0][\"message\"])\n\n\n\nargs = json.loads(response[\"choices\"][0][\"message\"]['function_call']['arguments'])\n\nobservation = get_current_weather(args)\n\n\n\n\nThis is the response of calling a funtion\n\n\nmessages.append(\n        {\n            \"role\": \"function\",\n            \"name\": \"get_current_weather\",\n            \"content\": observation,\n        }\n)"
+  },
+  {
+    "objectID": "slides/01_openai_functions.html#response-1",
+    "href": "slides/01_openai_functions.html#response-1",
+    "title": "OpenAI Function Calling",
+    "section": "Response",
+    "text": "Response\n\nresponse = openai.ChatCompletion.create(\n    model=\"gpt-3.5-turbo-0613\",\n    messages=messages,\n)\nprint(response)\n\n{ “id”: “chatcmpl-8EzsXbeQiRTRNHnGV9eCzlfCZrNU2”, “object”: “chat.completion”, “created”: 1698585145, “model”: “gpt-3.5-turbo-0613”, “choices”: [ { “index”: 0, “message”: { “role”: “assistant”, “content”: “The current temperature in Boston is 16 degrees Celsius. The weather is sunny and windy.” }, “finish_reason”: “stop” } ], “usage”: { “prompt_tokens”: 77, “completion_tokens”: 18, “total_tokens”: 95 } }"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#define-weather-tool",
+    "href": "slides/06_functional_conversation.html#define-weather-tool",
+    "title": "Conversational agent",
+    "section": "Define weather tool",
+    "text": "Define weather tool\n\n# Define the input schema\nclass OpenMeteoInput(BaseModel):\n    latitude: float = Field(..., description=\"Latitude of the location to fetch weather data for\")\n    longitude: float = Field(..., description=\"Longitude of the location to fetch weather data for\")\n\n@tool(args_schema=OpenMeteoInput)\ndef get_current_temperature(latitude: float, longitude: float) -&gt; dict:\n    \"\"\"Fetch current temperature for given coordinates.\"\"\"\n    \n    BASE_URL = \"https://api.open-meteo.com/v1/forecast\"\n    \n    # Parameters for the request\n    params = {\n        'latitude': latitude,\n        'longitude': longitude,\n        'hourly': 'temperature_2m',\n        'forecast_days': 1,\n    }\n\n    # Make the request\n    response = requests.get(BASE_URL, params=params)\n    \n    if response.status_code == 200:\n        results = response.json()\n    else:\n        raise Exception(f\"API Request failed with status code: {response.status_code}\")\n\n    current_utc_time = datetime.datetime.utcnow()\n    time_list = [datetime.datetime.fromisoformat(time_str.replace('Z', '+00:00')) for time_str in results['hourly']['time']]\n    temperature_list = results['hourly']['temperature_2m']\n    \n    closest_time_index = min(range(len(time_list)), key=lambda i: abs(time_list[i] - current_utc_time))\n    current_temperature = temperature_list[closest_time_index]\n    \n    return f'The current temperature is {current_temperature}°C'"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#define-wikipedia-tool",
+    "href": "slides/06_functional_conversation.html#define-wikipedia-tool",
+    "title": "Conversational agent",
+    "section": "Define Wikipedia tool",
+    "text": "Define Wikipedia tool\n\n@tool\ndef search_wikipedia(query: str) -&gt; str:\n    \"\"\"Run Wikipedia search and get page summaries.\"\"\"\n    page_titles = wikipedia.search(query)\n    summaries = []\n    for page_title in page_titles[: 3]:\n        try:\n            wiki_page =  wikipedia.page(title=page_title, auto_suggest=False)\n            summaries.append(f\"Page: {page_title}\\nSummary: {wiki_page.summary}\")\n        except (\n            self.wiki_client.exceptions.PageError,\n            self.wiki_client.exceptions.DisambiguationError,\n        ):\n            pass\n    if not summaries:\n        return \"No good Wikipedia Search Result was found\"\n    return \"\\n\\n\".join(summaries)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#save-list-of-tools",
+    "href": "slides/06_functional_conversation.html#save-list-of-tools",
+    "title": "Conversational agent",
+    "section": "Save list of tools",
+    "text": "Save list of tools\n\ntools = [get_current_temperature, search_wikipedia]"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#set-up-chain",
+    "href": "slides/06_functional_conversation.html#set-up-chain",
+    "title": "Conversational agent",
+    "section": "Set up chain",
+    "text": "Set up chain\n\nfunctions = [format_tool_to_openai_function(f) for f in tools]\n\nmodel = ChatOpenAI(temperature=0).bind(functions=functions)\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are helpful but sassy assistant\"),\n    (\"user\", \"{input}\"),\n])\n\nchain = prompt | model | OpenAIFunctionsAgentOutputParser()"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#invoke-chain",
+    "href": "slides/06_functional_conversation.html#invoke-chain",
+    "title": "Conversational agent",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nresult = chain.invoke({\"input\": \"what is the weather in stuttgart?\"})\n\n\n\nresult.tool\n\n\n‘get_current_temperature’\n\n\n\n\nresult.tool_input\n\n\n{‘latitude’: 48.7758, ‘longitude’: 9.1829}"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#modify-prompt",
+    "href": "slides/06_functional_conversation.html#modify-prompt",
+    "title": "Conversational agent",
+    "section": "Modify prompt",
+    "text": "Modify prompt\n\nUse MessagesPlaceholder\n\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are helpful but sassy assistant\"),\n    (\"user\", \"{input}\"),\n    MessagesPlaceholder(variable_name=\"agent_scratchpad\")\n])"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#create-chain",
+    "href": "slides/06_functional_conversation.html#create-chain",
+    "title": "Conversational agent",
+    "section": "Create chain",
+    "text": "Create chain\n\nchain = prompt | model | OpenAIFunctionsAgentOutputParser()"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#invoke-chain-1",
+    "href": "slides/06_functional_conversation.html#invoke-chain-1",
+    "title": "Conversational agent",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nWe use an empty list because we don’t have any input so far\n\n\n\nresult1 = chain.invoke({\n    \"input\": \"what is the weather is stuttgart?\",\n    \"agent_scratchpad\": []\n})"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#inspect-result1",
+    "href": "slides/06_functional_conversation.html#inspect-result1",
+    "title": "Conversational agent",
+    "section": "Inspect result1",
+    "text": "Inspect result1\n\nresult1.tool\n\n\n‘get_current_temperature’\n\n\nobservation = get_current_temperature(result1.tool_input)\n\n\nobservation\n\n\n‘The current temperature is 10.1°C’\n\n\ntype(result1)\n\n\nlangchain.schema.agent.AgentActionMessageLog"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#show-log",
+    "href": "slides/06_functional_conversation.html#show-log",
+    "title": "Conversational agent",
+    "section": "Show log",
+    "text": "Show log\n\nresult1.message_log\n\n\n[AIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘get_current_temperature’, ‘arguments’: ‘{“latitude”: 48.7758,“longitude”: 9.1829}’}})]"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#format-to-openai-functions",
+    "href": "slides/06_functional_conversation.html#format-to-openai-functions",
+    "title": "Conversational agent",
+    "section": "Format to OpenAI functions",
+    "text": "Format to OpenAI functions\n\nformat_to_openai_functions([(result1, observation), ])\n\n\n[AIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘get_current_temperature’, ‘arguments’: ‘{“latitude”: 48.7758,“longitude”: 9.1829}’}}), FunctionMessage(content=‘The current temperature is 10.1°C’, name=‘get_current_temperature’)]"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#update-chain",
+    "href": "slides/06_functional_conversation.html#update-chain",
+    "title": "Conversational agent",
+    "section": "Update chain",
+    "text": "Update chain\n\nresult2 = chain.invoke({\n    \"input\": \"what is the weather in stuttgart?\", \n    \"agent_scratchpad\": format_to_openai_functions([(result1, observation)])\n})\n\n\n\nresult2\n\n\nAgentFinish(return_values={‘output’: ‘The current temperature in Stuttgart is 10.1°C.’}, log=‘The current temperature in Stuttgart is 10.1°C.’)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#runnablepassthrough",
+    "href": "slides/06_functional_conversation.html#runnablepassthrough",
+    "title": "Conversational agent",
+    "section": "RunnablePassthrough",
+    "text": "RunnablePassthrough\n\nagent_chain = RunnablePassthrough.assign(\n    agent_scratchpad= lambda x: format_to_openai_functions(x[\"intermediate_steps\"])\n) | chain\n\n\ndef run_agent(user_input):\n    intermediate_steps = []\n    while True:\n        result = agent_chain.invoke({\n            \"input\": user_input, \n            \"intermediate_steps\": intermediate_steps\n        })\n        if isinstance(result, AgentFinish):\n            return result\n        tool = {\n            \"search_wikipedia\": search_wikipedia, \n            \"get_current_temperature\": get_current_temperature,\n        }[result.tool]\n        observation = tool.run(result.tool_input)\n        intermediate_steps.append((result, observation))"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#run-agent-with-weather-question",
+    "href": "slides/06_functional_conversation.html#run-agent-with-weather-question",
+    "title": "Conversational agent",
+    "section": "Run agent with weather question",
+    "text": "Run agent with weather question\n\nrun_agent(\"what is the weather in stuttgart?\")\n\n\nAgentFinish(return_values={‘output’: ‘The current temperature in Stuttgart is 10.1°C.’}, log=‘The current temperature in Stuttgart is 10.1°C.’)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#run-agent-with-general-question",
+    "href": "slides/06_functional_conversation.html#run-agent-with-general-question",
+    "title": "Conversational agent",
+    "section": "Run agent with general question",
+    "text": "Run agent with general question\n\nrun_agent(\"what is langchain?\")\n\n\nAgentFinish(return_values={‘output’: ‘LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.’}, log=‘LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.’)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#just-say-hi",
+    "href": "slides/06_functional_conversation.html#just-say-hi",
+    "title": "Conversational agent",
+    "section": "Just say hi",
+    "text": "Just say hi\n\nrun_agent(\"hi!\")\n\n\nAgentFinish(return_values={‘output’: ‘Hello! How can I assist you today?’}, log=‘Hello! How can I assist you today?’)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#define-agent-executor",
+    "href": "slides/06_functional_conversation.html#define-agent-executor",
+    "title": "Conversational agent",
+    "section": "Define Agent Executor",
+    "text": "Define Agent Executor\n\nagent_executor = AgentExecutor(agent=agent_chain, tools=tools, verbose=True)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#invoke-executor",
+    "href": "slides/06_functional_conversation.html#invoke-executor",
+    "title": "Conversational agent",
+    "section": "Invoke executor",
+    "text": "Invoke executor\n\nagent_executor.invoke({\"input\": \"what is langchain?\"})\n\n\nEntering new AgentExecutor chain…\n\nInvoking: search_wikipedia with {'query': 'langchain'}\nPage: LangChain Summary: LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). As a language model integration framework, LangChain’s use-cases largely overlap with those of language models in general, including document analysis and summarization, chatbots, and code analysis.\nPage: Prompt engineering Summary: Prompt engineering is the process of structuring text that can be interpreted and understood by a generative AI model. A prompt is natural language text describing the task that an AI should perform.A prompt for a text-to-text model can be a query such as “what is Fermat’s little theorem?”, a command such as “write a poem about leaves falling”, a short statement of feedback (for example, “too verbose”, “too formal”, “rephrase again”, “omit this word”) or a longer statement including context, instructions, and input data. Prompt engineering may involve phrasing a query, specifying a style, providing relevant context or assigning a role to the AI such as “Act as a native French speaker”. A prompt may include a few examples for a model to learn from, such as “maison -&gt; house, chat -&gt; cat, chien -&gt;”, an approach called few-shot learning.When communicating with a text-to-image or a text-to-audio model, a typical prompt is a description of a desired output such as “a high-quality photo of an astronaut riding a horse” or “Lo-fi slow BPM electro chill with organic samples”. Prompting a text-to-image model may involve adding, removing, emphasizing and re-ordering words to achieve a desired subject, style, layout, lighting, and aesthetic.\nPage: Sentence embedding Summary: In natural language processing, a sentence embedding refers to a numeric representation of a sentence in the form of a vector of real numbers which encodes meaningful semantic information.State of the art embeddings are based on the learned hidden layer representation of dedicated sentence transformer models. BERT pioneered an approach involving the use of a dedicated [CLS] token prepended to the beginning of each sentence inputted into the model; the final hidden state vector of this token encodes information about the sentence and can be fine-tuned for use in sentence classification tasks. In practice however, BERT’s sentence embedding with the [CLS] token achieves poor performance, often worse than simply averaging non-contextual word embeddings. SBERT later achieved superior sentence embedding performance by fine tuning BERT’s [CLS] token embeddings through the usage of a siamese neural network architecture on the SNLI dataset. Other approaches are loosely based on the idea of distributional semantics applied to sentences. Skip-Thought trains an encoder-decoder structure for the task of neighboring sentences predictions. Though this has been shown to achieve worse performance than approaches such as InferSent or SBERT. An alternative direction is to aggregate word embeddings, such as those returned by Word2vec, into sentence embeddings. The most straightforward approach is to simply compute the average of word vectors, known as continuous bag-of-words (CBOW). However, more elaborate solutions based on word vector quantization have also been proposed. One such approach is the vector of locally aggregated word embeddings (VLAWE), which demonstrated performance improvements in downstream text classification tasks. LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.\n\nFinished chain.\n\n{‘input’: ‘what is langchain?’, ‘output’: ‘LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). It is a language model integration framework that can be used for various tasks such as document analysis and summarization, chatbots, and code analysis. LangChain helps developers leverage the power of language models in their applications.’}"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#ask-a-question",
+    "href": "slides/06_functional_conversation.html#ask-a-question",
+    "title": "Conversational agent",
+    "section": "Ask a question",
+    "text": "Ask a question\n\nagent_executor.invoke({\"input\": \"what is my name\"})"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#add-previous-messages-in-prompt",
+    "href": "slides/06_functional_conversation.html#add-previous-messages-in-prompt",
+    "title": "Conversational agent",
+    "section": "Add previous messages in prompt",
+    "text": "Add previous messages in prompt\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are helpful but sassy assistant\"),\n    MessagesPlaceholder(variable_name=\"chat_history\"),\n    (\"user\", \"{input}\"),\n    MessagesPlaceholder(variable_name=\"agent_scratchpad\")\n])"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#create-agent-chain",
+    "href": "slides/06_functional_conversation.html#create-agent-chain",
+    "title": "Conversational agent",
+    "section": "Create agent chain",
+    "text": "Create agent chain\n\nagent_chain = RunnablePassthrough.assign(\n    agent_scratchpad= lambda x: format_to_openai_functions(x[\"intermediate_steps\"])\n) | prompt | model | OpenAIFunctionsAgentOutputParser()"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#create-memory-object",
+    "href": "slides/06_functional_conversation.html#create-memory-object",
+    "title": "Conversational agent",
+    "section": "Create memory object",
+    "text": "Create memory object\n\nmemory = ConversationBufferMemory(return_messages=True,memory_key=\"chat_history\")"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#agent-executor-1",
+    "href": "slides/06_functional_conversation.html#agent-executor-1",
+    "title": "Conversational agent",
+    "section": "Agent executor",
+    "text": "Agent executor\n\nagent_executor = AgentExecutor(agent=agent_chain, tools=tools, verbose=True, memory=memory)"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#provide-input-with-name",
+    "href": "slides/06_functional_conversation.html#provide-input-with-name",
+    "title": "Conversational agent",
+    "section": "Provide input with name",
+    "text": "Provide input with name\n\nagent_executor.invoke({\"input\": \"my name is bob\"})\n\n\nEntering new AgentExecutor chain… Hello Bob! How can I assist you today?\n\n\nFinished chain.\n\n{‘input’: ‘my name is bob’, ‘chat_history’: [HumanMessage(content=‘my name is bob’), AIMessage(content=‘Hello Bob! How can I assist you today?’)], ‘output’: ‘Hello Bob! How can I assist you today?’}"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#ask-about-name",
+    "href": "slides/06_functional_conversation.html#ask-about-name",
+    "title": "Conversational agent",
+    "section": "Ask about name",
+    "text": "Ask about name\n\nagent_executor.invoke({\"input\": \"whats my name\"})\n\n\nEntering new AgentExecutor chain… Your name is Bob.\n\n\nFinished chain.\n\n{‘input’: ‘whats my name’, ‘chat_history’: [HumanMessage(content=‘my name is bob’), AIMessage(content=‘Hello Bob! How can I assist you today?’), HumanMessage(content=‘whats my name’), AIMessage(content=‘Your name is Bob.’)], ‘output’: ‘Your name is Bob.’}"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#ask-about-the-weather",
+    "href": "slides/06_functional_conversation.html#ask-about-the-weather",
+    "title": "Conversational agent",
+    "section": "Ask about the weather",
+    "text": "Ask about the weather\n\nagent_executor.invoke({\"input\": \"whats the weather in stuttgart?\"})\n\n\nEntering new AgentExecutor chain…\n\nInvoking: get_current_temperature with {'latitude': 48.7758, 'longitude': 9.1829}\nThe current temperature is 9.5°CThe current temperature in Stuttgart is 9.5°C.\n\nFinished chain.\n\n{‘input’: ‘whats the weather in stuttgart?’, ‘chat_history’: [HumanMessage(content=‘my name is bob’), AIMessage(content=‘Hello Bob! How can I assist you today?’), HumanMessage(content=‘whats my name’), AIMessage(content=‘Your name is Bob.’), HumanMessage(content=‘whats the weather in stuttgart?’), AIMessage(content=‘The current temperature in Stuttgart is 9.5°C.’)], ‘output’: ‘The current temperature in Stuttgart is 9.5°C.’}"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#define-a-custom-function",
+    "href": "slides/06_functional_conversation.html#define-a-custom-function",
+    "title": "Conversational agent",
+    "section": "Define a custom function",
+    "text": "Define a custom function\n\n@tool\ndef create_your_own(query: str) -&gt; str:\n    \"\"\"This function can do whatever you would like once you fill it in \"\"\"\n    print(type(query))\n    return query[::-1]"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#create-tool-list",
+    "href": "slides/06_functional_conversation.html#create-tool-list",
+    "title": "Conversational agent",
+    "section": "Create tool list",
+    "text": "Create tool list\n\ntools = [get_current_temperature, search_wikipedia, create_your_own]"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#define-chatbot-function",
+    "href": "slides/06_functional_conversation.html#define-chatbot-function",
+    "title": "Conversational agent",
+    "section": "Define Chatbot function",
+    "text": "Define Chatbot function\n\nclass cbfs(param.Parameterized):\n    \n    def __init__(self, tools, **params):\n        super(cbfs, self).__init__( **params)\n        self.panels = []\n        self.functions = [format_tool_to_openai_function(f) for f in tools]\n        self.model = ChatOpenAI(temperature=0).bind(functions=self.functions)\n        self.memory = ConversationBufferMemory(return_messages=True,memory_key=\"chat_history\")\n        self.prompt = ChatPromptTemplate.from_messages([\n            (\"system\", \"You are helpful but sassy assistant\"),\n            MessagesPlaceholder(variable_name=\"chat_history\"),\n            (\"user\", \"{input}\"),\n            MessagesPlaceholder(variable_name=\"agent_scratchpad\")\n        ])\n        self.chain = RunnablePassthrough.assign(\n            agent_scratchpad = lambda x: format_to_openai_functions(x[\"intermediate_steps\"])\n        ) | self.prompt | self.model | OpenAIFunctionsAgentOutputParser()\n        self.qa = AgentExecutor(agent=self.chain, tools=tools, verbose=False, memory=self.memory)\n    \n    def convchain(self, query):\n        if not query:\n            return\n        inp.value = ''\n        result = self.qa.invoke({\"input\": query})\n        self.answer = result['output'] \n        self.panels.extend([\n            pn.Row('User:', pn.pane.Markdown(query, width=450)),\n            pn.Row('ChatBot:', pn.pane.Markdown(self.answer, width=450, styles={'background-color': '#F6F6F6'}))\n        ])\n        return pn.WidgetBox(*self.panels, scroll=True)\n\n\n    def clr_history(self,count=0):\n        self.chat_history = []\n        return"
+  },
+  {
+    "objectID": "slides/06_functional_conversation.html#panel-ui",
+    "href": "slides/06_functional_conversation.html#panel-ui",
+    "title": "Conversational agent",
+    "section": "Panel UI",
+    "text": "Panel UI\n\ncb = cbfs(tools)\n\ninp = pn.widgets.TextInput( placeholder='Enter text here…')\n\nconversation = pn.bind(cb.convchain, inp) \n\ntab1 = pn.Column(\n    pn.Row(inp),\n    pn.layout.Divider(),\n    pn.panel(conversation,  loading_indicator=True, height=400),\n    pn.layout.Divider(),\n)\n\ndashboard = pn.Column(\n    pn.Row(pn.pane.Markdown('# QnA_Bot')),\n    pn.Tabs(('Conversation', tab1))\n)\ndashboard"
+  },
+  {
+    "objectID": "docs/Notion_DB/Getting Started 95e5ecbe48c44e408ef09fed850fbd40.html",
+    "href": "docs/Notion_DB/Getting Started 95e5ecbe48c44e408ef09fed850fbd40.html",
+    "title": "Getting Started",
+    "section": "",
+    "text": "Getting Started\n👋 Welcome to Notion!\nHere are the basics:\n\nClick anywhere and just start typing\nHit / to see all the types of content you can add - headers, videos, sub pages, etc.\nExample sub page\nHighlight any text, and use the menu that pops up to style your writing however you like\nSee the ⋮⋮ to the left of this checkbox on hover? Click and drag to move this line\nClick the + New Page button at the bottom of your sidebar to add a new page\nClick Templates in your sidebar to get started with pre-built pages\nThis is a toggle block. Click the little triangle to see more useful tips!\n\nTemplate Gallery: More templates built by the Notion community\nHelp & Support: ****Guides and FAQs for everything in Notion\nStay organized with your sidebar and nested pages:\n\n\n\nGetting%20Started%2095e5ecbe48c44e408ef09fed850fbd40/infinitehierarchynodither.gif\n\n\n\n\nSee it in action:\n1 minute\n1 minute\n4 minutes\n4 minutes\n2 minutes\n2 minutes\n2 minutes\n2 minutes\nVisit our YouTube channel to watch 50+ more tutorials\n👉Have a question? Click the ? at the bottom right for more guides, or to send us a message."
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "tbd"
+  },
+  {
+    "objectID": "require.html",
+    "href": "require.html",
+    "title": "Requirements",
+    "section": "",
+    "text": "To start this lab on your local machine, you’ll need:\n\nPython: Anaconda, Anaconda Environment langchain and Visual Studio Code\nEnvironment: Use this folder template: langchain-rag and insert your OpenAI API key in the .env file.\n\n\n\n\n\n\n\nImportant\n\n\n\nVisit the “Programming Toolkit-webpage” to learn how to meet all requirements."
+  },
+  {
+    "objectID": "require.html#local-development",
+    "href": "require.html#local-development",
+    "title": "Requirements",
+    "section": "",
+    "text": "To start this lab on your local machine, you’ll need:\n\nPython: Anaconda, Anaconda Environment langchain and Visual Studio Code\nEnvironment: Use this folder template: langchain-rag and insert your OpenAI API key in the .env file.\n\n\n\n\n\n\n\nImportant\n\n\n\nVisit the “Programming Toolkit-webpage” to learn how to meet all requirements."
+  },
+  {
+    "objectID": "require.html#cloud-development",
+    "href": "require.html#cloud-development",
+    "title": "Requirements",
+    "section": "Cloud development",
+    "text": "Cloud development\nInstead of local development, you may also work in a fully configured dev environment in the cloud with GitHub Codespaces. Take a look at this site to learn more about the different options."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome 👋",
+    "section": "",
+    "text": "Welcome to the lab “Langchain RAG”\n\nThe tutorials in this lab will cover Retrieval Augmented Generation (RAG), a common LLM application that retrieves contextual documents from an external dataset, and a guide to building a chatbot that responds to queries based on the content of your documents, rather than the information it has learned in training.\n\n\n\n\n\n\nImportant\n\n\n\nMake sure you meet all the requirements and have read the lecture slides before you start with the assignments\n\n\nWhat you will learn in this lab:\n\nDocument Loading: Learn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video.\nDocument Splitting: Discover the best practices and considerations for splitting data.\nVector stores and embeddings: Dive into the concept of embeddings and explore vector store integrations within LangChain.\nRetrieval: Grasp advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries.\nQuestion Answering: Build a one-pass question-answering solution.\nChat System: Learn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain."
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#create-tagging-class",
+    "href": "slides/04_tagging_extraction.html#create-tagging-class",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Create tagging class",
+    "text": "Create tagging class\n\nclass Tagging(BaseModel):\n    \"\"\"Tag the piece of text with particular info.\"\"\"\n    sentiment: str = Field(description=\"sentiment of text, should be `pos`, `neg`, or `neutral`\")\n    language: str = Field(description=\"language of text (should be ISO 639-1 code)\")"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#take-a-look-at-the-class",
+    "href": "slides/04_tagging_extraction.html#take-a-look-at-the-class",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Take a look at the class",
+    "text": "Take a look at the class\n\nconvert_pydantic_to_openai_function(Tagging)\n\n{‘name’: ‘Tagging’, ‘description’: ‘Tag the piece of text with particular info.’, ‘parameters’: {‘title’: ‘Tagging’, ‘description’: ‘Tag the piece of text with particular info.’, ‘type’: ‘object’, ‘properties’: {‘sentiment’: {‘title’: ‘Sentiment’, ‘description’: ‘sentiment of text, should be pos, neg, or neutral’, ‘type’: ‘string’}, ‘language’: {‘title’: ‘Language’, ‘description’: ‘language of text (should be ISO 639-1 code)’, ‘type’: ‘string’}}, ‘required’: [‘sentiment’, ‘language’]}}"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#create-model-tagging-function-and-prompt",
+    "href": "slides/04_tagging_extraction.html#create-model-tagging-function-and-prompt",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Create model, tagging function and prompt",
+    "text": "Create model, tagging function and prompt\n\nmodel = ChatOpenAI(temperature=0)\n\n\n\ntagging_functions = [convert_pydantic_to_openai_function(Tagging)]\n\n\n\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"Think carefully, and then tag the text as instructed\"),\n    (\"user\", \"{input}\")\n])"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#bind-model-to-tagging-function-and-create-chain",
+    "href": "slides/04_tagging_extraction.html#bind-model-to-tagging-function-and-create-chain",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Bind model to tagging function and create chain",
+    "text": "Bind model to tagging function and create chain\nWe force the model to use the tagging functions\n\nmodel_with_functions = model.bind(\n    functions=tagging_functions,\n    function_call={\"name\": \"Tagging\"}\n)\n\n\n\ntagging_chain = prompt | model_with_functions"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#call-the-function",
+    "href": "slides/04_tagging_extraction.html#call-the-function",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Call the function",
+    "text": "Call the function\n\ntagging_chain.invoke({\"input\": \"I like the book Sapiens\"})\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘Tagging’, ‘arguments’: ‘{“sentiment”: “pos”,“language”: “en”}’}})\n\n\n\ntagging_chain.invoke({\"input\": \"Das 'Buch Eine Anleitung zum guten Leben: Wie Sie die alte Kunst des Stoizismus' ist sehr lesenswert\"})\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘Tagging’, ‘arguments’: ‘{“sentiment”: “pos”,“language”: “de”}’}})"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#use-output-parser",
+    "href": "slides/04_tagging_extraction.html#use-output-parser",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Use output parser",
+    "text": "Use output parser\n\nObtain a cleaner result with JsonOutputFunctionsParser()\n\n\n\ntagging_chain = prompt | model_with_functions | JsonOutputFunctionsParser()\n\n\n\n\ntagging_chain.invoke({\"input\": \"Das 'Buch Eine Anleitung zum guten Leben: Wie Sie die alte Kunst des Stoizismus' ist sehr lesenswert\"})\n\n\n{‘sentiment’: ‘pos’, ‘language’: ‘de’}"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#define-class",
+    "href": "slides/04_tagging_extraction.html#define-class",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Define class",
+    "text": "Define class\n\nclass Person(BaseModel):\n    \"\"\"Information about a person.\"\"\"\n    name: str = Field(description=\"person's name\")\n    age: Optional[int] = Field(description=\"person's age\")\n\n\n\nclass Information(BaseModel):\n    \"\"\"Information to extract.\"\"\"\n    people: List[Person] = Field(description=\"List of info about people\")"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#convert-pydantic-to-openai-function",
+    "href": "slides/04_tagging_extraction.html#convert-pydantic-to-openai-function",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Convert Pydantic to OpenAI function",
+    "text": "Convert Pydantic to OpenAI function\n\nconvert_pydantic_to_openai_function(Information)\n\n{‘name’: ‘Information’, ‘description’: ‘Information to extract.’, ‘parameters’: {‘title’: ‘Information’, ‘description’: ‘Information to extract.’, ‘type’: ‘object’, ‘properties’: {‘people’: {‘title’: ‘People’, ‘description’: ‘List of info about people’, ‘type’: ‘array’, ‘items’: {‘title’: ‘Person’, ‘description’: ‘Information about a person.’, ‘type’: ‘object’, ‘properties’: {‘name’: {‘title’: ‘Name’, ‘description’: “person’s name”, ‘type’: ‘string’}, ‘age’: {‘title’: ‘Age’, ‘description’: “person’s age”, ‘type’: ‘integer’}}, ‘required’: [‘name’]}}}, ‘required’: [‘people’]}}"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#set-up-model",
+    "href": "slides/04_tagging_extraction.html#set-up-model",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Set up model",
+    "text": "Set up model\n\nextraction_functions = [convert_pydantic_to_openai_function(Information)]\n\nextraction_model = model.bind(functions=extraction_functions, function_call={\"name\": \"Information\"})"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#test-model",
+    "href": "slides/04_tagging_extraction.html#test-model",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Test model",
+    "text": "Test model\n\nextraction_model.invoke(\"Joe is 30, his mom is Martha\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘Information’, ‘arguments’: ‘{“people”: [,]}’}})\nModel inputs age 0 if age isn’t provided"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#update-prompt",
+    "href": "slides/04_tagging_extraction.html#update-prompt",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Update prompt",
+    "text": "Update prompt\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"Extract the relevant information, if not explicitly provided do not guess. Extract partial info\"),\n    (\"human\", \"{input}\")\n])\n\n\n\nextraction_chain = prompt | extraction_model\n\n\n\n\nextraction_chain.invoke({\"input\": \"Joe is 30, his mom is Martha\"})\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘Information’, ‘arguments’: ‘{“people”: [,]}’}})"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#parse-output",
+    "href": "slides/04_tagging_extraction.html#parse-output",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Parse output",
+    "text": "Parse output\n\nextraction_chain = prompt | extraction_model | JsonOutputFunctionsParser()\n\n\n\nextraction_chain.invoke({\"input\": \"Joe is 30, his mom is Martha\"})\n\n\n{‘people’: [{‘name’: ‘Joe’, ‘age’: 30}, {‘name’: ‘Martha’}]}"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#use-different-output-parser",
+    "href": "slides/04_tagging_extraction.html#use-different-output-parser",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Use different output parser",
+    "text": "Use different output parser\n\nUse JsonKeyOutputFunctionsParser()to only extract relevant info\n\n\n\nextraction_chain = prompt | extraction_model | JsonKeyOutputFunctionsParser(key_name=\"people\")\n\n\n\n\nextraction_chain.invoke({\"input\": \"Joe is 30, his mom is Martha\"})\n\n\n[{‘name’: ‘Joe’, ‘age’: 30}, {‘name’: ‘Martha’}]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#load-document",
+    "href": "slides/04_tagging_extraction.html#load-document",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Load document",
+    "text": "Load document\n\nloader = WebBaseLoader(\"https://lilianweng.github.io/posts/2023-06-23-agent/\")\n\ndocuments = loader.load()\n\n\n\ndoc = documents[0]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#inspect-content",
+    "href": "slides/04_tagging_extraction.html#inspect-content",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Inspect content",
+    "text": "Inspect content\n\npage_content = doc.page_content[:10000]\n\n\n\nprint(page_content[:1000])\n\n\n\nLLM Powered Autonomous Agents | Lil'Log\n\nLil'Log\n\nPosts\n\nArchive\n\nSearch\n\nTags\n\nFAQ\n\nemojisearch.app\n\n      LLM Powered Autonomous Agents\n    \nJune 23, 2023 · 31 min · Lilian Weng\n\nTable of Contents\nAgent System Overview\nComponent One: Planning\nTask Decomposition\nSelf-Reflection\nComponent Two: Memory\nTypes of Memory\nMaximum Inner Product Search (MIPS)\nComponent Three: Tool Use\nCase Studies\nScientific Discovery Agent\nGenerative Agents Simulation\nProof-of-Concept Examples\nChallenges\nCitation\nReferences\n\nBuilding agents with LLM (large language model) as its core controller is a cool concept. Several proof-of-concepts demos, such as AutoGPT, GPT-Engineer and BabyAGI, serve as inspiring examples. The potentiality of LLM extends beyond generating well-written copies, stories, essays and programs; it can be framed as a powerful general problem solver.\nAgent System Overview#\nIn"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#create-class-to-create-article-overview-and-tags",
+    "href": "slides/04_tagging_extraction.html#create-class-to-create-article-overview-and-tags",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Create class to create article overview and tags",
+    "text": "Create class to create article overview and tags\n\nclass Overview(BaseModel):\n    \"\"\"Overview of a section of text.\"\"\"\n    summary: str = Field(description=\"Provide a concise summary of the content.\")\n    language: str = Field(description=\"Provide the language that the content is written in.\")\n    keywords: str = Field(description=\"Provide keywords related to the content.\")"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#setup-the-chain",
+    "href": "slides/04_tagging_extraction.html#setup-the-chain",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Setup the chain",
+    "text": "Setup the chain\n\noverview_tagging_function = [\n    convert_pydantic_to_openai_function(Overview)\n]\n\ntagging_model = model.bind(\n    functions=overview_tagging_function,\n    function_call={\"name\":\"Overview\"}\n)\n\ntagging_chain = prompt | tagging_model | JsonOutputFunctionsParser()"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#invoke-chain",
+    "href": "slides/04_tagging_extraction.html#invoke-chain",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\ntagging_chain.invoke({\"input\": page_content})\n\n\n{‘summary’: ‘This article discusses the concept of building autonomous agents powered by LLM (large language model) as their core controller. It explores the key components of such agents, including planning, memory, and tool use. It also covers various techniques for task decomposition and self-reflection in autonomous agents.’, ‘language’: ‘English’, ‘keywords’: ‘LLM, autonomous agents, planning, memory, tool use, task decomposition, self-reflection’}"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#define-class-to-extract-papers",
+    "href": "slides/04_tagging_extraction.html#define-class-to-extract-papers",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Define class to extract papers",
+    "text": "Define class to extract papers\n\nclass Paper(BaseModel):\n    \"\"\"Information about papers mentioned.\"\"\"\n    title: str\n    author: Optional[str]\n\n\nclass Info(BaseModel):\n    \"\"\"Information to extract\"\"\"\n    papers: List[Paper]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#setup-extraction-chain",
+    "href": "slides/04_tagging_extraction.html#setup-extraction-chain",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Setup extraction chain",
+    "text": "Setup extraction chain\n\npaper_extraction_function = [\n    convert_pydantic_to_openai_function(Info)\n]\n\nextraction_model = model.bind(\n    functions=paper_extraction_function, \n    function_call={\"name\":\"Info\"}\n)\n\nextraction_chain = prompt | extraction_model | JsonKeyOutputFunctionsParser(key_name=\"papers\")"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#invoke-chain-1",
+    "href": "slides/04_tagging_extraction.html#invoke-chain-1",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nextraction_chain.invoke({\"input\": page_content})\n\n\n[{‘title’: ‘LLM Powered Autonomous Agents’, ‘author’: ‘Lilian Weng’}]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#update-sytem-message",
+    "href": "slides/04_tagging_extraction.html#update-sytem-message",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Update sytem message",
+    "text": "Update sytem message\n\ntemplate = \"\"\"A article will be passed to you. Extract from it all papers that are mentioned by this article. \n\nDo not extract the name of the article itself. If no papers are mentioned that's fine - you don't need to extract any! Just return an empty list.\n\nDo not make up or guess ANY extra information. Only extract what exactly is in the text.\"\"\"\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", template),\n    (\"human\", \"{input}\")\n])\n\n\n\nextraction_chain = prompt | extraction_model | JsonKeyOutputFunctionsParser(key_name=\"papers\")"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#invoke-chain-2",
+    "href": "slides/04_tagging_extraction.html#invoke-chain-2",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nextraction_chain.invoke({\"input\": page_content})\n\n\n[{‘title’: ‘Chain of thought (CoT; Wei et al. 2022)’, ‘author’: ‘Wei et al.’}, {‘title’: ‘Tree of Thoughts (Yao et al. 2023)’, ‘author’: ‘Yao et al.’}, {‘title’: ‘LLM+P (Liu et al. 2023)’, ‘author’: ‘Liu et al.’}, {‘title’: ‘ReAct (Yao et al. 2023)’, ‘author’: ‘Yao et al.’}, {‘title’: ‘Reflexion (Shinn & Labash 2023)’, ‘author’: ‘Shinn & Labash’}, {‘title’: ‘Chain of Hindsight (CoH; Liu et al. 2023)’, ‘author’: ‘Liu et al.’}, {‘title’: ‘Algorithm Distillation (AD; Laskin et al. 2023)’, ‘author’: ‘Laskin et al.’}]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#test-chain",
+    "href": "slides/04_tagging_extraction.html#test-chain",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Test chain",
+    "text": "Test chain\n\nextraction_chain.invoke({\"input\": \"hi\"})\n\n\n[]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#split-the-text",
+    "href": "slides/04_tagging_extraction.html#split-the-text",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Split the text",
+    "text": "Split the text\n\ntext_splitter = RecursiveCharacterTextSplitter(chunk_overlap=0)\n\n\n\nsplits = text_splitter.split_text(doc.page_content)\n\n\n\n\nlen(splits)\n\n\n14"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#create-function-to-join-the-lists",
+    "href": "slides/04_tagging_extraction.html#create-function-to-join-the-lists",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Create function to join the lists",
+    "text": "Create function to join the lists\n\ndef flatten(matrix):\n    flat_list = []\n    for row in matrix:\n        flat_list += row\n    return flat_list\n\n\nTest the function\n\n\n\nflatten([[1, 2], [3, 4]])\n\n\n[1, 2, 3, 4]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#take-a-look-at-the-splits",
+    "href": "slides/04_tagging_extraction.html#take-a-look-at-the-splits",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Take a look at the splits",
+    "text": "Take a look at the splits\n\nThe splits are just text.\nWe need to convert them to a dictionary where the text is the input key.\n\n\n\nprint(splits[0])"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#use-runnablelambda-to-create-function",
+    "href": "slides/04_tagging_extraction.html#use-runnablelambda-to-create-function",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Use RunnableLambda to create function",
+    "text": "Use RunnableLambda to create function\n\nprep = RunnableLambda(\n    lambda x: [{\"input\": doc} for doc in text_splitter.split_text(x)]\n)\n\n\nTest function\n\n\n\nprep.invoke(\"hi\")\n\n\n[{‘input’: ‘hi’}]"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#create-chain",
+    "href": "slides/04_tagging_extraction.html#create-chain",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Create chain",
+    "text": "Create chain\n\nchain = prep | extraction_chain.map() | flatten\n\n\nextraction_chain operates over a single element\nHowever, we have a list of elements\nTherefore, we call .map()"
+  },
+  {
+    "objectID": "slides/04_tagging_extraction.html#invoke-chain-3",
+    "href": "slides/04_tagging_extraction.html#invoke-chain-3",
+    "title": "Tagging and Extraction Using OpenAI functions",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nchain.invoke(doc.page_content)\n\n[{'title': 'AutoGPT', 'author': ''},\n {'title': 'GPT-Engineer', 'author': ''},\n {'title': 'BabyAGI', 'author': ''},\n {'title': 'Chain of thought (CoT; Wei et al. 2022)', 'author': 'Wei et al.'},\n {'title': 'Tree of Thoughts (Yao et al. 2023)', 'author': 'Yao et al.'},\n {'title': 'LLM+P (Liu et al. 2023)', 'author': 'Liu et al.'},\n {'title': 'ReAct (Yao et al. 2023)', 'author': 'Yao et al.'},\n {'title': 'Reflexion (Shinn & Labash 2023)', 'author': 'Shinn & Labash'},\n {'title': 'Reflexion framework', 'author': 'Shinn & Labash'},\n {'title': 'Chain of Hindsight', 'author': 'Liu et al. 2023'},\n {'title': 'Algorithm Distillation', 'author': 'Laskin et al. 2023'},\n {'title': 'Algorithm Distillation', 'author': 'Laskin et al. 2023'},\n {'title': 'ED (expert distillation)', 'author': ''},\n {'title': 'RL^2', 'author': 'Duan et al. 2017'},\n {'title': 'LSH: Locality-Sensitive Hashing', 'author': ''},\n {'title': 'ANNOY: Approximate Nearest Neighbors Oh Yeah', 'author': ''},\n {'title': 'HNSW: Hierarchical Navigable Small World', 'author': ''},\n {'title': 'FAISS: Facebook AI Similarity Search', 'author': ''},\n {'title': 'ScaNN: Scalable Nearest Neighbors', 'author': ''},\n {'title': 'MRKL: Modular Reasoning, Knowledge and Language',\n  'author': 'Karpas et al. 2022'},\n {'title': 'TALM: Tool Augmented Language Models',\n  'author': 'Parisi et al. 2022'},\n {'title': 'Toolformer', 'author': 'Schick et al. 2023'},\n {'title': 'HuggingGPT', 'author': 'Shen et al. 2023'},\n {'title': 'API-Bank', 'author': 'Li et al. 2023'},\n {'title': 'ChemCrow', 'author': 'Bran et al. 2023'},\n {'title': 'Boiko et al. (2023)', 'author': 'Boiko et al.'},\n {'title': 'Generative Agents Simulation', 'author': 'Park, et al. 2023'},\n {'title': 'Park et al. 2023', 'author': ''},\n {'title': 'Super Mario: How Nintendo Conquered America',\n  'author': 'Jeff Ryan'},\n {'title': 'Model-View-Controller (MVC) Explained', 'author': 'Techopedia'},\n {'title': 'Python Game Development: Creating a Snake Game',\n  'author': 'Real Python'},\n {'title': 'Paper A', 'author': 'Author A'},\n {'title': 'Paper B', 'author': 'Author B'},\n {'title': 'Paper C', 'author': 'Author C'},\n {'title': 'Chain of thought prompting elicits reasoning in large language models',\n  'author': 'Wei et al.'},\n {'title': 'Tree of Thoughts: Deliberate Problem Solving with Large Language Models',\n  'author': 'Yao et al.'},\n {'title': 'Chain of Hindsight Aligns Language Models with Feedback',\n  'author': 'Liu et al.'},\n {'title': 'LLM+P: Empowering Large Language Models with Optimal Planning Proficiency',\n  'author': 'Liu et al.'},\n {'title': 'ReAct: Synergizing reasoning and acting in language models',\n  'author': 'Yao et al.'},\n {'title': 'Reflexion: an autonomous agent with dynamic memory and self-reflection',\n  'author': 'Shinn & Labash'},\n {'title': 'In-context Reinforcement Learning with Algorithm Distillation',\n  'author': 'Laskin et al.'},\n {'title': 'MRKL Systems A modular, neuro-symbolic architecture that combines large language models, external knowledge sources and discrete reasoning',\n  'author': 'Karpas et al.'},\n {'title': 'API-Bank: A Benchmark for Tool-Augmented LLMs',\n  'author': 'Li et al.'},\n {'title': 'HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in HuggingFace',\n  'author': 'Shen et al.'},\n {'title': 'ChemCrow: Augmenting large-language models with chemistry tools',\n  'author': 'Bran et al.'},\n {'title': 'Emergent autonomous scientific research capabilities of large language models',\n  'author': 'Boiko et al.'},\n {'title': 'Generative Agents: Interactive Simulacra of Human Behavior',\n  'author': 'Joon Sung Park, et al.'}]"
+  },
+  {
+    "objectID": "slides/02_lcel.html#langchain",
+    "href": "slides/02_lcel.html#langchain",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "LangChain",
+    "text": "LangChain\n\nfrom langchain.prompts import ChatPromptTemplate\nfrom langchain.chat_models import ChatOpenAI\nfrom langchain.schema.output_parser import StrOutputParser\n\n\nfrom langchain.embeddings import OpenAIEmbeddings\nfrom langchain.vectorstores import DocArrayInMemorySearch\n\n\nfrom langchain.schema.runnable import RunnableMap\n\n\nfrom langchain.llms import OpenAI\nimport json"
+  },
+  {
+    "objectID": "slides/02_lcel.html#create-chain",
+    "href": "slides/02_lcel.html#create-chain",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Create chain",
+    "text": "Create chain\n\nprompt = ChatPromptTemplate.from_template(\n    \"tell me a short joke about {topic}\"\n)\n\nmodel = ChatOpenAI()\n\noutput_parser = StrOutputParser()\n\n\n\nchain = prompt | model | output_parser"
+  },
+  {
+    "objectID": "slides/02_lcel.html#invoke-chain",
+    "href": "slides/02_lcel.html#invoke-chain",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nchain.invoke({\"topic\": \"a professor at HdM Stuttgar\"})\n\n\n‘’Why did the professor at HdM Stuttgart always carry a ladder?he wanted to reach new heights in teaching!’’"
+  },
+  {
+    "objectID": "slides/02_lcel.html#create-vector-store-and-retriever",
+    "href": "slides/02_lcel.html#create-vector-store-and-retriever",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Create Vector Store and Retriever",
+    "text": "Create Vector Store and Retriever\n\nvectorstore = DocArrayInMemorySearch.from_texts(\n    [\"Yuval Noah Harari is the author of Sapiens\", \"In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism\"],\n    embedding=OpenAIEmbeddings()\n)\n\n# create a retriever\nretriever = vectorstore.as_retriever()"
+  },
+  {
+    "objectID": "slides/02_lcel.html#retrieve-relevant-documents",
+    "href": "slides/02_lcel.html#retrieve-relevant-documents",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Retrieve relevant documents",
+    "text": "Retrieve relevant documents\n\nretriever.get_relevant_documents(\"who is the author of Sapiens?\")\n\n\n[Document(page_content=‘Yuval Noah Harari is the author of Sapiens’), Document(page_content=‘In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism’)]\n\n\n\nretriever.get_relevant_documents(\"Which book did William Irvine write?\")\n\n\n[Document(page_content=‘In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism’), Document(page_content=‘Yuval Noah Harari is the author of Sapiens’)]"
+  },
+  {
+    "objectID": "slides/02_lcel.html#create-prompt",
+    "href": "slides/02_lcel.html#create-prompt",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Create prompt",
+    "text": "Create prompt\n\ntemplate = \"\"\"Answer the question based only on the following context:\n{context}\n\nQuestion: {question}\n\"\"\"\n\nprompt = ChatPromptTemplate.from_template(template)"
+  },
+  {
+    "objectID": "slides/02_lcel.html#runnable-map",
+    "href": "slides/02_lcel.html#runnable-map",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Runnable Map",
+    "text": "Runnable Map\n\nChain: get user input &gt; fetch relevant context &gt; pass context into prompt &gt; pass into model &gt; pass into output parser to convert into string\nCreate dictionary with context and question . . .\n\n\nchain = RunnableMap({\n    \"context\": lambda x: retriever.get_relevant_documents(x[\"question\"]),\n    \"question\": lambda x: x[\"question\"]\n}) | prompt | model | output_parser"
+  },
+  {
+    "objectID": "slides/02_lcel.html#invoke-chain-1",
+    "href": "slides/02_lcel.html#invoke-chain-1",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nchain.invoke({\"question\": \"who is the author of Sapiens?\"})\n\n\n‘The author of Sapiens is Yuval Noah Harari.’"
+  },
+  {
+    "objectID": "slides/02_lcel.html#closer-look-at-the-runnablemap",
+    "href": "slides/02_lcel.html#closer-look-at-the-runnablemap",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Closer look at the RunnableMap",
+    "text": "Closer look at the RunnableMap\n\n\n\n\ninputs = RunnableMap({\n    \"context\": lambda x: retriever.get_relevant_documents(x[\"question\"]),\n    \"question\": lambda x: x[\"question\"]\n})\n\n\n\ninputs.invoke({\"question\": \"who is the author of Sapiens?\"})\n\n\n{‘context’: [Document(page_content=‘Yuval Noah Harari is the author of Sapiens’), Document(page_content=‘In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism’)], ‘question’: ‘who is the author of Sapiens?’}"
+  },
+  {
+    "objectID": "slides/02_lcel.html#weather-function",
+    "href": "slides/02_lcel.html#weather-function",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Weather function",
+    "text": "Weather function\n\nfunctions = [\n    {\n      \"name\": \"weather_search\",\n      \"description\": \"Search for weather given an airport code\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"airport_code\": {\n            \"type\": \"string\",\n            \"description\": \"The airport code to get the weather for\"\n          },\n        },\n        \"required\": [\"airport_code\"]\n      }\n    }\n  ]"
+  },
+  {
+    "objectID": "slides/02_lcel.html#bind",
+    "href": "slides/02_lcel.html#bind",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Bind",
+    "text": "Bind\n\nprompt = ChatPromptTemplate.from_messages(\n    [\n        (\"human\", \"{input}\")\n    ]\n)\nmodel = ChatOpenAI(temperature=0).bind(functions=functions)"
+  },
+  {
+    "objectID": "slides/02_lcel.html#runnable",
+    "href": "slides/02_lcel.html#runnable",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Runnable",
+    "text": "Runnable\n\nrunnable = prompt | model\n\n\nrunnable.invoke({\"input\": \"what is the weather in sf\"})\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘weather_search’, ‘arguments’: ‘{“airport_code”: “SFO”}’}})"
+  },
+  {
+    "objectID": "slides/02_lcel.html#weather-and-sports-search-function",
+    "href": "slides/02_lcel.html#weather-and-sports-search-function",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Weather and sports search function",
+    "text": "Weather and sports search function\n\nfunctions = [\n    {\n      \"name\": \"weather_search\",\n      \"description\": \"Search for weather given an airport code\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"airport_code\": {\n            \"type\": \"string\",\n            \"description\": \"The airport code to get the weather for\"\n          },\n        },\n        \"required\": [\"airport_code\"]\n      }\n    },\n        {\n      \"name\": \"sports_search\",\n      \"description\": \"Search for news of recent sport events\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"team_name\": {\n            \"type\": \"string\",\n            \"description\": \"The sports team to search for\"\n          },\n        },\n        \"required\": [\"team_name\"]\n      }\n    }\n  ]"
+  },
+  {
+    "objectID": "slides/02_lcel.html#bind-1",
+    "href": "slides/02_lcel.html#bind-1",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Bind",
+    "text": "Bind\n\nmodel = model.bind(functions=functions)\n\n\n\nrunnable = prompt | model\n\n\n\n\nrunnable.invoke({\"input\": \"how did the patriots do yesterday?\"})\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘sports_search’, ‘arguments’: ‘{“team_name”: “patriots”}’}})"
+  },
+  {
+    "objectID": "slides/02_lcel.html#create-json-output",
+    "href": "slides/02_lcel.html#create-json-output",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Create JSON output",
+    "text": "Create JSON output\n\nWe use a simple model\n\n\n\nsimple_model = OpenAI(\n    temperature=0, \n    max_tokens=1000, \n    model=\"text-davinci-001\"\n)\nsimple_chain = simple_model | json.loads"
+  },
+  {
+    "objectID": "slides/02_lcel.html#input-challenge",
+    "href": "slides/02_lcel.html#input-challenge",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Input challenge",
+    "text": "Input challenge\n\nchallenge = \"write three poems in a json blob, where each poem is a json blob of a title, author, and first line\""
+  },
+  {
+    "objectID": "slides/02_lcel.html#run-simple-model",
+    "href": "slides/02_lcel.html#run-simple-model",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Run simple model",
+    "text": "Run simple model\n\nsimple_model.invoke(challenge)\n\n\nNote: The next line is expected to fail.\n\n\n# simple_chain.invoke(challenge)\n\n\nOutput is not JSON"
+  },
+  {
+    "objectID": "slides/02_lcel.html#new-model",
+    "href": "slides/02_lcel.html#new-model",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "New model",
+    "text": "New model\n\nmodel = ChatOpenAI(temperature=0)\n\nchain = model | StrOutputParser() | json.loads\n\n\n\nchain.invoke(challenge)\n\n\n{‘poem1’: {‘title’: ‘Whispers of the Wind’, ‘author’: ‘Emily Rivers’, ‘first_line’: “Softly it blows, the wind’s gentle touch”}, ‘poem2’: {‘title’: ‘Silent Serenade’, ‘author’: ‘Jacob Stone’, ‘first_line’: ‘In moonlit night, a song unheard’}, ‘poem3’: {‘title’: ‘Dancing Shadows’, ‘author’: ‘Sophia Reed’, ‘first_line’: ‘Shadows sway, a graceful ballet’}}"
+  },
+  {
+    "objectID": "slides/02_lcel.html#new-model-with-fallbacks",
+    "href": "slides/02_lcel.html#new-model-with-fallbacks",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "New model with fallbacks",
+    "text": "New model with fallbacks\n\nfinal_chain = simple_chain.with_fallbacks([chain])\n\n\nfinal_chain.invoke(challenge)\n\n\n{‘poem1’: {‘title’: ‘Whispers of the Wind’, ‘author’: ‘Emily Rivers’, ‘first_line’: ‘Softly it comes, the whisper of the wind’}, ‘poem2’: {‘title’: ‘Silent Serenade’, ‘author’: ‘Jacob Moore’, ‘first_line’: ‘In the stillness of night, a silent serenade’}, ‘poem3’: {‘title’: ‘Dancing Shadows’, ‘author’: ‘Sophia Anderson’, ‘first_line’: ‘Shadows dance upon the walls, a secret ballet’}}"
+  },
+  {
+    "objectID": "slides/02_lcel.html#joke-example",
+    "href": "slides/02_lcel.html#joke-example",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Joke example",
+    "text": "Joke example\n\nprompt = ChatPromptTemplate.from_template(\n    \"Tell me a short joke about {topic}\"\n)\nmodel = ChatOpenAI()\noutput_parser = StrOutputParser()\n\nchain = prompt | model | output_parser"
+  },
+  {
+    "objectID": "slides/02_lcel.html#one-input",
+    "href": "slides/02_lcel.html#one-input",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "One input",
+    "text": "One input\n\nchain.invoke({\"topic\": \"professors\"})\n\n\n‘Why did the professor bring a ladder to the lecture? they wanted to reach new heights of knowledge!’"
+  },
+  {
+    "objectID": "slides/02_lcel.html#multiple-inputs",
+    "href": "slides/02_lcel.html#multiple-inputs",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Multiple inputs",
+    "text": "Multiple inputs\n\nchain.batch([{\"topic\": \"professors\"}, {\"topic\": \"students\"}])\n\n\n[‘Why did the professor bring a ladder to class?they heard the lecture was going to be on high-level concepts!’, ‘Why did the student bring a ladder to school?they wanted to reach for the highest grades!’]"
+  },
+  {
+    "objectID": "slides/02_lcel.html#stream-back-responses",
+    "href": "slides/02_lcel.html#stream-back-responses",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Stream back responses",
+    "text": "Stream back responses\n\nfor t in chain.stream({\"topic\": \"professors\"}):\n    print(t)\n\nWhy did the professor bring a ladder to class ?\nBecause they wanted to reach new heights in education !"
+  },
+  {
+    "objectID": "slides/02_lcel.html#async-method",
+    "href": "slides/02_lcel.html#async-method",
+    "title": "LangChain Expression Language (LCEL)",
+    "section": "Async method",
+    "text": "Async method\n\nresponse = await chain.ainvoke({\"topic\": \"professors\"})\nresponse\n\n\n‘Why did the professor bring a ladder to the lecture? they wanted to reach new heights of knowledge!’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#setup",
+    "href": "slides/05_tools_routing.html#setup",
+    "title": "Tools and Routing",
+    "section": "Setup",
+    "text": "Setup\n\nimport os\nimport openai\n\nfrom dotenv import load_dotenv, find_dotenv\n_ = load_dotenv(find_dotenv()) \nopenai.api_key = os.environ['OPENAI_API_KEY']\n\n\nfrom langchain.agents import tool\n\nfrom pydantic import BaseModel, Field\n\nimport requests\nfrom pydantic import BaseModel, Field\nimport datetime\n\nfrom langchain.tools.render import format_tool_to_openai_function\n\nimport wikipedia\n\nfrom langchain.chains.openai_functions.openapi import openapi_spec_to_openai_fn\n\nfrom langchain.utilities.openapi import OpenAPISpec\n\nfrom langchain.chat_models import ChatOpenAI\n\nfrom langchain.prompts import ChatPromptTemplate\n\nfrom langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser\n\nfrom langchain.schema.agent import AgentFinish"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#create-tool",
+    "href": "slides/05_tools_routing.html#create-tool",
+    "title": "Tools and Routing",
+    "section": "Create tool",
+    "text": "Create tool\n\n@tool\ndef search(query: str) -&gt; str:\n    \"\"\"Search for weather online\"\"\"\n    return \"42f\"\n\n\n\nsearch.name\n\n\n‘search’\n\n\n\n\nsearch.description\n\n\n‘search(query: str) -&gt; str - Search for weather online’ . . .\n\n\nsearch.args\n\n\n{‘query’: {‘title’: ‘Query’, ‘type’: ‘string’}}"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#add-a-description",
+    "href": "slides/05_tools_routing.html#add-a-description",
+    "title": "Tools and Routing",
+    "section": "Add a description",
+    "text": "Add a description\n\nclass SearchInput(BaseModel):\n    query: str = Field(description=\"Thing to search for\")\n\n\n\n@tool(args_schema=SearchInput)\ndef search(query: str) -&gt; str:\n    \"\"\"Search for the weather online.\"\"\"\n    return \"42f\"\n\n\n\n\nsearch.args\n\n\n{‘query’: {‘title’: ‘Query’, ‘description’: ‘Thing to search for’, ‘type’: ‘string’}}"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#call-function",
+    "href": "slides/05_tools_routing.html#call-function",
+    "title": "Tools and Routing",
+    "section": "Call function",
+    "text": "Call function\n\nsearch.run(\"sf\")\n\n\n‘42f’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#create-tool-1",
+    "href": "slides/05_tools_routing.html#create-tool-1",
+    "title": "Tools and Routing",
+    "section": "Create tool",
+    "text": "Create tool\n\n# Define the input schema\nclass OpenMeteoInput(BaseModel):\n    latitude: float = Field(..., description=\"Latitude of the location to fetch weather data for\")\n    longitude: float = Field(..., description=\"Longitude of the location to fetch weather data for\")\n\n@tool(args_schema=OpenMeteoInput)\ndef get_current_temperature(latitude: float, longitude: float) -&gt; dict:\n    \"\"\"Fetch current temperature for given coordinates.\"\"\"\n    \n    BASE_URL = \"https://api.open-meteo.com/v1/forecast\"\n    \n    # Parameters for the request\n    params = {\n        'latitude': latitude,\n        'longitude': longitude,\n        'hourly': 'temperature_2m',\n        'forecast_days': 1,\n    }\n\n    # Make the request\n    response = requests.get(BASE_URL, params=params)\n    \n    if response.status_code == 200:\n        results = response.json()\n    else:\n        raise Exception(f\"API Request failed with status code: {response.status_code}\")\n\n    current_utc_time = datetime.datetime.utcnow()\n    time_list = [datetime.datetime.fromisoformat(time_str.replace('Z', '+00:00')) for time_str in results['hourly']['time']]\n    temperature_list = results['hourly']['temperature_2m']\n    \n    closest_time_index = min(range(len(time_list)), key=lambda i: abs(time_list[i] - current_utc_time))\n    current_temperature = temperature_list[closest_time_index]\n    \n    return f'The current temperature is {current_temperature}°C'"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#inspect-function",
+    "href": "slides/05_tools_routing.html#inspect-function",
+    "title": "Tools and Routing",
+    "section": "Inspect function",
+    "text": "Inspect function\n\nget_current_temperature.name\n\n\n‘get_current_temperature’\n\n\n\nget_current_temperature.description\n\n\n‘get_current_temperature’\n\n\n\n\nget_current_temperature.args\n\n\n{‘latitude’: {‘title’: ‘Latitude’, ‘description’: ‘Latitude of the location to fetch weather data for’, ‘type’: ‘number’}, ‘longitude’: {‘title’: ‘Longitude’, ‘description’: ‘Longitude of the location to fetch weather data for’, ‘type’: ‘number’}}"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#convert-this-tool-into-openai-function",
+    "href": "slides/05_tools_routing.html#convert-this-tool-into-openai-function",
+    "title": "Tools and Routing",
+    "section": "Convert this tool into OpenAI function",
+    "text": "Convert this tool into OpenAI function\n\nformat_tool_to_openai_function(get_current_temperature)\n\n\n{‘name’: ‘get_current_temperature’, ‘description’: ‘get_current_temperature(latitude: float, longitude: float) -&gt; dict - Fetch current temperature for given coordinates.’, ‘parameters’: {‘title’: ‘OpenMeteoInput’, ‘type’: ‘object’, ‘properties’: {‘latitude’: {‘title’: ‘Latitude’, ‘description’: ‘Latitude of the location to fetch weather data for’, ‘type’: ‘number’}, ‘longitude’: {‘title’: ‘Longitude’, ‘description’: ‘Longitude of the location to fetch weather data for’, ‘type’: ‘number’}}, ‘required’: [‘latitude’, ‘longitude’]}}"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#use-tool",
+    "href": "slides/05_tools_routing.html#use-tool",
+    "title": "Tools and Routing",
+    "section": "Use tool",
+    "text": "Use tool\n\nget_current_temperature({\"latitude\": 48.741400, \"longitude\": 9.1006302})\n\n\n‘The current temperature is 8.2°C’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#create-tool-2",
+    "href": "slides/05_tools_routing.html#create-tool-2",
+    "title": "Tools and Routing",
+    "section": "Create tool",
+    "text": "Create tool\n\n@tool\ndef search_wikipedia(query: str) -&gt; str:\n    \"\"\"Run Wikipedia search and get page summaries.\"\"\"\n    page_titles = wikipedia.search(query)\n    summaries = []\n    for page_title in page_titles[: 3]:\n        try:\n            wiki_page =  wikipedia.page(title=page_title, auto_suggest=False)\n            summaries.append(f\"Page: {page_title}\\nSummary: {wiki_page.summary}\")\n        except (\n            self.wiki_client.exceptions.PageError,\n            self.wiki_client.exceptions.DisambiguationError,\n        ):\n            pass\n    if not summaries:\n        return \"No good Wikipedia Search Result was found\"\n    return \"\\n\\n\".join(summaries)"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#inspect-function-1",
+    "href": "slides/05_tools_routing.html#inspect-function-1",
+    "title": "Tools and Routing",
+    "section": "Inspect function",
+    "text": "Inspect function\n\nsearch_wikipedia.name\n\n\n‘search_wikipedia’\n\n\n\nsearch_wikipedia.description\n\n\n{‘name’: ‘search_wikipedia’, ‘description’: ‘search_wikipedia(query: str) -&gt; str - Run Wikipedia search and get page summaries.’, ‘parameters’: {‘title’: ‘search_wikipediaSchemaSchema’, ‘type’: ‘object’, ‘properties’: {‘query’: {‘title’: ‘Query’, ‘type’: ‘string’}}, ‘required’: [‘query’]}}\n\n\n\n\nformat_tool_to_openai_function(search_wikipedia)\n\n\n{‘name’: ‘search_wikipedia’, ‘description’: ‘search_wikipedia(query: str) -&gt; str - Run Wikipedia search and get page summaries.’, ‘parameters’: {‘title’: ‘search_wikipediaSchemaSchema’, ‘type’: ‘object’, ‘properties’: {‘query’: {‘title’: ‘Query’, ‘type’: ‘string’}}, ‘required’: [‘query’]}}"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#use-tool-1",
+    "href": "slides/05_tools_routing.html#use-tool-1",
+    "title": "Tools and Routing",
+    "section": "Use tool",
+    "text": "Use tool\n\nsearch_wikipedia({\"query\": \"Hochschule der Medien Stuttgart\"})\n\n\n‘Page: Stuttgart Media University: The Stuttgart Media University or Media University (German: Hochschule der Medien) is a state university of media studies in Stuttgart, Germany, offering nearly 30 accredited bachelor's and master's degree programs within three faculties.: Stuttgart: Stuttgart (German: [ˈʃtʊtɡaʁt] ; Swabian: Schduagert [ˈʒ̊d̥ua̯ɡ̊ɛʕd̥]; names in other languages) is the capital and largest city of the German state of Baden-Württemberg. It is located on the Neckar river in a fertile valley known as the Stuttgarter Kessel (Stuttgart Cauldron) and lies an hour from the Swabian Jura and the Black Forest. Stuttgart has a population of 635,911, making it the sixth largest city in Germany, while over 2.8 million people live in the city's administrative region and nearly 5.5 million people in its metropolitan area, making it the fourth largest metropolitan area in Germany. The city and metropolitan area are consistently ranked among the top 20 European metropolitan areas by GDP; Mercer listed Stuttgart as 21st on its 2015 list of cities by quality of living; innovation agency 2thinknow ranked the city 24th globally out of 442 cities in its Innovation Cities Index; and the Globalization and World Cities Research Network ranked the city as a Beta-status global city in their 2020 survey. Stuttgart was one of the host cities for the official tournaments of the 1974 and 2006 FIFA World Cups.is unusual in the scheme of German cities. It is spread across a variety of hills (some of them covered in vineyards), valleys (especially around the Neckar river and the Stuttgart basin) and parks. The city is known as the “cradle of the automobile”. As such, it is home to famous automobile museums like the Mercedes-Benz Museum and Porsche Museum, as well as numerous auto-enthusiast magazines, which contributes to Stuttgart's status as Germany's “Autohauptstadt” (“car capital city”). The city's tourism slogan is “Stuttgart offers more”. Under current plans to improve transport links to the international infrastructure (as part of the Stuttgart 21 project), Stuttgart unveiled a new city logo and slogan in March 2008, describing itself as “Das neue Herz Europas” (“The new Heart of Europe”). For business, it describes itself as “Where business meets the future”. In July 2010, the city unveiled a new logo, designed to entice more business people to stay in the city and enjoy breaks in the area.Since the seventh millennium BC, the Stuttgart area has been an important agricultural area and has been host to a number of cultures seeking to utilize the rich soil of the Neckar valley. The Roman Empire conquered the area in AD 83 and built a massive castrum near Bad Cannstatt, making it the most important regional centre for several centuries. Stuttgart's roots were truly laid in the tenth century with its founding by Liudolf, Duke of Swabia, as a stud farm for his warhorses. Initially overshadowed by nearby Bad Cannstatt, the town grew steadily and was granted a charter in 1320. The fortunes of Stuttgart turned with those of the House of Württemberg, and they made it the capital of their county, duchy, and kingdom from the 15th century to 1918. Stuttgart prospered despite setbacks in the Thirty Years' War and devastating air raids by the Allies on the city and its automobile production during World War II. However, by 1952, the city had bounced back and became the major cultural, economic, industrial, financial, tourism and publishing centre it is today.Stuttgart is known for its strong high-tech industry, especially in the automotive sector. It has the highest general standard of prosperity of any German city. In addition to many medium-sized companies, several major corporations are headquartered in Stuttgart, including Porsche, Bosch, and Mercedes-Benz Group. Stuttgart is an important financial center; the Stuttgart Stock Exchange is the second largest in Germany (after Frankfurt), and the Landesbank Baden-Württemberg (LBBW) is Germany's largest Landesbank. Stuttgart is also a major transport junction; it is among the most congested conurbations of Europe, and its airport is the sixth-busiest in Germany (2019). Stuttgart is a city with a high number of immigrants; according to Dorling Kindersley's Eyewitness Travel Guide to Germany, “In the city of Stuttgart, every third inhabitant is a foreigner.” 40% of Stuttgart's residents, and 64% of the population below the age of five, are of immigrant background.: Menschenliebe: Menschenliebe is an independent German feature film directed by Alexander Tuschinski. It had its premiere in Stuttgart, Germany in December 2010. It was screened and received numerous awards at international film-festivals, was additionally shown in various cinemas and screening events in Germany, and was officially released online in June 2013. It is the first instalment of Tuschinski's informal Trilogy of Rebellion - three very different feature films connected by the same thoughts, ideas and main characters, although each tells an independent story: Menschenliebe, Timeless and an upcoming project called Revolution!. Additionally, the film Break-Up refers to some events of Menschenliebe.’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#include-tools-in-function",
+    "href": "slides/05_tools_routing.html#include-tools-in-function",
+    "title": "Tools and Routing",
+    "section": "Include tools in function",
+    "text": "Include tools in function\n\nfunctions = [\n    format_tool_to_openai_function(f) for f in [\n        search_wikipedia, get_current_temperature\n    ]\n]\n\nmodel = ChatOpenAI(temperature=0).bind(functions=functions)"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#invoke-functions",
+    "href": "slides/05_tools_routing.html#invoke-functions",
+    "title": "Tools and Routing",
+    "section": "Invoke functions",
+    "text": "Invoke functions\n\nmodel.invoke(\"what is the weather in stuttgart right now\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘get_current_temperature’, ‘arguments’: ‘{“latitude”: 48.7758,“longitude”: 9.1829}’}})\n\n\n\nmodel.invoke(\"what is langchain\")\n\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘search_wikipedia’, ‘arguments’: ‘{“query”: “langchain”}’}})"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#create-prompt-and-chain",
+    "href": "slides/05_tools_routing.html#create-prompt-and-chain",
+    "title": "Tools and Routing",
+    "section": "Create prompt and chain",
+    "text": "Create prompt and chain\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are helpful but sassy assistant\"),\n    (\"user\", \"{input}\"),\n])\n\nchain = prompt | model"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#invoke-chain",
+    "href": "slides/05_tools_routing.html#invoke-chain",
+    "title": "Tools and Routing",
+    "section": "Invoke chain",
+    "text": "Invoke chain\n\nchain.invoke({\"input\": \"what is the weather in stuttgart right now\"})\n\nAIMessage(content=’‘, additional_kwargs={’function_call’: {‘name’: ‘get_current_temperature’, ‘arguments’: ‘{“latitude”: 48.7758,“longitude”: 9.1829}’}})"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#use-output-parser",
+    "href": "slides/05_tools_routing.html#use-output-parser",
+    "title": "Tools and Routing",
+    "section": "Use output parser",
+    "text": "Use output parser\n\nchain = prompt | model | OpenAIFunctionsAgentOutputParser()\n\n\nresult = chain.invoke({\"input\": \"what is the weather in stuttgart right now\"})\n\n\ntype(result)\n\n\nlangchain.schema.agent.AgentActionMessageLog"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#inspect-result",
+    "href": "slides/05_tools_routing.html#inspect-result",
+    "title": "Tools and Routing",
+    "section": "Inspect result",
+    "text": "Inspect result\n\nresult.tool\n\n\n‘get_current_temperature’\n\n\n\nresult.tool_input\n\n\n{‘latitude’: 48.7758, ‘longitude’: 9.1829}\n\n\n\n\nget_current_temperature(result.tool_input)\n\n\n‘The current temperature is 10.1°C’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#try-a-new-input",
+    "href": "slides/05_tools_routing.html#try-a-new-input",
+    "title": "Tools and Routing",
+    "section": "Try a new input",
+    "text": "Try a new input\n\nresult = chain.invoke({\"input\": \"Hi! How are you?\"})\n\n\ntype(result)\n\n\nlangchain.schema.agent.AgentFinish\n\n\n\nresult.return_values\n\n\n{‘output’: “Hello! I’m an AI assistant, so I don’t have feelings, but I’m here to help you. How can I assist you today?”}"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#define-route-function",
+    "href": "slides/05_tools_routing.html#define-route-function",
+    "title": "Tools and Routing",
+    "section": "Define route function",
+    "text": "Define route function\n\ndef route(result):\n    if isinstance(result, AgentFinish):\n        return result.return_values['output']\n    else:\n        tools = {\n            \"search_wikipedia\": search_wikipedia, \n            \"get_current_temperature\": get_current_temperature,\n        }\n        return tools[result.tool].run(result.tool_input)"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#create-chain",
+    "href": "slides/05_tools_routing.html#create-chain",
+    "title": "Tools and Routing",
+    "section": "Create chain",
+    "text": "Create chain\n\nchain = prompt | model | OpenAIFunctionsAgentOutputParser() | route"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#input-a-weather-quaestion",
+    "href": "slides/05_tools_routing.html#input-a-weather-quaestion",
+    "title": "Tools and Routing",
+    "section": "Input a weather quaestion",
+    "text": "Input a weather quaestion\n\nresult = chain.invoke({\"input\": \"What is the weather in stuttgart right now?\"})\n\n\nresult\n\n\n‘The current temperature is 10.1°C’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#input-a-general-queation",
+    "href": "slides/05_tools_routing.html#input-a-general-queation",
+    "title": "Tools and Routing",
+    "section": "Input a general queation",
+    "text": "Input a general queation\n\nresult = chain.invoke({\"input\": \"What is langchain?\"})\n\n\nresult\n\n‘Page: LangChain: LangChain is a framework designed to simplify the creation of applications using large language models (LLMs). As a language model integration framework, LangChain's use-cases largely overlap with those of language models in general, including document analysis and summarization, chatbots, and code analysis.: Prompt engineering: Prompt engineering is the process of structuring text that can be interpreted and understood by a generative AI model. A prompt is natural language text describing the task that an AI should perform.A prompt for a text-to-text model can be a query such as “what is Fermat's little theorem?”, a command such as “write a poem about leaves falling”, a short statement of feedback (for example, “too verbose”, “too formal”, “rephrase again”, “omit this word”) or a longer statement including context, instructions, and input data. Prompt engineering may involve phrasing a query, specifying a style, providing relevant context or assigning a role to the AI such as “Act as a native French speaker”. A prompt may include a few examples for a model to learn from, such as “maison -&gt; house, chat -&gt; cat, chien -&gt;”, an approach called few-shot learning.When communicating with a text-to-image or a text-to-audio model, a typical prompt is a description of a desired output such as “a high-quality photo of an astronaut riding a horse” or “Lo-fi slow BPM electro chill with organic samples”. Prompting a text-to-image model may involve adding, removing, emphasizing and re-ordering words to achieve a desired subject, style, layout, lighting, and aesthetic.: Sentence embedding: In natural language processing, a sentence embedding refers to a numeric representation of a sentence in the form of a vector of real numbers which encodes meaningful semantic information.State of the art embeddings are based on the learned hidden layer representation of dedicated sentence transformer models. BERT pioneered an approach involving the use of a dedicated [CLS] token prepended to the beginning of each sentence inputted into the model; the final hidden state vector of this token encodes information about the sentence and can be fine-tuned for use in sentence classification tasks. In practice however, BERT's sentence embedding with the [CLS] token achieves poor performance, often worse than simply averaging non-contextual word embeddings. SBERT later achieved superior sentence embedding performance by fine tuning BERT's [CLS] token embeddings through the usage of a siamese neural network architecture on the SNLI dataset. approaches are loosely based on the idea of distributional semantics applied to sentences. Skip-Thought trains an encoder-decoder structure for the task of neighboring sentences predictions. Though this has been shown to achieve worse performance than approaches such as InferSent or SBERT. alternative direction is to aggregate word embeddings, such as those returned by Word2vec, into sentence embeddings. The most straightforward approach is to simply compute the average of word vectors, known as continuous bag-of-words (CBOW). However, more elaborate solutions based on word vector quantization have also been proposed. One such approach is the vector of locally aggregated word embeddings (VLAWE), which demonstrated performance improvements in downstream text classification tasks.’"
+  },
+  {
+    "objectID": "slides/05_tools_routing.html#just-say-hi",
+    "href": "slides/05_tools_routing.html#just-say-hi",
+    "title": "Tools and Routing",
+    "section": "Just say hi",
+    "text": "Just say hi\n\nchain.invoke({\"input\": \"hi!\"})\n\n\n‘Hello! How can I assist you today?’"
+  }
+]
