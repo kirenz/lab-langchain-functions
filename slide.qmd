@@ -3,11 +3,8 @@ title: "Slides"
 number-sections: true
 ---
 
-*The following tutorials are mainly based on the excellent course ["LangChain: Chat with Your DataI"](https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/) provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI and cover the following topics:*
 
-
-![](/images/rag.png)
-
+*The following tutorials are mainly based on the excellent course ["Functions, Tools and Agents with LangChain"](https://www.deeplearning.ai/short-courses/functions-tools-agents-langchain/?) provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI.*
 
 
 ::: {.callout-note appearance="simple"}
@@ -20,67 +17,49 @@ You have several options to start code development:
 
 2. **Local**: Click on one of the links "💻 Jupyter Notebook" below, go to the Colab menu and choose "File" > "Download" > "Download .ipynb"
 
-3. **Cloud Codespace**: Work in a fully configured dev environment in the cloud with a [GitHub Codespace VS Code Browser](https://github.com/kirenz/lab-langchain-rag/blob/main/README.md) environment.
+3. **Cloud Codespace**: Work in a fully configured dev environment in the cloud with a [GitHub Codespace VS Code Browser](https://github.com/kirenz/lab-langchain-functions/blob/main/README.md) environment.
 
 4. **Local VS Code with Codespace**: Use [GitHub Codespaces in your local Visual Studio Code environment](https://docs.github.com/en/codespaces/developing-in-codespaces/using-github-codespaces-in-visual-studio-code).
 
 
-## What is Retrieval-Augmented Generation (RAG)?
 
+## OpenAI Function Calling
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/T-D1OfcDW1M?si=E491V0ebqfGxV5UZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-Large language models usually give great answers, but because they're limited to the training data used to create the model, over time they can become incomplete--or worse, generate answers that are just plain wrong. One way of improving the LLM results is called "retrieval-augmented generation" or RAG. 
-
-In this video, IBM Senior Research Scientist Marina Danilevsky explains the LLM/RAG framework and how this combination delivers two big advantages, namely: the model gets the most up-to-date and trustworthy facts, and you can see where the model got its info, lending more credibility to what it generates.
-
-
-
-## Document Loading
-
-Learn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video:
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](/slides/01_document_loading.qmd)
-- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/01_document_loading.ipynb)
+- [🖥️ Presentation](/slides/01_openai_functions.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/01_openai_functions.ipynb)
+
 :::
 
 
-## Document Splitting
-
-In the context of building LLM-related applications, splitting is the process of breaking down large pieces of text into smaller segments:
+## LangChain Expression Language (LCEL)
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](/slides/02_document_splitting.qmd)
-- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/02_document_splitting.ipynb)
+- [🖥️ Presentation](/slides/02_lcel.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/02_lcel.ipynb)
 :::
 
-## Vector stores and embeddings
-
-Learn the concept of embeddings and explore vector store integrations within LangChain.
+## OpenAI Function Calling In LangChain
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](/slides/03_vectorstores_and_embeddings.qmd)
-- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/03_vectorstores_and_embeddings.ipynb)
+- [🖥️ Presentation](/slides/03_function_calling.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/03_function_calling.ipynb)
 :::
 
-## Retrieval
-
-Learn advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries:
+## Tagging and Extraction Using OpenAI functions
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](/slides/04_retrieval.qmd)
-- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/04_retrieval.ipynb)
+- [🖥️ Presentation](/slides/04_tagging_extraction.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/04_tagging_extraction.ipynb)
 :::
 
 
-## Question Answering
-
-Build a one-pass question-answering solution.
+## Tools and Routing
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](/slides/05_question_answering.qmd)
-- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/05_question_answering.ipynb)
+- [🖥️ Presentation](/slides/05_tools_routing.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/05_tools_routing.ipynb)
 :::
 
 ## Chat System
@@ -88,8 +67,8 @@ Build a one-pass question-answering solution.
 Learn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain.
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](/slides/06_chat.qmd)
-- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-rag/blob/main/code/06_chat.ipynb)
+- [🖥️ Presentation](/slides/06_functional_conversation.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/06_functional_conversation.ipynb)
 :::
 
 ## LangChain cookbook
