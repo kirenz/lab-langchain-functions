@@ -1,0 +1,358 @@
+---
+title: OpenAI Function Calling In LangChain
+title-slide-attributes:
+  data-background-image: ../images/logo.png
+  data-background-size: contain
+  data-background-opacity: "0.5"
+lang: en
+subtitle: Tutorial 3
+author: Jan Kirenz
+execute:
+  eval: false
+  echo: true
+highlight-style: github
+format:
+  revealjs: 
+    toc: true
+    toc-depth: 1
+    embed-resources: false
+    theme: [dark, ../custom.scss]  
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    code-copy: true
+    code-line-numbers: true
+    smaller: false
+    scrollable: true
+    slide-number: c
+    preview-links: auto
+    chalkboard: 
+      buttons: false
+   # logo: ../images/logo.png
+    footer: Jan Kirenz
+---
+
+# OpenAI Function Calling In LangChain
+
+
+# Setup
+
+```{python}
+import os
+import openai
+
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv()) 
+openai.api_key = os.environ['OPENAI_API_KEY']
+```
+
+```{python}
+from typing import List
+from pydantic import BaseModel, Field
+
+from langchain.utils.openai_functions import convert_pydantic_to_openai_function
+
+from langchain.chat_models import ChatOpenAI
+
+from langchain.prompts import ChatPromptTemplate
+
+```
+
+# Pydantic Syntax
+
+## Basics
+
+- Pydantic data classes are a blend of Python's data classes with the validation power of Pydantic. 
+
+- They offer a concise way to define data structures while ensuring that the data adheres to specified types and constraints.
+
+## Create class with standard Python
+
+```{python}
+class User:
+    def __init__(self, name: str, age: int, email: str):
+        self.name = name
+        self.age = age
+        self.email = email
+```
+
+## Creata an instance {.smaller}
+
+```{python}
+foo = User(name="Joe",age=32, email="joe@gmail.com")
+```
+
+. . .
+
+```{python}
+foo.name
+```
+
+- 'Joe'
+
+. . .
+
+```{python}
+foo = User(name="Joe",age="bar", email="joe@gmail.com")
+```
+
+. . .
+
+```{python}
+foo.age
+```
+
+- 'bar'
+
+## Create class with Pydantic
+
+```{python}
+class pUser(BaseModel):
+    name: str
+    age: int
+    email: str
+```
+
+
+## Create instance {.smaller}
+
+```{python}
+foo_p = pUser(name="Jane", age=32, email="jane@gmail.com")
+```
+
+```{python}
+foo_p.name
+```
+
+- 'Jane'
+
+```{python}
+foo_p = pUser(name="Jane", age="bar", email="jane@gmail.com")
+```
+
+- ValidationError: 1 validation error for pUser age value is not a valid integer (type=type_error.integer)
+
+
+## Nest data structures
+
+- Define class type which includes another object (nest objects)
+
+. . .
+
+```{python}
+class Class(BaseModel):
+    students: List[pUser]
+```
+
+. . .
+
+```{python}
+obj = Class(
+    students=[pUser(name="Jane", age=32, email="jane@gmail.com")]
+)
+```
+
+. . .
+
+```{python}
+obj
+```
+
+
+- Class(students=[pUser(name='Jane', age=32, email='jane@gmail.com')])
+
+# Pydantic to OpenAI function definition
+
+## Weather search function
+
+- [Docstring](https://peps.python.org/pep-0257/#what-is-a-docstring) is required
+
+. . .
+
+```{python}
+class WeatherSearch(BaseModel):
+    """Call this with an airport code to get the weather at that airport"""
+    airport_code: str = Field(description="airport code to get weather for")
+```
+
+- Pass in class type
+
+. . .
+
+```{python}
+weather_function = convert_pydantic_to_openai_function(WeatherSearch)
+```
+
+## Inspect class type
+
+```{python}
+weather_function
+```
+
+
+{'name': 'WeatherSearch',
+ 'description': 'Call this with an airport code to get the weather at that airport',
+ 'parameters': {'title': 'WeatherSearch',
+  'description': 'Call this with an airport code to get the weather at that airport',
+  'type': 'object',
+  'properties': {'airport_code': {'title': 'Airport Code',
+    'description': 'airport code to get weather for',
+    'type': 'string'}},
+  'required': ['airport_code']}}
+
+
+# Combine OpenAI with LEL
+
+## Use model directly
+
+```{python}
+model = ChatOpenAI()
+```
+
+```{python}
+model.invoke("what is the weather in SF today?", functions=[weather_function])
+```
+
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'WeatherSearch', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+## Use bind 
+
+```{python}
+model_with_function = model.bind(functions=[weather_function])
+```
+
+. . .
+
+```{python}
+model_with_function.invoke("what is the weather in sf?")
+```
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'WeatherSearch', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+## Forcing it to use a function
+
+
+```{python}
+model_with_forced_function = model.bind(functions=[weather_function], function_call={"name":"WeatherSearch"})
+```
+
+. . .
+
+```{python}
+model_with_forced_function.invoke("what is the weather in sf?")
+```
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'WeatherSearch', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+. . .
+
+```{python}
+model_with_forced_function.invoke("hi!")
+```
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'WeatherSearch', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+# Using in a chain
+
+## Prompt template
+
+We can use this model bound to function in a chain as we normally would
+
+```{python}
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant"),
+    ("user", "{input}")
+])
+```
+
+## Chain
+
+```{python}
+chain = prompt | model_with_function
+```
+
+. . .
+
+```{python}
+chain.invoke({"input": "what is the weather in sf?"})
+```
+
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'WeatherSearch', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+## Using multiple functions
+
+
+## Create ArtistSearch function {.smaller}
+
+Even better, we can pass a set of function and let the LLM decide which to use based on the question context.
+
+```{python}
+class ArtistSearch(BaseModel):
+    """Call this to get the names of songs by a particular artist"""
+    artist_name: str = Field(description="name of artist to look up")
+    n: int = Field(description="number of results")
+```
+
+. . .
+
+```{python}
+functions = [
+    convert_pydantic_to_openai_function(WeatherSearch),
+    convert_pydantic_to_openai_function(ArtistSearch),
+]
+```
+
+. . .
+
+```{python}
+model_with_functions = model.bind(functions=functions)
+```
+
+## Invoke functions {.smaller}
+
+```{python}
+model_with_functions.invoke("what is the weather in sf?")
+```
+
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'WeatherSearch', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+```{python}
+
+model_with_functions.invoke("what are three songs by taylor swift?")
+```
+
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'ArtistSearch', 'arguments': '{\n  "artist_name": "taylor swift",\n  "n": 3\n}'}})
+
+
+```{python}
+model_with_functions.invoke("hi!")
+```
+
+- AIMessage(content='Hello! How can I assist you today?')
+
+
+
+# Acknowledgments
+
+- This tutorial is mainly based on the excellent course ["Functions, Tools and Agents with LangChain"](https://www.deeplearning.ai/short-courses/functions-tools-agents-langchain/?) provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI.
+
+
+# What's next? {background-image="../images/logo.png" background-opacity="0.5"}
+
+**Congratulations! You have completed this tutorial** 👍
+
+
+**Next, you may want to go back to the [lab's website](https://kirenz.github.io/lab-langchain-functions/)**
+
+
+
+
+
+
+
+
