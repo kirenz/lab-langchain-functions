@@ -48,22 +48,17 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 ```
 
 ```{python}
-from typing import List
 from pydantic import BaseModel, Field
-from langchain.utils.openai_functions import convert_pydantic_to_openai_function
-
-from langchain.prompts import ChatPromptTemplate
-from langchain.chat_models import ChatOpenAI
-
-from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser
-from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
-
+from typing import List
 from typing import Optional
 
+from langchain.utils.openai_functions import convert_pydantic_to_openai_function
+from langchain.prompts import ChatPromptTemplate
+from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser
+from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
 from langchain.document_loaders import WebBaseLoader
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
 from langchain.schema.runnable import RunnableLambda
 ```
 
@@ -79,7 +74,7 @@ class Tagging(BaseModel):
     language: str = Field(description="language of text (should be ISO 639-1 code)")
 ```
 
-## Take a look at the class
+## Take a look at the class {.smaller}
 
 ```{python}
 convert_pydantic_to_openai_function(Tagging)
@@ -99,7 +94,7 @@ convert_pydantic_to_openai_function(Tagging)
   'required': ['sentiment', 'language']}}
 
 
-## Create model, tagging function and prompt
+## Create model, tagging function and prompt {.smaller}
 
 ```{python}
 model = ChatOpenAI(temperature=0)
@@ -137,7 +132,7 @@ model_with_functions = model.bind(
 tagging_chain = prompt | model_with_functions
 ```
 
-## Call the function
+## Call the function with example 1
 
 ```{python}
 tagging_chain.invoke({"input": "I like the book Sapiens"})
@@ -145,7 +140,8 @@ tagging_chain.invoke({"input": "I like the book Sapiens"})
 
 - AIMessage(content='', additional_kwargs={'function_call': {'name': 'Tagging', 'arguments': '{\n  "sentiment": "pos",\n  "language": "en"\n}'}})
 
-. . . 
+## Call the function with example 2
+
 
 ```{python}
 tagging_chain.invoke({"input": "Das 'Buch Eine Anleitung zum guten Leben: Wie Sie die alte Kunst des Stoizismus' ist sehr lesenswert"})
@@ -154,7 +150,7 @@ tagging_chain.invoke({"input": "Das 'Buch Eine Anleitung zum guten Leben: Wie Si
 - AIMessage(content='', additional_kwargs={'function_call': {'name': 'Tagging', 'arguments': '{\n  "sentiment": "pos",\n  "language": "de"\n}'}})
 
 
-## Use output parser
+## Use output parser {.smaller}
 
 - Obtain a cleaner result with `JsonOutputFunctionsParser()`
 
@@ -177,7 +173,7 @@ tagging_chain.invoke({"input": "Das 'Buch Eine Anleitung zum guten Leben: Wie Si
 
 Extraction is similar to tagging, but used for extracting multiple pieces of information.
 
-## Define class 
+## Define class {.smaller}
 
 ```{python}
 class Person(BaseModel):
@@ -195,7 +191,7 @@ class Information(BaseModel):
 ```
 
 
-## Convert Pydantic to OpenAI function
+## Convert Pydantic to OpenAI function {.smaller}
 
 ```{python}
 convert_pydantic_to_openai_function(Information)
@@ -307,9 +303,6 @@ extraction_chain.invoke({"input": "Joe is 30, his mom is Martha"})
 
 We can apply tagging and axtracting to a larger body of text.
 
-For example, let's load a blog post and provide tag information from a sub-set of the text.
-
-Furthermore, we want 
 
 
 ## Load document
@@ -481,7 +474,7 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 ```
 
-. . .
+## Set up chain
 
 ```{python}
 extraction_chain = prompt | extraction_model | JsonKeyOutputFunctionsParser(key_name="papers")
@@ -569,8 +562,7 @@ flatten([[1, 2], [3, 4]])
 print(splits[0])
 ```
 
-## Use RunnableLambda to create function
-
+## Use RunnableLambda to create function {.smaller}
 
 ```{python}
 prep = RunnableLambda(
