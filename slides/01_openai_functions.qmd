@@ -35,34 +35,24 @@ format:
 
 # OpenAI Function Calling
 
-- Functions count in token usage
 
 # Setup
 
 ```{python}
 import os
 import openai
-
+import json
 
 from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv()) # read local .env file
+_ = load_dotenv(find_dotenv()) 
 openai.api_key = os.environ['OPENAI_API_KEY']
-```
-
-## Helper function
-
-```{python}
-
 ```
 
 # Functions
 
-## Weather example
-
+## Weather example function
 
 ```{python}
-import json
-
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
 def get_current_weather(location, unit="celsius"):
@@ -79,7 +69,6 @@ def get_current_weather(location, unit="celsius"):
 ## Define a function
 
 ```{python}
-# define a function
 functions = [
     {
         "name": "get_current_weather",
@@ -241,9 +230,39 @@ response = openai.ChatCompletion.create(
 )
 ```
 
+
+## Show response {.smaller}
+
 ```{python}
 print(response)
 ```
+
+
+{
+  "id": "chatcmpl-8GqJyabUr85mp4mGjFLZJuKGOoBu6",
+  "object": "chat.completion",
+  "created": 1699025062,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Hello! How can I assist you today?"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 75,
+    "completion_tokens": 10,
+    "total_tokens": 85
+  }
+}
+
+
+
+## Use function call auto
 
 ```{python}
 messages = [
@@ -252,6 +271,7 @@ messages = [
         "content": "hi!",
     }
 ]
+
 response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=messages,
@@ -284,9 +304,9 @@ print(response)
 }
 
 
-## Disable function usage
+## Disable function usage {.smaller}
 
-- Don't use the function
+Don't use the function
 
 ```{python}
 messages = [
@@ -304,8 +324,29 @@ response = openai.ChatCompletion.create(
 print(response)
 ```
 
+{
+  "id": "chatcmpl-8GqKcx0cYK0MWb0ONpWqTTbU1hWlJ",
+  "object": "chat.completion",
+  "created": 1699025102,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Hello! How can I assist you today?"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 76,
+    "completion_tokens": 9,
+    "total_tokens": 85
+  }
+}
 
-## Force function usage
+## Force function usage {.smaller}
 
 - force to use the function
 
@@ -324,6 +365,32 @@ response = openai.ChatCompletion.create(
 )
 print(response)
 ```
+
+{
+  "id": "chatcmpl-8GqKwA2jwWb8PmgrXGZANDyxcsO0l",
+  "object": "chat.completion",
+  "created": 1699025122,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "function_call": {
+          "name": "get_current_weather",
+          "arguments": "{\n  \"location\": \"Stuttgart, BW\"\n}"
+        }
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 82,
+    "completion_tokens": 12,
+    "total_tokens": 94
+  }
+}
 
 ## Pass the reults back in the LLM
 
