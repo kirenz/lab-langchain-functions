@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/assignments.html</loc>
-    <lastmod>2023-11-03T15:47:23.828Z</lastmod>
+    <lastmod>2023-11-03T15:54:30.126Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slide.html</loc>
-    <lastmod>2023-11-03T15:47:22.956Z</lastmod>
+    <lastmod>2023-11-03T15:54:29.534Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slides/03_function_calling.html</loc>
-    <lastmod>2023-11-03T15:47:20.776Z</lastmod>
+    <lastmod>2023-11-03T15:54:28.082Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slides/01_openai_functions.html</loc>
-    <lastmod>2023-11-03T15:47:18.636Z</lastmod>
+    <lastmod>2023-11-03T15:54:26.714Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slides/04_tagging_extraction.html</loc>
-    <lastmod>2023-11-03T15:47:16.328Z</lastmod>
+    <lastmod>2023-11-03T15:54:25.266Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/index.html</loc>
-    <lastmod>2023-11-03T15:47:12.632Z</lastmod>
+    <lastmod>2023-11-03T15:54:22.586Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/code/04_tagging_extraction.html</loc>
-    <lastmod>2023-11-03T15:47:10.940Z</lastmod>
+    <lastmod>2023-11-03T15:54:21.490Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/code/03_function_calling.html</loc>
-    <lastmod>2023-11-03T15:47:08.916Z</lastmod>
+    <lastmod>2023-11-03T15:54:20.238Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/code/06_functional_conversation.html</loc>
-    <lastmod>2023-11-03T15:47:06.756Z</lastmod>
+    <lastmod>2023-11-03T15:54:18.610Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/code/02_lcel.html</loc>
-    <lastmod>2023-11-03T15:47:08.132Z</lastmod>
+    <lastmod>2023-11-03T15:54:19.666Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/code/01_openai_functions.html</loc>
-    <lastmod>2023-11-03T15:47:09.720Z</lastmod>
+    <lastmod>2023-11-03T15:54:20.766Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/code/05_tools_routing.html</loc>
-    <lastmod>2023-11-03T15:47:12.148Z</lastmod>
+    <lastmod>2023-11-03T15:54:22.274Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slides/02_lcel.html</loc>
-    <lastmod>2023-11-03T15:47:14.904Z</lastmod>
+    <lastmod>2023-11-03T15:54:24.362Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slides/05_tools_routing.html</loc>
-    <lastmod>2023-11-03T15:47:17.732Z</lastmod>
+    <lastmod>2023-11-03T15:54:26.130Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/slides/06_functional_conversation.html</loc>
-    <lastmod>2023-11-03T15:47:19.892Z</lastmod>
+    <lastmod>2023-11-03T15:54:27.518Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/docs/Notion_DB/Getting Started 95e5ecbe48c44e408ef09fed850fbd40.html</loc>
-    <lastmod>2023-11-03T15:47:21.776Z</lastmod>
+    <lastmod>2023-11-03T15:54:28.758Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-langchain-functions/require.html</loc>
-    <lastmod>2023-11-03T15:47:23.408Z</lastmod>
+    <lastmod>2023-11-03T15:54:29.846Z</lastmod>
   </url>
 </urlset>

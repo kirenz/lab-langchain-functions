@@ -56,13 +56,6 @@
     "text": "6 Chat System\nLearn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain.\n\n\n\n\n\n\n\n🖥️ Presentation\n💻 Jupyter Notebook"
   },
   {
-    "objectID": "slide.html#langchain-cookbook",
-    "href": "slide.html#langchain-cookbook",
-    "title": "Slides",
-    "section": "7 LangChain cookbook",
-    "text": "7 LangChain cookbook\nSome example code for building applications with LangChain, with an emphasis on more applied and end-to-end examples (see this site for more examples):\n\nSemi-structured RAG: This cookbook shows how to perform RAG on documents with semi-structured data (e.g. PDF with tables and text)"
-  },
-  {
     "objectID": "slides/03_function_calling.html#basics",
     "href": "slides/03_function_calling.html#basics",
     "title": "OpenAI Function Calling In LangChain",
