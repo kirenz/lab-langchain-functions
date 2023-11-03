@@ -35,7 +35,7 @@ format:
 
 # LangChain Expression Language (LCEL)
 
-# Setup 
+# Setup {.smaller}
 
 ```{python}
 import os
@@ -46,27 +46,16 @@ _ = load_dotenv(find_dotenv()) # read local .env file
 openai.api_key = os.environ['OPENAI_API_KEY']
 ```
 
-## LangChain
-
 ```{python}
+import json
+
 from langchain.prompts import ChatPromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.schema.output_parser import StrOutputParser
-```
-
-```{python}
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import DocArrayInMemorySearch
-```
-
-```{python}
 from langchain.schema.runnable import RunnableMap
-```
-
-
-```{python}
 from langchain.llms import OpenAI
-import json
 ```
 
 # Simple Chain 
@@ -114,7 +103,7 @@ vectorstore = DocArrayInMemorySearch.from_texts(
 retriever = vectorstore.as_retriever()
 ```
 
-## Retrieve  relevant documents {.smaller}
+## Retrieve relevant documents {.smaller}
 
 ```{python}
 retriever.get_relevant_documents("who is the author of Sapiens?")
@@ -148,7 +137,7 @@ Question: {question}
 prompt = ChatPromptTemplate.from_template(template)
 ```
 
-## Runnable Map
+## Runnable Map {.smaller}
 
 - Chain: get user input > fetch relevant context > pass context into prompt > pass into model > pass into output parser to convert into string
 
@@ -172,7 +161,6 @@ chain.invoke({"question": "who is the author of Sapiens?"})
 
 ## Closer look at the RunnableMap {.smaller}
 
-- 
 
 ```{python}
 inputs = RunnableMap({
@@ -278,7 +266,7 @@ functions = [
 ```
 
 
-## Bind
+## Bind {.smaller}
 
 ```{python}
 model = model.bind(functions=functions)
@@ -300,11 +288,8 @@ runnable.invoke({"input": "how did the patriots do yesterday?"})
 
 # Fallbacks
 
-## Create JSON output
+## Use a simple model
 
-- We use a simple model
-
-. . .
 
 ```{python}
 simple_model = OpenAI(
@@ -315,7 +300,7 @@ simple_model = OpenAI(
 simple_chain = simple_model | json.loads
 ```
 
-## Input challenge
+## Input
 
 ```{python}
 challenge = "write three poems in a json blob, where each poem is a json blob of a title, author, and first line"
@@ -335,7 +320,7 @@ simple_model.invoke(challenge)
 
 - Output is not JSON
 
-## New model
+## Use different model
 
 ```{python}
 model = ChatOpenAI(temperature=0)
@@ -412,7 +397,7 @@ chain.batch([{"topic": "professors"}, {"topic": "students"}])
  'Why did the student bring a ladder to school?\n\nBecause they wanted to reach for the highest grades!']
 
 
-## Stream back responses
+## Stream back responses {.smaller}
 
 ```{python}
 
