@@ -71,10 +71,5 @@ Learn how to track and select pertinent information from conversations and data 
 - [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-langchain-functions/blob/main/code/06_functional_conversation.ipynb)
 :::
 
-## LangChain cookbook
-
-Some example code for building applications with LangChain, with an emphasis on more applied and end-to-end examples (see [this site](https://github.com/langchain-ai/langchain/tree/master/cookbook) for more examples):
-
-- [Semi-structured RAG](https://github.com/langchain-ai/langchain/blob/master/cookbook/Semi_Structured_RAG.ipynb): This cookbook shows how to perform RAG on documents with semi-structured data (e.g. PDF with tables and text)
 
 
