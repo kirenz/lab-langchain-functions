@@ -1,0 +1,474 @@
+---
+title: LangChain Expression Language (LCEL)
+title-slide-attributes:
+  data-background-image: ../images/logo.png
+  data-background-size: contain
+  data-background-opacity: "0.5"
+lang: en
+subtitle: Tutorial 2
+author: Jan Kirenz
+execute:
+  eval: false
+  echo: true
+highlight-style: github
+format:
+  revealjs: 
+    toc: true
+    toc-depth: 1
+    embed-resources: false
+    theme: [dark, ../custom.scss]  
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    code-copy: true
+    code-line-numbers: true
+    smaller: false
+    scrollable: true
+    slide-number: c
+    preview-links: auto
+    chalkboard: 
+      buttons: false
+   # logo: ../images/logo.png
+    footer: Jan Kirenz
+---
+
+# LangChain Expression Language (LCEL)
+
+# Setup 
+
+```{python}
+import os
+import openai
+
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv()) # read local .env file
+openai.api_key = os.environ['OPENAI_API_KEY']
+```
+
+## LangChain
+
+```{python}
+from langchain.prompts import ChatPromptTemplate
+from langchain.chat_models import ChatOpenAI
+from langchain.schema.output_parser import StrOutputParser
+```
+
+```{python}
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import DocArrayInMemorySearch
+```
+
+```{python}
+from langchain.schema.runnable import RunnableMap
+```
+
+
+```{python}
+from langchain.llms import OpenAI
+import json
+```
+
+# Simple Chain 
+
+
+## Create chain{.smaller}
+
+```{python}
+prompt = ChatPromptTemplate.from_template(
+    "tell me a short joke about {topic}"
+)
+
+model = ChatOpenAI()
+
+output_parser = StrOutputParser()
+```
+
+. . . 
+
+```{python}
+chain = prompt | model | output_parser
+```
+
+## Invoke chain
+
+```{python}
+chain.invoke({"topic": "a professor at HdM Stuttgar"})
+```
+
+- ''Why did the professor at HdM Stuttgart always carry a ladder?\n\nBecause he wanted to reach new heights in teaching!''
+
+
+# More complex chain
+
+## Create Vector Store and Retriever
+
+
+```{python}
+vectorstore = DocArrayInMemorySearch.from_texts(
+    ["Yuval Noah Harari is the author of Sapiens", "In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism"],
+    embedding=OpenAIEmbeddings()
+)
+
+# create a retriever
+retriever = vectorstore.as_retriever()
+```
+
+## Retrieve  relevant documents {.smaller}
+
+```{python}
+retriever.get_relevant_documents("who is the author of Sapiens?")
+```
+
+- [Document(page_content='Yuval Noah Harari is the author of Sapiens'),
+ Document(page_content='In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism')]
+
+. . .
+
+```{python}
+retriever.get_relevant_documents("Which book did William Irvine write?")
+```
+
+- [Document(page_content='In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism'),
+ Document(page_content='Yuval Noah Harari is the author of Sapiens')]
+
+
+# RAG pipeline
+
+
+## Create prompt
+
+```{python}
+template = """Answer the question based only on the following context:
+{context}
+
+Question: {question}
+"""
+
+prompt = ChatPromptTemplate.from_template(template)
+```
+
+## Runnable Map
+
+- Chain: get user input > fetch relevant context > pass context into prompt > pass into model > pass into output parser to convert into string
+
+- Create dictionary with context and question
+. . .
+
+```{python}
+chain = RunnableMap({
+    "context": lambda x: retriever.get_relevant_documents(x["question"]),
+    "question": lambda x: x["question"]
+}) | prompt | model | output_parser
+```
+
+## Invoke chain
+
+```{python}
+chain.invoke({"question": "who is the author of Sapiens?"})
+```
+
+- 'The author of Sapiens is Yuval Noah Harari.'
+
+## Closer look at the RunnableMap {.smaller}
+
+- 
+
+```{python}
+inputs = RunnableMap({
+    "context": lambda x: retriever.get_relevant_documents(x["question"]),
+    "question": lambda x: x["question"]
+})
+```
+
+. . .
+
+```{python}
+inputs.invoke({"question": "who is the author of Sapiens?"})
+```
+
+- {'context': [Document(page_content='Yuval Noah Harari is the author of Sapiens'),
+  Document(page_content='In A Guide to the Good Life, William Irvine offers a refreshing presentation of Stoicism')],
+ 'question': 'who is the author of Sapiens?'}
+
+
+# Bind parameters
+
+## Weather function
+
+
+```{python}
+
+functions = [
+    {
+      "name": "weather_search",
+      "description": "Search for weather given an airport code",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "airport_code": {
+            "type": "string",
+            "description": "The airport code to get the weather for"
+          },
+        },
+        "required": ["airport_code"]
+      }
+    }
+  ]
+```
+
+
+## Bind
+
+
+```{python}
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("human", "{input}")
+    ]
+)
+model = ChatOpenAI(temperature=0).bind(functions=functions)
+```
+
+## Runnable
+
+```{python}
+runnable = prompt | model
+```
+
+```{python}
+runnable.invoke({"input": "what is the weather in sf"})
+```
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'weather_search', 'arguments': '{\n  "airport_code": "SFO"\n}'}})
+
+## Weather and sports search function {.smaller}
+
+```{python}
+functions = [
+    {
+      "name": "weather_search",
+      "description": "Search for weather given an airport code",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "airport_code": {
+            "type": "string",
+            "description": "The airport code to get the weather for"
+          },
+        },
+        "required": ["airport_code"]
+      }
+    },
+        {
+      "name": "sports_search",
+      "description": "Search for news of recent sport events",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "team_name": {
+            "type": "string",
+            "description": "The sports team to search for"
+          },
+        },
+        "required": ["team_name"]
+      }
+    }
+  ]
+```
+
+
+## Bind
+
+```{python}
+model = model.bind(functions=functions)
+```
+
+. . .
+
+```{python}
+runnable = prompt | model
+```
+
+. . .
+
+```{python}
+runnable.invoke({"input": "how did the patriots do yesterday?"})
+```
+
+- AIMessage(content='', additional_kwargs={'function_call': {'name': 'sports_search', 'arguments': '{\n  "team_name": "patriots"\n}'}})
+
+# Fallbacks
+
+## Create JSON output
+
+- We use a simple model
+
+. . .
+
+```{python}
+simple_model = OpenAI(
+    temperature=0, 
+    max_tokens=1000, 
+    model="text-davinci-001"
+)
+simple_chain = simple_model | json.loads
+```
+
+## Input challenge
+
+```{python}
+challenge = "write three poems in a json blob, where each poem is a json blob of a title, author, and first line"
+```
+
+## Run simple model
+
+```{python}
+simple_model.invoke(challenge)
+```
+
+- Note: The next line is expected to fail.
+
+```{python}
+# simple_chain.invoke(challenge)
+```
+
+- Output is not JSON
+
+## New model
+
+```{python}
+model = ChatOpenAI(temperature=0)
+
+chain = model | StrOutputParser() | json.loads
+```
+
+. . .
+
+```{python}
+chain.invoke(challenge)
+```
+
+- {'poem1': {'title': 'Whispers of the Wind',
+  'author': 'Emily Rivers',
+  'first_line': "Softly it blows, the wind's gentle touch"},
+ 'poem2': {'title': 'Silent Serenade',
+  'author': 'Jacob Stone',
+  'first_line': 'In moonlit night, a song unheard'},
+ 'poem3': {'title': 'Dancing Shadows',
+  'author': 'Sophia Reed',
+  'first_line': 'Shadows sway, a graceful ballet'}}
+
+
+## New model with fallbacks
+
+```{python}
+final_chain = simple_chain.with_fallbacks([chain])
+```
+
+```{python}
+final_chain.invoke(challenge)
+```
+
+- {'poem1': {'title': 'Whispers of the Wind',
+  'author': 'Emily Rivers',
+  'first_line': 'Softly it comes, the whisper of the wind'},
+ 'poem2': {'title': 'Silent Serenade',
+  'author': 'Jacob Moore',
+  'first_line': 'In the stillness of night, a silent serenade'},
+ 'poem3': {'title': 'Dancing Shadows',
+  'author': 'Sophia Anderson',
+  'first_line': 'Shadows dance upon the walls, a secret ballet'}}
+
+# Interface
+
+## Joke example
+
+```{python}
+prompt = ChatPromptTemplate.from_template(
+    "Tell me a short joke about {topic}"
+)
+model = ChatOpenAI()
+output_parser = StrOutputParser()
+
+chain = prompt | model | output_parser
+```
+
+## One input
+
+```{python}
+chain.invoke({"topic": "professors"})
+```
+
+- 'Why did the professor bring a ladder to the lecture? \n\nBecause they wanted to reach new heights of knowledge!'
+
+## Multiple inputs
+
+```{python}
+chain.batch([{"topic": "professors"}, {"topic": "students"}])
+```
+
+- ['Why did the professor bring a ladder to class?\n\nBecause they heard the lecture was going to be on high-level concepts!',
+ 'Why did the student bring a ladder to school?\n\nBecause they wanted to reach for the highest grades!']
+
+
+## Stream back responses
+
+```{python}
+
+for t in chain.stream({"topic": "professors"}):
+    print(t)
+```
+
+
+Why
+ did
+ the
+ professor
+ bring
+ a
+ ladder
+ to
+ class
+?
+ 
+
+
+Because
+ they
+ wanted
+ to
+ reach
+ new
+ heights
+ in
+ education
+!
+
+## Async method
+
+```{python}
+response = await chain.ainvoke({"topic": "professors"})
+response
+```
+
+
+- 'Why did the professor bring a ladder to the lecture? \nBecause they wanted to reach new heights of knowledge!'
+
+
+
+# Acknowledgments
+
+- This tutorial is mainly based on the excellent course ["Functions, Tools and Agents with LangChain"](https://www.deeplearning.ai/short-courses/functions-tools-agents-langchain/?) provided by Harrison Chase from LangChain and Andrew Ng from DeepLearning.AI.
+
+
+# What's next? {background-image="../images/logo.png" background-opacity="0.5"}
+
+**Congratulations! You have completed this tutorial** 👍
+
+
+**Next, you may want to go back to the [lab's website](https://kirenz.github.io/lab-langchain-functions/)**
+
+
+
+
