@@ -1,11 +1,11 @@
 # Welcome to our lab 👋
 
-You can open the Jupyter Notebooks in Colab (on this [site](https://kirenz.github.io/lab-langchain-rag/slide.html)) or in GitHub Codespaces (see instructions below).
+You can open the Jupyter Notebooks in Colab (on this [site](https://kirenz.github.io/lab-langchain-functions/slide.html)) or in GitHub Codespaces (see instructions below).
 
 ## Create Codespace
 
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/kirenz/lab-langchain-rag?quickstart=1)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/kirenz/lab-langchain-functions?quickstart=1)
 
 1. Simply choose the *default* settings and create the Codespace.
 
@@ -24,7 +24,7 @@ After your Codespace is ready, you may want to:
 
 2. If needed, provide **API-keys** (e.g. OpenAi or Hugging Face) in the file `.env-template`. Then save your changes and rename the file to `.env`
 
-3. Open *Extensions*, select *Atom One Dark Theme* and click twice on *Set Color Theme* to change the user interface
+3. Open *Extensions*, select *Atom One Dark Theme* and click on *Set Color Theme* to change the user interface
 
 4. Open *Explorer* and open the folder 📂 *code*. Now you can select a Jupyter Notebook
 
