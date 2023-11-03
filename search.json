@@ -522,7 +522,7 @@
     "href": "index.html",
     "title": "Welcome 👋",
     "section": "",
-    "text": "Welcome to the lab “Langchain RAG”\n\nThe tutorials in this lab will cover Retrieval Augmented Generation (RAG), a common LLM application that retrieves contextual documents from an external dataset, and a guide to building a chatbot that responds to queries based on the content of your documents, rather than the information it has learned in training.\n\n\n\n\n\n\nImportant\n\n\n\nMake sure you meet all the requirements and have read the lecture slides before you start with the assignments\n\n\nWhat you will learn in this lab:\n\nDocument Loading: Learn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video.\nDocument Splitting: Discover the best practices and considerations for splitting data.\nVector stores and embeddings: Dive into the concept of embeddings and explore vector store integrations within LangChain.\nRetrieval: Grasp advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries.\nQuestion Answering: Build a one-pass question-answering solution.\nChat System: Learn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain."
+    "text": "Welcome to the lab “Langchain Functions”\n\nThe tutorials in this lab will cover function calling and how to build a conversational agent using the LangChain Expression Language (LCEL) for tasks like tagging, extraction, tool selection, and routing.\n\n\n\n\n\n\nImportant\n\n\n\nMake sure you meet all the requirements and have read the lecture slides before you start with the assignments\n\n\nUpon completing this course, you will acquire the ability to:\n\nProduce structured outputs, encompassing function calls, through the utilization of LLMs\nEmploy LCEL for streamlining the customization process of chains and agents in application development\nImplement function calling techniques for tasks such as tagging and data extraction\nComprehend tool selection and routing methodologies using LangChain tools and LLM function calling"
   },
   {
     "objectID": "code/04_tagging_extraction.html",
@@ -2139,14 +2139,14 @@
     "href": "require.html",
     "title": "Requirements",
     "section": "",
-    "text": "To start this lab on your local machine, you’ll need:\n\nPython: Anaconda, Anaconda Environment langchain and Visual Studio Code\nEnvironment: Use this folder template: langchain-rag and insert your OpenAI API key in the .env file.\n\n\n\n\n\n\n\nImportant\n\n\n\nVisit the “Programming Toolkit-webpage” to learn how to meet all requirements."
+    "text": "To start this lab on your local machine, you’ll need:\n\nPython: Anaconda, Anaconda Environment langchain-2 and Visual Studio Code\nEnvironment: OpenAI API key in an .env file.\n\n\n\n\n\n\n\nImportant\n\n\n\nVisit the “Programming Toolkit-webpage” to learn how to meet all requirements."
   },
   {
     "objectID": "require.html#local-development",
     "href": "require.html#local-development",
     "title": "Requirements",
     "section": "",
-    "text": "To start this lab on your local machine, you’ll need:\n\nPython: Anaconda, Anaconda Environment langchain and Visual Studio Code\nEnvironment: Use this folder template: langchain-rag and insert your OpenAI API key in the .env file.\n\n\n\n\n\n\n\nImportant\n\n\n\nVisit the “Programming Toolkit-webpage” to learn how to meet all requirements."
+    "text": "To start this lab on your local machine, you’ll need:\n\nPython: Anaconda, Anaconda Environment langchain-2 and Visual Studio Code\nEnvironment: OpenAI API key in an .env file.\n\n\n\n\n\n\n\nImportant\n\n\n\nVisit the “Programming Toolkit-webpage” to learn how to meet all requirements."
   },
   {
     "objectID": "require.html#cloud-development",
